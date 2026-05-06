@@ -101,13 +101,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 1.1em;
         }
         .widget-details {
             color: #ccc;
-            margin-top: 6px;
+            margin-top: 8px;
             font-size: 0.95em;
         }
+        
         /* Scorecard Table */
         .scorecard-table {
             width: 100%;
@@ -440,28 +440,36 @@ function finishRound() {
 
 async function loadWeather() {
     const container = document.getElementById('weather-container');
-    container.innerHTML = '<p style="text-align:center;">Loading weather widget...</p>';
+    container.innerHTML = '<p style="text-align:center;">Loading weather...</p>';
 
     try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&hourly=temperature_2m&timezone=America/New_York');
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,weather_code&timezone=America/New_York');
         const data = await res.json();
         window.weatherData = data;
 
-        let html = `<h3 style="text-align:center; color:var(--gold); margin-bottom:20px;">Louisville, KY</h3>`;
+        let html = `<h3 style="text-align:center; color:var(--gold);">Louisville, KY Weather</h3>`;
 
-        // Main Widget Style
         for (let i = 0; i < 5; i++) {
             const date = data.daily.time[i];
             const maxF = Math.round(data.daily.temperature_2m_max[i] * 9/5 + 32);
             const minF = Math.round(data.daily.temperature_2m_min[i] * 9/5 + 32);
             const rain = data.daily.precipitation_probability_max[i];
-            const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+            const code = data.daily.weather_code[i];
+
+            const dayName = new Date(date).toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric' 
+            });
 
             html += `
                 <div class="weather-widget" onclick="toggleHourly(this, '${date}')">
                     <div class="widget-header">
-                        <strong>${dayName} • ${date.slice(5)}</strong>
-                        <span style="font-size:28px; font-weight:bold;">${maxF}°F</span>
+                        <div>
+                            <strong>${dayName}</strong><br>
+                            <span style="font-size:22px;">${getWeatherEmoji(code)}</span>
+                        </div>
+                        <span style="font-size:36px; font-weight:bold;">${maxF}°F</span>
                     </div>
                     <div class="widget-details">
                         Low: ${minF}°F • Rain: ${rain}%
@@ -477,6 +485,19 @@ async function loadWeather() {
     }
 }
 
+function getWeatherEmoji(code) {
+    const emojis = {
+        0: "☀️", 1: "☀️", 2: "⛅", 3: "☁️",
+        45: "🌫️", 48: "🌫️",
+        51: "🌧️", 53: "🌧️", 55: "🌧️",
+        61: "🌧️", 63: "🌧️", 65: "🌧️",
+        71: "❄️", 73: "❄️", 75: "❄️",
+        80: "🌦️", 81: "🌦️", 82: "🌦️",
+        95: "⛈️", 96: "⛈️", 99: "⛈️"
+    };
+    return emojis[code] || "☁️";
+}
+
 function toggleHourly(card, selectedDate) {
     const hourlyDiv = card.querySelector('.hourly-forecast');
     
@@ -488,24 +509,30 @@ function toggleHourly(card, selectedDate) {
     }
 
     hourlyDiv.style.display = 'block';
-    hourlyDiv.innerHTML = '<p style="text-align:center;">Loading hourly...</p>';
+    hourlyDiv.innerHTML = '<p>Loading hourly...</p>';
 
-    let hourlyHTML = `<strong style="color:var(--gold);">Hourly</strong><br><br>`;
+    let hourlyHTML = `<strong style="color:var(--gold);">Next 5 Hours</strong><br><br>`;
     let count = 0;
+    const now = new Date();
 
-    for (let j = 0; j < window.weatherData.hourly.time.length && count < 6; j++) {
+    for (let j = 0; j < window.weatherData.hourly.time.length && count < 5; j++) {
         if (window.weatherData.hourly.time[j].startsWith(selectedDate)) {
-            const time = window.weatherData.hourly.time[j].slice(11, 16);
+            const hourTime = new Date(window.weatherData.hourly.time[j]);
+            if (hourTime < now) continue; // Skip past hours
+
+            const time = hourTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
             const tempF = Math.round(window.weatherData.hourly.temperature_2m[j] * 9/5 + 32);
-            hourlyHTML += `<div style="display:flex; justify-content:space-between; padding:6px 0;">
-                <span>${time}</span>
-                <span style="font-weight:bold;">${tempF}°F</span>
-            </div>`;
+            
+            hourlyHTML += `
+                <div style="display:flex; justify-content:space-between; margin:8px 0;">
+                    <span>${time}</span>
+                    <span style="font-weight:bold;">${tempF}°F</span>
+                </div>`;
             count++;
         }
     }
 
-    hourlyDiv.innerHTML = hourlyHTML;
+    hourlyDiv.innerHTML = hourlyHTML || '<p>No more hourly data for today.</p>';
 }
     
 // Initialize
