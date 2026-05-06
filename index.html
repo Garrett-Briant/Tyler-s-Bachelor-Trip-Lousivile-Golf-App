@@ -431,24 +431,21 @@ async function loadWeather() {
 
         let html = `<h3 style="text-align:center; color:var(--gold);">Louisville, KY • 5-Day Forecast</h3>`;
 
-        for (let i = 0; i < 5; i++) {   // Next 5 days
+        for (let i = 0; i < 5; i++) {
             const date = data.daily.time[i];
-            const maxC = data.daily.temperature_2m_max[i];
-            const minC = data.daily.temperature_2m_min[i];
-            const maxF = Math.round(maxC * 9/5 + 32);
-            const minF = Math.round(minC * 9/5 + 32);
+            const maxF = Math.round(data.daily.temperature_2m_max[i] * 9/5 + 32);
+            const minF = Math.round(data.daily.temperature_2m_min[i] * 9/5 + 32);
             const rain = data.daily.precipitation_probability_max[i];
-
             const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
 
             html += `
                 <div class="weather-card" style="margin:12px 0; cursor:pointer;" onclick="toggleHourly(this, '${date}')">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <strong>${dayName} • ${date.slice(5)}</strong>
-                        <span style="font-size:28px; font-weight:bold;">${maxF}°F</span>
+                        <strong>${dayName}<br><small>${date}</small></strong>
+                        <span style="font-size:32px; font-weight:bold;">${maxF}°F</span>
                     </div>
                     <div>Low: ${minF}°F • Rain: ${rain}%</div>
-                    <div class="hourly-forecast" style="display:none; margin-top:15px; padding-top:10px; border-top:1px solid #555;"></div>
+                    <div class="hourly-forecast" style="display:none; margin-top:15px; padding:15px; background:rgba(0,0,0,0.3); border-radius:10px;"></div>
                 </div>`;
         }
 
@@ -459,28 +456,47 @@ async function loadWeather() {
     }
 }
 
-// Function to toggle hourly forecast
-function toggleHourly(card, date) {
+function toggleHourly(card, selectedDate) {
     const hourlyDiv = card.querySelector('.hourly-forecast');
     
+    // Close all others
+    document.querySelectorAll('.hourly-forecast').forEach(div => {
+        if (div !== hourlyDiv) div.style.display = 'none';
+    });
+
     if (hourlyDiv.style.display === 'block') {
         hourlyDiv.style.display = 'none';
         return;
     }
 
-    // Close all others
-    document.querySelectorAll('.hourly-forecast').forEach(div => div.style.display = 'none');
-
     hourlyDiv.innerHTML = '<p>Loading hourly...</p>';
     hourlyDiv.style.display = 'block';
 
-    // This is a simplified hourly display (you can expand later)
-    hourlyDiv.innerHTML = `
-        <strong style="color:var(--gold);">Hourly Forecast for ${date}</strong>
-        <p style="font-size:14px; color:#aaa;">(Hourly data would go here - currently limited by API call)</p>
-    `;
-}
+    // Get actual hourly data for the selected day (first 5 hours starting ~8 AM)
+    const data = window.weatherData || {}; // We'll store data globally
+    const hourlyTimes = data.hourly ? data.hourly.time : [];
+    let hourlyHTML = `<strong style="color:var(--gold);">Hourly for ${selectedDate}</strong><br><br>`;
 
+    let count = 0;
+    for (let j = 0; j < hourlyTimes.length; j++) {
+        if (hourlyTimes[j].startsWith(selectedDate) && count < 5) {
+            const time = hourlyTimes[j].slice(11, 16); // HH:MM
+            const tempF = Math.round(data.hourly.temperature_2m[j] * 9/5 + 32);
+            hourlyHTML += `<div style="display:flex; justify-content:space-between; margin:6px 0;">
+                <span>${time}</span>
+                <span style="font-weight:bold;">${tempF}°F</span>
+            </div>`;
+            count++;
+        }
+    }
+
+    if (count === 0) {
+        hourlyHTML += `<p>No hourly data availablefor this day.</p>`;
+    }
+
+    hourlyDiv.innerHTML = hourlyHTML;
+}
+        
 // Initialize
 renderPlayers();
 </script>
