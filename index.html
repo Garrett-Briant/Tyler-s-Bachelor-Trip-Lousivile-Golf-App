@@ -828,56 +828,62 @@ async function loadWeather() {
         const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,weather_code&timezone=America/New_York');
         const data = await res.json();
 
-        let html = `<div style="background: rgba(255,255,255,0.12); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">`;
+        let html = `<div style="background: rgba(30,30,40,0.95); border-radius: 22px; padding: 20px; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">`;
 
-        // Today's big widget (Apple style)
+        // Big Current Widget
         const todayMax = Math.round(data.daily.temperature_2m_max[0] * 9/5 + 32);
         const todayMin = Math.round(data.daily.temperature_2m_min[0] * 9/5 + 32);
         const todayCode = data.daily.weather_code[0];
 
         html += `
-            <div style="text-align:center;">
-                <div style="font-size: 72px; font-weight: 300; line-height: 1;">${todayMax}°</div>
-                <div style="font-size: 24px; margin: 8px 0;">${getWeatherText(todayCode)}</div>
-                <div style="font-size: 18px; color:#ddd;">H:${todayMax}° L:${todayMin}°</div>
+            <div style="text-align:center; margin-bottom: 20px;">
+                <div style="font-size: 78px; font-weight: 300; line-height: 1;">${todayMax}°</div>
+                <div style="font-size: 24px; margin: 4px 0;">${getWeatherText(todayCode)}</div>
+                <div style="font-size: 17px; color:#ddd;">H:${todayMax}° L:${todayMin}°</div>
             </div>
 
-            <hr style="border: none; height: 1px; background: rgba(255,255,255,0.2); margin: 20px 0;">
+            <hr style="border:none; height:1px; background:rgba(255,255,255,0.2); margin:20px 0;">
 
-            <!-- Hourly -->
-            <div style="display:flex; gap:12px; overflow-x:auto; padding-bottom:10px;">
+            <!-- Hourly Strip -->
+            <div style="display:flex; gap:14px; overflow-x:auto; padding-bottom:12px;">
         `;
 
-        // Show next 8 hours
         for (let i = 0; i < 8; i++) {
             const tempF = Math.round(data.hourly.temperature_2m[i] * 9/5 + 32);
-            const time = new Date(data.hourly.time[i]).getHours();
-            const hourLabel = time === 0 ? "12AM" : time < 12 ? time + "AM" : (time === 12 ? "12PM" : time-12 + "PM");
+            const hour = new Date(data.hourly.time[i]).getHours();
+            const label = hour % 12 === 0 ? (hour === 0 ? "12AM" : "12PM") : (hour > 12 ? hour-12 + "PM" : hour + "AM");
 
             html += `
-                <div style="text-align:center; min-width:60px;">
-                    <div style="font-size:13px; margin-bottom:4px;">${hourLabel}</div>
-                    <div style="font-size:28px;">${getWeatherEmoji(data.hourly.weather_code[i])}</div>
-                    <div style="font-weight:bold; margin-top:6px;">${tempF}°</div>
+                <div style="text-align:center; min-width:55px;">
+                    <div style="font-size:13px;">${label}</div>
+                    <div style="font-size:26px; margin:6px 0;">${getWeatherEmoji(data.hourly.weather_code[i])}</div>
+                    <div style="font-weight:bold;">${tempF}°</div>
                 </div>`;
         }
 
-        html += `</div><hr style="border: none; height: 1px; background: rgba(255,255,255,0.2); margin: 20px 0;">`;
+        html += `</div><hr style="border:none; height:1px; background:rgba(255,255,255,0.2); margin:20px 0;">`;
 
-        // 5-Day Forecast
+        // 5-Day Forecast with Temperature Bars
         html += `<div style="font-size:15px;">`;
         for (let i = 0; i < 5; i++) {
             const date = data.daily.time[i];
             const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
             const maxF = Math.round(data.daily.temperature_2m_max[i] * 9/5 + 32);
             const minF = Math.round(data.daily.temperature_2m_min[i] * 9/5 + 32);
+            const range = maxF - minF;
+            const barWidth = Math.round(((maxF - 30) / 50) * 100); // scale for bar
 
             html += `
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.15);">
-                    <span style="width:60px; font-weight:500;">${dayName}</span>
-                    <span style="font-size:24px;">${getWeatherEmoji(data.daily.weather_code[i])}</span>
-                    <span style="width:50px; text-align:right;">${maxF}°</span>
-                    <span style="width:50px; text-align:right; color:#aaa;">${minF}°</span>
+                <div style="display:flex; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.15);">
+                    <span style="width:55px; font-weight:500;">${dayName}</span>
+                    <span style="font-size:26px; width:40px;">${getWeatherEmoji(data.daily.weather_code[i])}</span>
+                    
+                    <div style="flex:1; height:6px; background:#444; border-radius:9999px; margin:0 12px; position:relative;">
+                        <div style="position:absolute; left:0; top:0; height:100%; background:linear-gradient(to right, #4fc3f7, #ffd54f); border-radius:9999px; width:${range + 20}%;"></div>
+                    </div>
+                    
+                    <span style="width:36px; text-align:right; font-weight:bold;">${maxF}°</span>
+                    <span style="width:36px; text-align:right; color:#aaa;">${minF}°</span>
                 </div>`;
         }
         html += `</div></div>`;
