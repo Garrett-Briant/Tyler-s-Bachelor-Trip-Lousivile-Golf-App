@@ -149,28 +149,43 @@
             max-width: 420px;
             padding: 25px;
             text-align: center;
-        }
+                /* Score Modal Options */
         .score-option {
-            display: inline-block;
-            width: 110px;
-            margin: 8px;
-            padding: 18px 10px;
-            background: rgba(255,255,255,0.1);
-            border: 3px solid #666;
-            border-radius: 12px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            width: 115px;
+            margin: 8px 6px;
+            padding: 12px 8px;
+            background: rgba(255,255,255,0.08);
+            border: 3px solid #555;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s;
         }
         .score-option:hover, .score-option.selected {
             border-color: var(--gold);
-            transform: scale(1.08);
-            background: rgba(212,175,55,0.2);
+            background: rgba(212,175,55,0.15);
+            transform: scale(1.05);
         }
-        .score-number {
-            font-size: 42px;
+        .score-circle {
+            width: 72px;
+            height: 72px;
+            border: 4px solid #a8d4ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
             font-weight: bold;
-            position: relative;
-            display: inline-block;
+            color: white;
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.3);
+        }
+        .score-label {
+            font-size: 14px;
+            color: #ddd;
+            font-weight: 500;
         }
 
         .weather-grid {
@@ -394,26 +409,23 @@ function openScoreModal(hole) {
     let optionsHTML = '';
     const adjustments = [-2, -1, 0, 1, 2, 3];
     const labels = ['Eagle', 'Birdie', 'Par', 'Bogey', 'Double', 'Triple'];
-    const symbols = ['◯◯', '◯', '', '☐', '☐☐', '☐☐☐'];
 
     adjustments.forEach((adj, i) => {
         const scoreNum = par + adj;
         const label = labels[i];
-        const symbol = symbols[i];
+
         optionsHTML += `
             <div class="score-option" onclick="recordScore(${scoreNum})">
-                <div class="score-number" style="position:relative;">
+                <div class="score-circle">
                     ${scoreNum}
-                    <span style="position:absolute; font-size:60px; opacity:0.6; top:50%; left:50%; transform:translate(-50%,-50%);">${symbol}</span>
                 </div>
-                <div>${label}</div>
+                <div class="score-label">${label}</div>
             </div>`;
     });
 
     document.getElementById('modal-score-options').innerHTML = optionsHTML;
     document.getElementById('score-modal').style.display = 'flex';
 }
-
 function recordScore(score) {
     const key = `${currentPlayer}-${currentCourseIndex}-${currentModalHole}`;
     scores[key] = score;
@@ -430,34 +442,42 @@ function finishRound() {
     switchTab(3);
 }
 
-// Weather
+// Weather - Fahrenheit + Focus on Golf Days
 async function loadWeather() {
     const container = document.getElementById('weather-container');
     container.innerHTML = '<p>Loading Louisville forecast...</p>';
     
     try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&timezone=America/New_York');
+        // Get daily + hourly forecast
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&hourly=temperature_2m,weather_code&timezone=America/New_York');
         const data = await res.json();
         
-        let html = '';
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(data.daily.time[i]);
-            const isTrip = date.getDate() === 26 || date.getDate() === 27;
+        let html = '<h3 style="text-align:center; color:var(--gold);">June 26–27, 2026 • Louisville, KY</h3>';
+        
+        // Show only the two golf days
+        for (let day of [26, 27]) {
+            const dateIndex = data.daily.time.findIndex(d => d.endsWith(`-0${day}`));
+            if (dateIndex === -1) continue;
+            
+            const maxTemp = Math.round(data.daily.temperature_2m_max[dateIndex]);
+            const minTemp = Math.round(data.daily.temperature_2m_min[dateIndex]);
+            
             html += `
-                <div class="weather-card" style="${isTrip ? 'border-color:#ffd700; box-shadow:0 0 20px rgba(212,175,55,0.5);' : ''}">
-                    <strong>${date.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'})}</strong>
-                    <div class="temp">${data.daily.temperature_2m_max[i]}° / ${data.daily.temperature_2m_min[i]}°</div>
-                    <div>Rain: ${data.daily.precipitation_probability_max[i]}%</div>
-                    <div>Wind: ${data.daily.wind_speed_10m_max[i]} mph</div>
-                    ${isTrip ? '<strong style="color:#ffd700;">★ TRIP DAY ★</strong>' : ''}
+                <div class="weather-card" style="border-color:#ffd700; box-shadow:0 0 20px rgba(212,175,55,0.5);">
+                    <strong style="font-size:1.3em;">June ${day} • ${day === 26 ? 'Friday' : 'Saturday'}</strong>
+                    <div class="temp" style="font-size:48px;">${maxTemp}°F</div>
+                    <div style="font-size:18px; color:#ccc;">Low: ${minTemp}°F</div>
+                    <div>Rain Chance: ${data.daily.precipitation_probability_max[dateIndex]}%</div>
+                    <div>Wind: ${data.daily.wind_speed_10m_max[dateIndex]} mph</div>
+                    <strong style="color:#ffd700;">★ GOLF DAY ★</strong>
                 </div>`;
         }
+        
         container.innerHTML = html;
+        
     } catch(e) {
-        container.innerHTML = '<p>Weather service temporarily unavailable.</p>';
+        container.innerHTML = '<p>Weather service temporarily unavailable. Please try again later.</p>';
     }
-}
-
 // Initialize
 renderPlayers();
 </script>
