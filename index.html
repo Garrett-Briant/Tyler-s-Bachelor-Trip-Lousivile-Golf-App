@@ -344,10 +344,10 @@
     <div class="tab" onclick="switchTab(5)">Weather</div>
 </div>
     
-<!-- HOME: Landing Page + Multi-step Flow -->
+<!-- HOME: Landing Page -->
 <div id="content-0" class="content active">
 
-    <!-- STEP 1: Landing Page -->
+    <!-- STEP 1: Beautiful Landing Page -->
     <div id="landing-page">
         <div style="text-align:center; padding:40px 20px 30px; background: rgba(0,0,0,0.4); border-radius: 16px; margin-bottom: 30px;">
             
@@ -373,13 +373,13 @@
         </div>
     </div>
 
-    <!-- STEP 2: Select Your Name (different page feel) -->
+    <!-- STEP 2: Select Your Name -->
     <div id="player-selection-page" style="display: none;">
         <h2 style="text-align: center; color: var(--gold);">Select Your Name</h2>
         <div class="player-grid" id="player-grid"></div>
     </div>
 
-    <!-- STEP 3: Select Round (shows after name is chosen) -->
+    <!-- STEP 3: Select Round -->
     <div id="schedule-selection" style="display: none; margin-top: 40px;">
         <h2 style="text-align: center; color: var(--gold);">Select Your Round</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; max-width: 620px; margin-left: auto; margin-right: auto;">
@@ -882,6 +882,22 @@ function loadScores() {
     document.getElementById('player-selection-area').style.display = 'block';
     // Optional: scroll smoothly to player grid
     document.getElementById('player-selection-area').scrollIntoView({ behavior: "smooth" });
+}
+    function startApp() {
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('player-selection-page').style.display = 'block';
+    document.getElementById('player-selection-page').scrollIntoView({ behavior: "smooth" });
+}
+
+function selectPlayer(name) {
+    currentPlayer = name;
+    document.getElementById('current-player-name').textContent = name;
+    
+    document.getElementById('player-selection-page').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'block';
+    
+    // Enable Scorecard tab
+    document.getElementById('tab-2').classList.remove('disabled');
 }
 // Start
 init();
