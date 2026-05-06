@@ -207,7 +207,24 @@
         .score-visual-small.double {
             box-shadow: inset 0 0 0 2px #3d5f7e, 0 0 0 4px #3d5f7e;
         }
- 
+ <!-- PLAYER PROFILE MODAL -->
+<div id="profile-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width: 420px; padding: 30px 25px;">
+        <div onclick="closeProfileModal()" style="position:absolute; top:15px; right:20px; font-size:28px; cursor:pointer; color:#aaa;">×</div>
+        
+        <div id="profile-avatar" style="width:110px; height:110px; margin:0 auto 20px; border-radius:50%; background:linear-gradient(#d4af37,#b8860b); color:#0d3d0d; display:flex; align-items:center; justify-content:center; font-size:42px; font-weight:bold; border:5px solid white;"></div>
+        
+        <h2 id="profile-name" style="text-align:center; margin:10px 0; color:var(--gold);"></h2>
+        <p id="profile-bio" style="text-align:center; color:#ddd; line-height:1.5; font-size:1.05em;"></p>
+        
+        <div style="margin:30px 0; text-align:center;">
+            <button onclick="continueFromProfile()" 
+                    style="background:var(--gold); color:#0d3d0d; border:none; padding:14px 40px; font-size:1.2em; font-weight:bold; border-radius:50px; cursor:pointer;">
+                Continue to Round Selection →
+            </button>
+        </div>
+    </div>
+</div>
         /* Score Modal */
         .modal {
             position: fixed;
@@ -474,7 +491,31 @@ const players = [
     "Sam Trap", "Nathan Bazant", "Austin Armstrong", "AJ Marino", "Nick Bayer",
     "Jake Piatt", "Ben Andresky", "Blake Rohrbacher", "Jake Pato"
 ];
- 
+ const playerProfiles = {
+    "Garrett Briant": {
+        bio: "The organizer. Always brings the good bourbon and questionable golf jokes."
+    },
+    "Tyler Denman": {
+        bio: "The man of the hour! Bachelor, big hitter, and future legend of Louisville golf."
+    },
+    "Mac Chambers": {
+        bio: "Longest driver in the group. Watch out for the bombs off the tee."
+    },
+    "Michael Bury": {
+        bio: "Short game wizard. Will steal your money on the greens."
+    },
+    // Add the rest of the players here (you can edit the bios anytime)
+    "Dan Orr": { bio: "Steady player and the voice of reason on the course." },
+    "Sam Trap": { bio: "The quiet assassin. Always shoots way better than he talks." },
+    "Nathan Bazant": { bio: "Master of the scramble. Never met a bunker he couldn't escape." },
+    "Austin Armstrong": { bio: "Power player. Brings the energy and the snacks." },
+    "AJ Marino": { bio: "The guy who somehow always makes birdies when it matters." },
+    "Nick Bayer": { bio: "Consistent and clutch. Great teammate." },
+    "Jake Piatt": { bio: "The comedian of the group. Keeps the vibes high." },
+    "Ben Andresky": { bio: "Solid all-around player and good hang." },
+    "Blake Rohrbacher": { bio: "The dark horse. Don't sleep on him." },
+    "Jake Pato": { bio: "The wild card. Expect the unexpected." }
+};
 const courses = [
     {
         name: "Covered Bridge GC",
@@ -528,8 +569,16 @@ function startApp() {
 // Select Player (updated for new flow)
 function selectPlayer(name) {
     currentPlayer = name;
-    document.getElementById('current-player-name').textContent = name;
-    
+
+    const profile = playerProfiles[name] || { bio: "Ready to golf!" };
+
+    // Fill the modal
+    document.getElementById('profile-avatar').textContent = name.split(' ').map(n => n[0]).join('');
+    document.getElementById('profile-name').textContent = name;
+    document.getElementById('profile-bio').textContent = profile.bio;
+
+    // Show modal
+    document.getElementById('profile-modal').style.display = 'flex';
     // Hide player selection and show Round selection
     document.getElementById('player-selection-page').style.display = 'none';
     document.getElementById('schedule-selection').style.display = 'block';
@@ -930,6 +979,18 @@ function selectPlayer(name) {
     document.getElementById('current-player-name').textContent = name;
     
     document.getElementById('player-selection-page').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'block';
+    
+    // Enable Scorecard tab
+    document.getElementById('tab-2').classList.remove('disabled');
+}
+function closeProfileModal() {
+    document.getElementById('profile-modal').style.display = 'none';
+}
+
+function continueFromProfile() {
+    closeProfileModal();
+    document.getElementById('player-selection-page').style.display = 'none'; // if using the new flow
     document.getElementById('schedule-selection').style.display = 'block';
     
     // Enable Scorecard tab
