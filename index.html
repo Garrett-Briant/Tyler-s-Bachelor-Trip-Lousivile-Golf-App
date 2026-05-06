@@ -274,6 +274,7 @@ const players = [
 let currentPlayer = null;
 let currentCourseIndex = 0; // 0 = Covered Bridge, 1 = Champions Pointe
 let scores = {}; // player-course-hole → score
+let weatherData = null;
 
 const courses = [
     {
@@ -428,6 +429,8 @@ async function loadWeather() {
     try {
         const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m&timezone=America/New_York');
         const data = await res.json();
+        
+        window.weatherData = data;   // ← THIS IS IMPORTANT
 
         let html = `<h3 style="text-align:center; color:var(--gold);">Louisville, KY • 5-Day Forecast</h3>`;
 
@@ -456,6 +459,8 @@ async function loadWeather() {
     }
 }
 
+3. Add/Update the toggleHourly functionAdd this function anywhere in the <script> section (preferably near the bottom, before the last }):javascript
+
 function toggleHourly(card, selectedDate) {
     const hourlyDiv = card.querySelector('.hourly-forecast');
     
@@ -469,33 +474,34 @@ function toggleHourly(card, selectedDate) {
         return;
     }
 
-    hourlyDiv.innerHTML = '<p>Loading hourly...</p>';
     hourlyDiv.style.display = 'block';
+    hourlyDiv.innerHTML = '<p>Loading hourly data...</p>';
 
-    // Get actual hourly data for the selected day (first 5 hours starting ~8 AM)
-    const data = window.weatherData || {}; // We'll store data globally
-    const hourlyTimes = data.hourly ? data.hourly.time : [];
-    let hourlyHTML = `<strong style="color:var(--gold);">Hourly for ${selectedDate}</strong><br><br>`;
+    if (!window.weatherData || !window.weatherData.hourly) {
+        hourlyDiv.innerHTML = '<p>Hourly data not available.</p>';
+        return;
+    }
 
+    let hourlyHTML = `<strong style="color:var(--gold);">5-Hour Forecast for ${selectedDate}</strong><br><br>`;
     let count = 0;
-    for (let j = 0; j < hourlyTimes.length; j++) {
-        if (hourlyTimes[j].startsWith(selectedDate) && count < 5) {
-            const time = hourlyTimes[j].slice(11, 16); // HH:MM
-            const tempF = Math.round(data.hourly.temperature_2m[j] * 9/5 + 32);
-            hourlyHTML += `<div style="display:flex; justify-content:space-between; margin:6px 0;">
-                <span>${time}</span>
-                <span style="font-weight:bold;">${tempF}°F</span>
-            </div>`;
+
+    for (let j = 0; j < window.weatherData.hourly.time.length; j++) {
+        if (window.weatherData.hourly.time[j].startsWith(selectedDate) && count < 5) {
+            const time = window.weatherData.hourly.time[j].slice(11, 16);
+            const tempF = Math.round(window.weatherData.hourly.temperature_2m[j] * 9/5 + 32);
+            
+            hourlyHTML += `
+                <div style="display:flex; justify-content:space-between; margin:8px 0; padding:4px 0;">
+                    <span>${time}</span>
+                    <span style="font-weight:bold;">${tempF}°F</span>
+                </div>`;
             count++;
         }
     }
 
-    if (count === 0) {
-        hourlyHTML += `<p>No hourly data availablefor this day.</p>`;
-    }
-
     hourlyDiv.innerHTML = hourlyHTML;
 }
+
         
 // Initialize
 renderPlayers();
