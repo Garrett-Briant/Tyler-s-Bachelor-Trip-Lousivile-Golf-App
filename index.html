@@ -823,7 +823,11 @@ function loadScores() {
     const saved = localStorage.getItem('golfScores');
     if (saved) scores = JSON.parse(saved);
 }
- 
+ function startApp() {
+    document.getElementById('player-selection-area').style.display = 'block';
+    // Optional: scroll smoothly to player grid
+    document.getElementById('player-selection-area').scrollIntoView({ behavior: "smooth" });
+}
 // Start
 init();
 </script>
