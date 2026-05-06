@@ -89,7 +89,25 @@
             font-weight: bold;
             border: 3px solid white;
         }
-
+        .weather-widget {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 12px 0;
+            cursor: pointer;
+        }
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1em;
+        }
+        .widget-details {
+            color: #ccc;
+            margin-top: 6px;
+            font-size: 0.95em;
+        }
         /* Scorecard Table */
         .scorecard-table {
             width: 100%;
@@ -250,9 +268,7 @@
 <!-- WEATHER -->
 <div id="content-5" class="content">
     <h2 style="text-align:center; color:var(--gold);">⛅ Louisville Weather</h2>
-    <div id="weather-container" class="weather-grid">
-        Loading forecast...
-    </div>
+    <div id="weather-container" style="max-width: 420px; margin: 0 auto;"></div>
 </div>
 
 <!-- SCORE MODAL -->
@@ -424,31 +440,33 @@ function finishRound() {
 
 async function loadWeather() {
     const container = document.getElementById('weather-container');
-    container.innerHTML = '<p style="text-align:center;">Loading 5-day forecast...</p>';
+    container.innerHTML = '<p style="text-align:center;">Loading weather widget...</p>';
 
     try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m&timezone=America/New_York');
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&hourly=temperature_2m&timezone=America/New_York');
         const data = await res.json();
-        
         window.weatherData = data;
 
-        let html = `<h3 style="text-align:center; color:var(--gold);">Louisville, KY • 5-Day Forecast</h3>`;
+        let html = `<h3 style="text-align:center; color:var(--gold); margin-bottom:20px;">Louisville, KY</h3>`;
 
+        // Main Widget Style
         for (let i = 0; i < 5; i++) {
             const date = data.daily.time[i];
             const maxF = Math.round(data.daily.temperature_2m_max[i] * 9/5 + 32);
             const minF = Math.round(data.daily.temperature_2m_min[i] * 9/5 + 32);
             const rain = data.daily.precipitation_probability_max[i];
-            const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+            const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
 
             html += `
-                <div class="weather-card" style="margin:12px 0; cursor:pointer;" onclick="toggleHourly(this, '${date}')">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <strong>${dayName}<br><small>${date}</small></strong>
-                        <span style="font-size:32px; font-weight:bold;">${maxF}°F</span>
+                <div class="weather-widget" onclick="toggleHourly(this, '${date}')">
+                    <div class="widget-header">
+                        <strong>${dayName} • ${date.slice(5)}</strong>
+                        <span style="font-size:28px; font-weight:bold;">${maxF}°F</span>
                     </div>
-                    <div>Low: ${minF}°F • Rain: ${rain}%</div>
-                    <div class="hourly-forecast" style="display:none; margin-top:15px; padding:15px; background:rgba(0,0,0,0.3); border-radius:10px;"></div>
+                    <div class="widget-details">
+                        Low: ${minF}°F • Rain: ${rain}%
+                    </div>
+                    <div class="hourly-forecast" style="display:none;"></div>
                 </div>`;
         }
 
@@ -462,9 +480,7 @@ async function loadWeather() {
 function toggleHourly(card, selectedDate) {
     const hourlyDiv = card.querySelector('.hourly-forecast');
     
-    document.querySelectorAll('.hourly-forecast').forEach(div => {
-        if (div !== hourlyDiv) div.style.display = 'none';
-    });
+    document.querySelectorAll('.hourly-forecast').forEach(div => div.style.display = 'none');
 
     if (hourlyDiv.style.display === 'block') {
         hourlyDiv.style.display = 'none';
@@ -472,33 +488,26 @@ function toggleHourly(card, selectedDate) {
     }
 
     hourlyDiv.style.display = 'block';
-    hourlyDiv.innerHTML = '<p>Loading hourly data...</p>';
+    hourlyDiv.innerHTML = '<p style="text-align:center;">Loading hourly...</p>';
 
-    if (!window.weatherData || !window.weatherData.hourly) {
-        hourlyDiv.innerHTML = '<p>Hourly data not available.</p>';
-        return;
-    }
-
-    let hourlyHTML = `<strong style="color:var(--gold);">5-Hour Forecast for ${selectedDate}</strong><br><br>`;
+    let hourlyHTML = `<strong style="color:var(--gold);">Hourly</strong><br><br>`;
     let count = 0;
 
-    for (let j = 0; j < window.weatherData.hourly.time.length; j++) {
-        if (window.weatherData.hourly.time[j].startsWith(selectedDate) && count < 5) {
+    for (let j = 0; j < window.weatherData.hourly.time.length && count < 6; j++) {
+        if (window.weatherData.hourly.time[j].startsWith(selectedDate)) {
             const time = window.weatherData.hourly.time[j].slice(11, 16);
             const tempF = Math.round(window.weatherData.hourly.temperature_2m[j] * 9/5 + 32);
-            
-            hourlyHTML += `
-                <div style="display:flex; justify-content:space-between; margin:8px 0;">
-                    <span>${time}</span>
-                    <span style="font-weight:bold;">${tempF}°F</span>
-                </div>`;
+            hourlyHTML += `<div style="display:flex; justify-content:space-between; padding:6px 0;">
+                <span>${time}</span>
+                <span style="font-weight:bold;">${tempF}°F</span>
+            </div>`;
             count++;
         }
     }
 
     hourlyDiv.innerHTML = hourlyHTML;
 }
-
+    
 // Initialize
 renderPlayers();
 </script>
