@@ -421,32 +421,62 @@ function finishRound() {
     switchTab(3);
 }
 
-// Weather
+// Updated Weather - Fahrenheit + High/Low + 12hr Forecast
 async function loadWeather() {
     const container = document.getElementById('weather-container');
-    container.innerHTML = '<p>Loading Louisville forecast...</p>';
-    
+    container.innerHTML = '<p style="text-align:center;">Loading Louisville forecast...</p>';
+
     try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&timezone=America/New_York');
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,weather_code&timezone=America/New_York');
         const data = await res.json();
-        
-        let html = '';
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(data.daily.time[i]);
-            const isTrip = date.getDate() === 26 || date.getDate() === 27;
+
+        let html = `<h3 style="text-align:center; color:var(--gold);">June 26–27, 2026 • Louisville, KY</h3>`;
+
+        // Show for June 26 and 27 only
+        for (let day of [26, 27]) {
+            const dateStr = `2026-06-${day < 10 ? '0' : ''}${day}`;
+            const dayIndex = data.daily.time.indexOf(dateStr);
+            if (dayIndex === -1) continue;
+
+            const maxF = Math.round(data.daily.temperature_2m_max[dayIndex]);
+            const minF = Math.round(data.daily.temperature_2m_min[dayIndex]);
+            const dayName = day === 26 ? 'Friday' : 'Saturday';
+
             html += `
-                <div class="weather-card" style="${isTrip ? 'border-color:#ffd700; box-shadow:0 0 20px rgba(212,175,55,0.5);' : ''}">
-                    <strong>${date.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'})}</strong>
-                    <div class="temp">${data.daily.temperature_2m_max[i]}° / ${data.daily.temperature_2m_min[i]}°</div>
-                    <div>Rain: ${data.daily.precipitation_probability_max[i]}%</div>
-                    <div>Wind: ${data.daily.wind_speed_10m_max[i]} mph</div>
-                    ${isTrip ? '<strong style="color:#ffd700;">★ TRIP DAY ★</strong>' : ''}
-                </div>`;
+                <div class="weather-card">
+                    <strong style="font-size:1.4em;">June ${day} • ${dayName}</strong>
+                    <div style="font-size:52px; margin:10px 0;">${maxF}°F</div>
+                    <div style="font-size:18px; color:#ccc;">Low: ${minF}°F</div>
+                    <div>Rain Chance: ${data.daily.precipitation_probability_max[dayIndex]}%</div>
+                    
+                    <hr style="border-color:#555; margin:15px 0;">
+                    <strong style="color:var(--gold);">12-Hour Forecast</strong>
+                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-top:12px; font-size:14px;">`;
+
+            // Add next 12 hours (every 3 hours)
+            const startHour = day === 26 ? 6 : 6; // Start from 6 AM
+            for (let h = 0; h < 12; h += 3) {
+                const hourIndex = data.hourly.time.findIndex(t => t.includes(dateStr) && t.includes(`T${(startHour + h).toString().padStart(2,'0')}`));
+                if (hourIndex === -1) continue;
+                const tempF = Math.round(data.hourly.temperature_2m[hourIndex]);
+                const timeLabel = `${(startHour + h) % 12 || 12}${ (startHour + h) >= 12 ? 'PM' : 'AM' }`;
+
+                html += `
+                    <div style="text-align:center; background:rgba(255,255,255,0.1); padding:8px; border-radius:8px;">
+                        <div>${timeLabel}</div>
+                        <div style="font-size:18px; font-weight:bold;">${tempF}°F</div>
+                    </div>`;
+            }
+
+            html += `</div></div>`;
         }
+
         container.innerHTML = html;
-    } catch(e) {
-        container.innerHTML = '<p>Weather service temporarily unavailable.</p>';
+
+    } catch (e) {
+        container.innerHTML = `<p style="text-align:center; color:#ff9999;">Weather service unavailable.<br>Please try again later.</p>`;
     }
+}
 }
 
 // Initialize
