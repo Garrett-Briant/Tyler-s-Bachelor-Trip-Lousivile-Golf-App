@@ -519,6 +519,25 @@ function selectPlayer(name) {
     // Enable Scorecard tab
     document.getElementById('tab-2').classList.remove('disabled');
 }
+    // Landing Page - Get Started Button
+function startApp() {
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('player-selection-page').style.display = 'block';
+    document.getElementById('player-selection-page').scrollIntoView({ behavior: "smooth" });
+}
+
+// Select Player (updated for new flow)
+function selectPlayer(name) {
+    currentPlayer = name;
+    document.getElementById('current-player-name').textContent = name;
+    
+    // Hide player selection and show Round selection
+    document.getElementById('player-selection-page').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'block';
+    
+    // Enable Scorecard tab
+    document.getElementById('tab-2').classList.remove('disabled');
+}
     
 // Initialize
 function init() {
