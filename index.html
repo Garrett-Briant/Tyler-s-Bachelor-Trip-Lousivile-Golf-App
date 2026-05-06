@@ -121,6 +121,8 @@
             height: 48px;
             vertical-align: middle;
             background: white;
+            color: #333;
+            font-weight: 600;
         }
         .scorecard-row:nth-child(even) .scorecard-cell {
             background: #fafafa;
@@ -171,17 +173,12 @@
         .scorecard-cell.clickable:hover {
             background: rgba(61, 95, 126, 0.2);
         }
-        .scorecard-row.out-row {
-            background: #e8e8e8;
-            font-weight: 700;
-        }
-        .scorecard-row.out-row .hole-label {
-            background: #d0d0d0;
-            font-weight: 700;
-        }
-        .scorecard-row.out-row .scorecard-cell {
-            background: #e8e8e8;
-            font-weight: 700;
+        .scorecard-cell.total-cell {
+            background: #d4af37;
+            color: #0d3d0d;
+            font-weight: 900;
+            border-left: 2px solid #999;
+            border-right: 2px solid #999;
         }
  
         /* Score Markings */
@@ -538,59 +535,151 @@ function renderScorecard() {
     const course = courses[currentCourseIndex];
     let tableHtml = '<table class="scorecard-table">';
     
-    // Header row with hole numbers
+    // Header row with Hole label + hole numbers 1-9 + Out + hole numbers 10-18 + In + Total
     tableHtml += '<tr class="scorecard-row header">';
-    course.holes.forEach((hole) => {
-        tableHtml += `<td class="scorecard-cell">${hole.hole}</td>`;
-    });
+    tableHtml += '<td class="scorecard-cell hole-label">Hole</td>';
+    for (let i = 1; i <= 9; i++) {
+        tableHtml += `<td class="scorecard-cell">${i}</td>`;
+    }
+    tableHtml += '<td class="scorecard-cell">Out</td>';
+    for (let i = 10; i <= 18; i++) {
+        tableHtml += `<td class="scorecard-cell">${i}</td>`;
+    }
+    tableHtml += '<td class="scorecard-cell">In</td>';
+    tableHtml += '<td class="scorecard-cell">Total</td>';
     tableHtml += '</tr>';
     
     // Yards row
     tableHtml += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">Yards</td>';
-    course.holes.forEach((hole) => {
-        tableHtml += `<td class="scorecard-cell">${hole.yards}</td>`;
-    });
+    for (let i = 0; i < 9; i++) {
+        tableHtml += `<td class="scorecard-cell">${course.holes[i].yards}</td>`;
+    }
+    const frontYards = course.holes.slice(0,9).reduce((a,b) => a+b.yards, 0);
+    tableHtml += `<td class="scorecard-cell">${frontYards}</td>`;
+    for (let i = 9; i < 18; i++) {
+        tableHtml += `<td class="scorecard-cell">${course.holes[i].yards}</td>`;
+    }
+    const backYards = course.holes.slice(9,18).reduce((a,b) => a+b.yards, 0);
+    tableHtml += `<td class="scorecard-cell">${backYards}</td>`;
+    const totalYards = frontYards + backYards;
+    tableHtml += `<td class="scorecard-cell">${totalYards}</td>`;
     tableHtml += '</tr>';
     
     // Par row
     tableHtml += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">Par</td>';
-    course.holes.forEach((hole) => {
-        tableHtml += `<td class="scorecard-cell">${hole.par}</td>`;
-    });
+    for (let i = 0; i < 9; i++) {
+        tableHtml += `<td class="scorecard-cell">${course.holes[i].par}</td>`;
+    }
+    const frontPar = course.holes.slice(0,9).reduce((a,b) => a+b.par, 0);
+    tableHtml += `<td class="scorecard-cell">${frontPar}</td>`;
+    for (let i = 9; i < 18; i++) {
+        tableHtml += `<td class="scorecard-cell">${course.holes[i].par}</td>`;
+    }
+    const backPar = course.holes.slice(9,18).reduce((a,b) => a+b.par, 0);
+    tableHtml += `<td class="scorecard-cell">${backPar}</td>`;
+    const totalPar = frontPar + backPar;
+    tableHtml += `<td class="scorecard-cell">${totalPar}</td>`;
     tableHtml += '</tr>';
     
-    // Score row
+    // Score row with golf markings
     tableHtml += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">Score</td>';
-    course.holes.forEach((hole, idx) => {
+    const frontScores = [];
+    const backScores = [];
+    
+    for (let i = 0; i < 9; i++) {
+        const hole = course.holes[i];
         const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
         const score = scores[key];
-        const scoreHtml = score ? `<div class="score-visual-small">${score}</div>` : '-';
+        if (score) frontScores.push(score);
+        const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
         tableHtml += `<td class="scorecard-cell clickable" onclick="openScoreModal(${hole.hole}, ${hole.par})">${scoreHtml}</td>`;
-    });
+    }
+    
+    const outTotal = frontScores.length > 0 ? frontScores.reduce((a,b) => a+b, 0) : '-';
+    tableHtml += `<td class="scorecard-cell total-cell">${outTotal}</td>`;
+    
+    for (let i = 9; i < 18; i++) {
+        const hole = course.holes[i];
+        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const score = scores[key];
+        if (score) backScores.push(score);
+        const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
+        tableHtml += `<td class="scorecard-cell clickable" onclick="openScoreModal(${hole.hole}, ${hole.par})">${scoreHtml}</td>`;
+    }
+    
+    const inTotal = backScores.length > 0 ? backScores.reduce((a,b) => a+b, 0) : '-';
+    tableHtml += `<td class="scorecard-cell total-cell">${inTotal}</td>`;
+    
+    const grandTotal = (typeof outTotal === 'number' && typeof inTotal === 'number') ? outTotal + inTotal : '-';
+    tableHtml += `<td class="scorecard-cell total-cell">${grandTotal}</td>`;
     tableHtml += '</tr>';
     
-    // Out row (front 9 totals)
-    const frontNineScores = [];
-    const frontNinePars = course.holes.slice(0, 9);
-    for (let i = 1; i <= 9; i++) {
-        const key = `${currentPlayer}-${currentCourseIndex}-${i}`;
-        if (scores[key]) frontNineScores.push(scores[key]);
-    }
-    const outTotal = frontNineScores.length > 0 ? frontNineScores.reduce((a,b) => a+b, 0) : '-';
-    const outPar = frontNinePars.reduce((a,b) => a+b.par, 0);
-    
-    tableHtml += '<tr class="scorecard-row out-row"><td class="scorecard-cell hole-label">Out</td>';
+    // Adj. Score row
+    tableHtml += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">Adj. Score</td>';
     for (let i = 0; i < 9; i++) {
-        tableHtml += `<td class="scorecard-cell">${i === 8 ? outTotal : ''}</td>`;
+        const hole = course.holes[i];
+        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const score = scores[key];
+        const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
+        tableHtml += `<td class="scorecard-cell clickable" onclick="openScoreModal(${hole.hole}, ${hole.par})">${scoreHtml}</td>`;
     }
-    tableHtml += `<td class="scorecard-cell">${outPar}</td>`;
-    for (let i = 10; i <= 18; i++) {
-        tableHtml += '<td class="scorecard-cell"></td>';
+    tableHtml += `<td class="scorecard-cell total-cell">${outTotal}</td>`;
+    
+    for (let i = 9; i < 18; i++) {
+        const hole = course.holes[i];
+        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const score = scores[key];
+        const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
+        tableHtml += `<td class="scorecard-cell clickable" onclick="openScoreModal(${hole.hole}, ${hole.par})">${scoreHtml}</td>`;
     }
+    tableHtml += `<td class="scorecard-cell total-cell">${inTotal}</td>`;
+    tableHtml += `<td class="scorecard-cell total-cell">${grandTotal}</td>`;
+    tableHtml += '</tr>';
+    
+    // To Par row
+    tableHtml += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">To Par</td>';
+    for (let i = 0; i < 9; i++) {
+        const hole = course.holes[i];
+        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const score = scores[key];
+        const toPar = score ? score - hole.par : '';
+        const toParHtml = toPar !== '' ? (toPar > 0 ? `+${toPar}` : toPar) : '-';
+        tableHtml += `<td class="scorecard-cell">${toParHtml}</td>`;
+    }
+    const frontToPar = frontScores.length > 0 ? (frontScores.reduce((a,b) => a+b, 0) - frontPar) : '-';
+    const frontToParHtml = frontToPar !== '-' ? (frontToPar > 0 ? `+${frontToPar}` : frontToPar) : '-';
+    tableHtml += `<td class="scorecard-cell total-cell">${frontToParHtml}</td>`;
+    
+    for (let i = 9; i < 18; i++) {
+        const hole = course.holes[i];
+        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const score = scores[key];
+        const toPar = score ? score - hole.par : '';
+        const toParHtml = toPar !== '' ? (toPar > 0 ? `+${toPar}` : toPar) : '-';
+        tableHtml += `<td class="scorecard-cell">${toParHtml}</td>`;
+    }
+    const backToPar = backScores.length > 0 ? (backScores.reduce((a,b) => a+b, 0) - backPar) : '-';
+    const backToParHtml = backToPar !== '-' ? (backToPar > 0 ? `+${backToPar}` : backToPar) : '-';
+    tableHtml += `<td class="scorecard-cell total-cell">${backToParHtml}</td>`;
+    
+    const totalToPar = (typeof outTotal === 'number' && typeof inTotal === 'number') ? (outTotal + inTotal - totalPar) : '-';
+    const totalToParHtml = totalToPar !== '-' ? (totalToPar > 0 ? `+${totalToPar}` : totalToPar) : '-';
+    tableHtml += `<td class="scorecard-cell total-cell">${totalToParHtml}</td>`;
     tableHtml += '</tr>';
     
     tableHtml += '</table>';
     document.getElementById('scorecard-table').innerHTML = tableHtml;
+}
+ 
+function getScoreClass(score, par) {
+    const diff = score - par;
+    if (diff === -2) return 'eagle';
+    if (diff === -1) return 'birdie';
+    if (diff === 0) return 'par';
+    if (diff === 1) return 'bogey';
+    if (diff === 2) return 'double';
+    if (diff >= 3) return 'triple';
+    return '';
 }
  
 // Score modal
