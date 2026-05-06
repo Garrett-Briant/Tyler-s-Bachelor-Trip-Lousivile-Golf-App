@@ -107,6 +107,24 @@
             margin-top: 8px;
             font-size: 0.95em;
         }
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border: 5px solid #a8d4ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.4);
+        }
+        .score-option {
+            width: 120px;
+            margin: 10px;
+        }
         
         /* Scorecard Table */
         .scorecard-table {
@@ -393,35 +411,31 @@ let currentModalHole = 1;
 function openScoreModal(hole) {
     currentModalHole = hole;
     const course = courses[currentCourseIndex];
-    const h = course.holes[hole-1];
+    const h = course.holes[hole - 1];
     const par = h.par;
 
-    document.getElementById('modal-hole-info').textContent = 
+    document.getElementById('modal-hole-info').innerHTML = 
         `Hole ${hole} • Par ${par} • ${h.yards} yds`;
 
     let optionsHTML = '';
     const adjustments = [-2, -1, 0, 1, 2, 3];
     const labels = ['Eagle', 'Birdie', 'Par', 'Bogey', 'Double', 'Triple'];
-    const symbols = ['◯◯', '◯', '', '☐', '☐☐', '☐☐☐'];
 
     adjustments.forEach((adj, i) => {
         const scoreNum = par + adj;
         const label = labels[i];
-        const symbol = symbols[i];
+
         optionsHTML += `
-            <div class="score-option" onclick="recordScore(${scoreNum})">
-                <div class="score-number" style="position:relative;">
-                    ${scoreNum}
-                    <span style="position:absolute; font-size:60px; opacity:0.6; top:50%; left:50%; transform:translate(-50%,-50%);">${symbol}</span>
-                </div>
-                <div>${label}</div>
+            <div class="score-option" onclick="recordScore(${scoreNum}); closeModal();">
+                <div class="score-circle">${scoreNum}</div>
+                <div class="score-label">${label}</div>
             </div>`;
     });
 
     document.getElementById('modal-score-options').innerHTML = optionsHTML;
     document.getElementById('score-modal').style.display = 'flex';
 }
-
+    
 function recordScore(score) {
     const key = `${currentPlayer}-${currentCourseIndex}-${currentModalHole}`;
     scores[key] = score;
@@ -447,7 +461,7 @@ async function loadWeather() {
         const data = await res.json();
         window.weatherData = data;
 
-        let html = `<h3 style="text-align:center; color:var(--gold);">Louisville, KY Weather</h3>`;
+        let html = `<h3 style="text-align:center; color:var(--gold); margin-bottom:20px;">Louisville, KY</h3>`;
 
         for (let i = 0; i < 5; i++) {
             const date = data.daily.time[i];
@@ -457,24 +471,26 @@ async function loadWeather() {
             const code = data.daily.weather_code[i];
 
             const dayName = new Date(date).toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                month: 'short', 
-                day: 'numeric' 
+                weekday: 'short', month: 'short', day: 'numeric' 
             });
 
             html += `
                 <div class="weather-widget" onclick="toggleHourly(this, '${date}')">
                     <div class="widget-header">
                         <div>
-                            <strong>${dayName}</strong><br>
-                            <span style="font-size:22px;">${getWeatherEmoji(code)}</span>
+                            <strong style="font-size:1.1em;">${dayName}</strong><br>
+                            <span style="font-size:28px;">${getWeatherEmoji(code)}</span>
+                            <span style="margin-left:8px; color:#ccc;">${getWeatherText(code)}</span>
                         </div>
-                        <span style="font-size:36px; font-weight:bold;">${maxF}°F</span>
+                        <div style="text-align:right;">
+                            <span style="font-size:42px; font-weight:bold;">${maxF}°</span><br>
+                            <span style="color:#ccc; font-size:15px;">${minF}°</span>
+                        </div>
                     </div>
                     <div class="widget-details">
-                        Low: ${minF}°F • Rain: ${rain}%
+                        Rain Chance: ${rain}%
                     </div>
-                    <div class="hourly-forecast" style="display:none;"></div>
+                    <div class="hourly-forecast" style="display:none; margin-top:12px; padding-top:12px; border-top:1px solid #555;"></div>
                 </div>`;
         }
 
@@ -533,6 +549,18 @@ function toggleHourly(card, selectedDate) {
     }
 
     hourlyDiv.innerHTML = hourlyHTML || '<p>No more hourly data for today.</p>';
+}
+  function getWeatherEmoji(code) {
+    const map = { 0:"☀️",1:"☀️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",
+                  61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌦️",
+                  95:"⛈️",96:"⛈️",99:"⛈️" };
+    return map[code] || "☁️";
+}
+
+function getWeatherText(code) {
+    const map = { 0:"Clear",1:"Mainly Clear",2:"Partly Cloudy",3:"Overcast",45:"Fog",48:"Fog",
+                  51:"Light Rain",61:"Rain",80:"Rain Showers",95:"Thunderstorm" };
+    return map[code] || "Cloudy";
 }
     
 // Initialize
