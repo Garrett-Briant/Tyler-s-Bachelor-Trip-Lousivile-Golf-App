@@ -430,7 +430,7 @@ async function loadWeather() {
         const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m&timezone=America/New_York');
         const data = await res.json();
         
-        window.weatherData = data;   // ← THIS IS IMPORTANT
+        window.weatherData = data;
 
         let html = `<h3 style="text-align:center; color:var(--gold);">Louisville, KY • 5-Day Forecast</h3>`;
 
@@ -459,12 +459,9 @@ async function loadWeather() {
     }
 }
 
-3. Add/Update the toggleHourly functionAdd this function anywhere in the <script> section (preferably near the bottom, before the last }):javascript
-
 function toggleHourly(card, selectedDate) {
     const hourlyDiv = card.querySelector('.hourly-forecast');
     
-    // Close all others
     document.querySelectorAll('.hourly-forecast').forEach(div => {
         if (div !== hourlyDiv) div.style.display = 'none';
     });
@@ -491,7 +488,7 @@ function toggleHourly(card, selectedDate) {
             const tempF = Math.round(window.weatherData.hourly.temperature_2m[j] * 9/5 + 32);
             
             hourlyHTML += `
-                <div style="display:flex; justify-content:space-between; margin:8px 0; padding:4px 0;">
+                <div style="display:flex; justify-content:space-between; margin:8px 0;">
                     <span>${time}</span>
                     <span style="font-weight:bold;">${tempF}°F</span>
                 </div>`;
@@ -502,7 +499,6 @@ function toggleHourly(card, selectedDate) {
     hourlyDiv.innerHTML = hourlyHTML;
 }
 
-        
 // Initialize
 renderPlayers();
 </script>
