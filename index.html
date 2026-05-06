@@ -344,39 +344,42 @@
     <div class="tab" onclick="switchTab(5)">Weather</div>
 </div>
     
-<!-- HOME: Landing Page -->
+<!-- HOME: Landing Page + Multi-step Flow -->
 <div id="content-0" class="content active">
-    <!-- Landing Page Hero -->
-    <div style="text-align:center; padding:40px 20px 30px; background: rgba(0,0,0,0.4); border-radius: 16px; margin-bottom: 30px;">
-        
-        <img src="tyler-photo.jpg" 
-             alt="Tyler" 
-             style="width: 100%; max-width: 260px; height: 260px; object-fit: cover; border-radius: 50%; border: 8px solid var(--gold); box-shadow: 0 15px 35px rgba(0,0,0,0.7); margin-bottom: 25px;">
 
-        <h1 style="font-size: 2.4em; margin: 15px 0 8px 0; color: var(--gold);">Tyler's Bachelor Trip</h1>
-        <p style="font-size: 1.4em; color: #eee; margin: 0 0 25px 0;">
-            Louisville, Kentucky • June 2026
-        </p>
+    <!-- STEP 1: Landing Page -->
+    <div id="landing-page">
+        <div style="text-align:center; padding:40px 20px 30px; background: rgba(0,0,0,0.4); border-radius: 16px; margin-bottom: 30px;">
+            
+            <img src="tyler-photo.jpg" 
+                 alt="Tyler" 
+                 style="width: 100%; max-width: 260px; height: 260px; object-fit: cover; border-radius: 50%; border: 8px solid var(--gold); box-shadow: 0 15px 35px rgba(0,0,0,0.7); margin-bottom: 25px;">
 
-        <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 420px;">
-            <p style="margin: 8px 0; font-size: 1.15em;">⛳ Two epic golf rounds</p>
-            <p style="margin: 8px 0; font-size: 1.15em;">🏌️‍♂️ Covered Bridge GC + Champions Pointe</p>
-            <p style="margin: 8px 0; font-size: 1.15em;">🍻 Bourbon, buddies &amp; unforgettable times</p>
+            <h1 style="font-size: 2.4em; margin: 15px 0 8px 0; color: var(--gold);">Tyler's Bachelor Trip</h1>
+            <p style="font-size: 1.4em; color: #eee; margin: 0 0 25px 0;">
+                Louisville, Kentucky • June 2026
+            </p>
+
+            <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 420px;">
+                <p style="margin: 8px 0; font-size: 1.15em;">⛳ Two epic golf rounds</p>
+                <p style="margin: 8px 0; font-size: 1.15em;">🏌️‍♂️ Covered Bridge GC + Champions Pointe</p>
+                <p style="margin: 8px 0; font-size: 1.15em;">🍻 Bourbon, buddies &amp; unforgettable times</p>
+            </div>
+
+            <button onclick="startApp()" 
+                    style="background: var(--gold); color: #0d3d0d; border: none; padding: 16px 40px; font-size: 1.35em; font-weight: bold; border-radius: 50px; cursor: pointer;">
+                Get Started →
+            </button>
         </div>
-
-        <button onclick="startApp()" 
-                style="background: var(--gold); color: #0d3d0d; border: none; padding: 16px 40px; font-size: 1.35em; font-weight: bold; border-radius: 50px; cursor: pointer;">
-            Get Started →
-        </button>
     </div>
 
-    <!-- Player Selection (hidden until Get Started is clicked) -->
-    <div id="player-selection-area" style="display: none;">
+    <!-- STEP 2: Select Your Name (different page feel) -->
+    <div id="player-selection-page" style="display: none;">
         <h2 style="text-align: center; color: var(--gold);">Select Your Name</h2>
         <div class="player-grid" id="player-grid"></div>
     </div>
 
-    <!-- Schedule Selection (Round 1 / Round 2) -->
+    <!-- STEP 3: Select Round (shows after name is chosen) -->
     <div id="schedule-selection" style="display: none; margin-top: 40px;">
         <h2 style="text-align: center; color: var(--gold);">Select Your Round</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; max-width: 620px; margin-left: auto; margin-right: auto;">
@@ -395,7 +398,7 @@
         </div>
     </div>
 </div>
-
+    
 <!-- SCHEDULE -->
 <div id="content-1" class="content">
     <h2 style="text-align:center; color:var(--gold);">Trip Schedule</h2>
@@ -500,9 +503,23 @@ let scores = {};
 let teamSize = 3;
 let currentModalHole = 1;
 function startApp() {
-    document.getElementById('player-selection-area').style.display = 'block';
-    document.getElementById('player-selection-area').scrollIntoView({ behavior: "smooth" });
+    // Hide landing page and show player selection
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('player-selection-page').style.display = 'block';
 }
+
+function selectPlayer(name) {
+    currentPlayer = name;
+    document.getElementById('current-player-name').textContent = name;
+    
+    // Hide player selection and show round selection
+    document.getElementById('player-selection-page').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'block';
+    
+    // Enable Scorecard tab
+    document.getElementById('tab-2').classList.remove('disabled');
+}
+    
 // Initialize
 function init() {
     renderPlayers();
