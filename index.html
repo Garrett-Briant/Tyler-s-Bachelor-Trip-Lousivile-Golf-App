@@ -351,20 +351,19 @@
  
     <!-- Schedule Selection (hidden until player selected) -->
     <div id="schedule-selection" style="display:none; margin-top:40px;">
-        <h2 style="text-align:center; color:var(--gold);">Which day are you playing?</h2>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:25px; max-width:600px; margin-left:auto; margin-right:auto;">
-            
-            <div class="card" id="day-0" onclick="selectCourse(0)" style="cursor:pointer; padding:25px;">
-                <strong style="font-size:1.3em;">Friday</strong><br>
-                <span style="font-size:1.1em;">June 26, 2026</span><br><br>
-                <span style="color:var(--gold);">Covered Bridge GC</span>
-            </div>
- 
-            <div class="card" id="day-1" onclick="selectCourse(1)" style="cursor:pointer; padding:25px;">
-                <strong style="font-size:1.3em;">Saturday</strong><br>
-                <span style="font-size:1.1em;">June 27, 2026</span><br><br>
-                <span style="color:var(--gold);">Champions Pointe</span>
-            </div>
+    <h2 style="text-align:center; color:var(--gold);">Select Your Round</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:25px; max-width:620px; margin-left:auto; margin-right:auto;">
+        
+        <div class="card" onclick="selectCourse(0)" style="cursor:pointer; padding:35px 20px; text-align:center;">
+            <h3 style="margin:0 0 8px 0; font-size:1.8em; color:var(--gold);">ROUND 1</h3>
+            <p style="margin:0; color:#ccc;">Friday, June 26, 2026</p>
+            <p style="margin:12px 0 0 0; font-weight:bold;">Covered Bridge GC</p>
+        </div>
+
+        <div class="card" onclick="selectCourse(1)" style="cursor:pointer; padding:35px 20px; text-align:center;">
+            <h3 style="margin:0 0 8px 0; font-size:1.8em; color:var(--gold);">ROUND 2</h3>
+            <p style="margin:0; color:#ccc;">Saturday, June 27, 2026</p>
+            <p style="margin:12px 0 0 0; font-weight:bold;">Champions Pointe</p>
         </div>
     </div>
 </div>
