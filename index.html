@@ -224,37 +224,37 @@
 <div class="tab-bar">
     <div class="tab active" onclick="switchTab(0)">Home</div>
     <div class="tab" onclick="switchTab(1)">Schedule</div>
-    <div class="tab" onclick="switchTab(2)">Scorecard</div>
+    <div class="tab" id="scorecard-tab" onclick="switchTab(2)" style="opacity:0.5; pointer-events:none;">Scorecard</div>
     <div class="tab" onclick="switchTab(3)">Leaderboard</div>
     <div class="tab" onclick="switchTab(4)">Teams</div>
     <div class="tab" onclick="switchTab(5)">Weather</div>
 </div>
-
+    
 <!-- HOME -->
 <div id="content-0" class="content active">
     <h2 style="text-align:center; color:var(--gold);">Select Your Name</h2>
     <div class="player-grid" id="player-grid"></div>
-</div>
 
-<!-- SCHEDULE -->
-<div id="content-1" class="content">
-    <h2 style="text-align:center; color:var(--gold);">Choose Your Round</h2>
-    <div class="day-grid">
-        <div class="card" onclick="startRound(0)">
-            <h3>June 26th</h3>
-            <h4 style="color:#ddd;">Covered Bridge Golf Club</h4>
-            <p>Par 72 • Louisville, KY</p>
-            <button>Start Scoring</button>
-        </div>
-        <div class="card" onclick="startRound(1)">
-            <h3>June 27th</h3>
-            <h4 style="color:#ddd;">Champions Pointe Golf Club</h4>
-            <p>Par 72 • Louisville, KY</p>
-            <button>Start Scoring</button>
+    <!-- Course / Date Selection (hidden until player is chosen) -->
+    <div id="course-selection" style="display:none; margin-top:40px; text-align:center;">
+        <h2 style="color:var(--gold);">Which day are you playing?</h2>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:25px;">
+            
+            <div class="card" onclick="selectDate(0)" style="cursor:pointer; padding:25px;">
+                <strong style="font-size:1.3em;">Friday</strong><br>
+                <span style="font-size:1.1em;">June 26, 2026</span><br><br>
+                <small>Course 1</small>
+            </div>
+
+            <div class="card" onclick="selectDate(1)" style="cursor:pointer; padding:25px;">
+                <strong style="font-size:1.3em;">Saturday</strong><br>
+                <span style="font-size:1.1em;">June 27, 2026</span><br><br>
+                <small>Course 2</small>
+            </div>
         </div>
     </div>
 </div>
-
+    
 <!-- SCORECARD -->
 <div id="content-2" class="content">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
@@ -561,6 +561,50 @@ function getWeatherText(code) {
     const map = { 0:"Clear",1:"Mainly Clear",2:"Partly Cloudy",3:"Overcast",45:"Fog",48:"Fog",
                   51:"Light Rain",61:"Rain",80:"Rain Showers",95:"Thunderstorm" };
     return map[code] || "Cloudy";
+}
+let selectedPlayer = null;
+let selectedDateIndex = null;
+
+function selectPlayer(name) {
+    selectedPlayer = name;
+    currentPlayer = name;
+    
+    // Show date selection
+    document.getElementById('course-selection').style.display = 'block';
+    
+    // Highlight selected player
+    document.querySelectorAll('.player-card').forEach(card => {
+        card.style.borderColor = card.textContent.includes(name) ? 'var(--gold)' : '#555';
+    });
+}
+
+function selectDate(index) {
+    selectedDateIndex = index;
+    currentCourseIndex = index;
+    
+    // Enable Scorecard tab
+    const scorecardTab = document.getElementById('scorecard-tab');
+    scorecardTab.style.opacity = "1";
+    scorecardTab.style.pointerEvents = "auto";
+    
+    alert(`✅ ${selectedPlayer} is ready for ${index === 0 ? 'Friday June 26' : 'Saturday June 27'}!`);
+    
+    // Switch to Scorecard automatically
+    switchTab(2);
+}
+
+// Updated player grid
+function renderPlayers() {
+    const grid = document.getElementById('player-grid');
+    grid.innerHTML = '';
+    players.forEach(player => {
+        const div = document.createElement('div');
+        div.className = 'card player-card';
+        div.style.cursor = 'pointer';
+        div.innerHTML = `<strong>${player}</strong>`;
+        div.onclick = () => selectPlayer(player);
+        grid.appendChild(div);
+    });
 }
     
 // Initialize
