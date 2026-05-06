@@ -454,10 +454,9 @@
     </div>
 </div>
  
-<!-- WEATHER -->
+<!-- WEATHER TAB - Apple Style Widget -->
 <div id="content-5" class="content">
-    <h2 style="text-align:center; color:var(--gold);">⛅ Louisville Weather</h2>
-    <div id="weather-container" style="max-width: 600px; margin: 0 auto;"></div>
+    <div id="weather-container" style="max-width: 420px; margin: 0 auto; padding: 10px;"></div>
 </div>
  
 <!-- SCORE MODAL -->
@@ -823,42 +822,70 @@ function generateTeams() {
 // Weather
 async function loadWeather() {
     const container = document.getElementById('weather-container');
-    container.innerHTML = '<p style="text-align:center;">Loading weather...</p>';
-    
+    container.innerHTML = '<p style="text-align:center; padding:40px;">Loading weather...</p>';
+
     try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=America/New_York');
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,weather_code&timezone=America/New_York');
         const data = await res.json();
-        
-        let html = '<h3 style="text-align:center; color:var(--gold); margin-bottom:20px;">Louisville, KY</h3>';
-        
-        for (let i = 0; i < 5; i++) {
-            const date = data.daily.time[i];
-            const maxF = Math.round(data.daily.temperature_2m_max[i] * 9/5 + 32);
-            const minF = Math.round(data.daily.temperature_2m_min[i] * 9/5 + 32);
-            const code = data.daily.weather_code[i];
-            
-            const dayName = new Date(date).toLocaleDateString('en-US', { 
-                weekday: 'short', month: 'short', day: 'numeric' 
-            });
-            
+
+        let html = `<div style="background: rgba(255,255,255,0.12); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">`;
+
+        // Today's big widget (Apple style)
+        const todayMax = Math.round(data.daily.temperature_2m_max[0] * 9/5 + 32);
+        const todayMin = Math.round(data.daily.temperature_2m_min[0] * 9/5 + 32);
+        const todayCode = data.daily.weather_code[0];
+
+        html += `
+            <div style="text-align:center;">
+                <div style="font-size: 72px; font-weight: 300; line-height: 1;">${todayMax}°</div>
+                <div style="font-size: 24px; margin: 8px 0;">${getWeatherText(todayCode)}</div>
+                <div style="font-size: 18px; color:#ddd;">H:${todayMax}° L:${todayMin}°</div>
+            </div>
+
+            <hr style="border: none; height: 1px; background: rgba(255,255,255,0.2); margin: 20px 0;">
+
+            <!-- Hourly -->
+            <div style="display:flex; gap:12px; overflow-x:auto; padding-bottom:10px;">
+        `;
+
+        // Show next 8 hours
+        for (let i = 0; i < 8; i++) {
+            const tempF = Math.round(data.hourly.temperature_2m[i] * 9/5 + 32);
+            const time = new Date(data.hourly.time[i]).getHours();
+            const hourLabel = time === 0 ? "12AM" : time < 12 ? time + "AM" : (time === 12 ? "12PM" : time-12 + "PM");
+
             html += `
-                <div class="weather-widget">
-                    <div class="widget-header">
-                        <div>
-                            <strong>${dayName}</strong><br>
-                            <span style="font-size:28px;">${getWeatherEmoji(code)}</span>
-                        </div>
-                        <div style="text-align:right;">
-                            <span style="font-size:32px; font-weight:bold;">${maxF}°</span><br>
-                            <span style="color:#ccc;">${minF}°</span>
-                        </div>
-                    </div>
+                <div style="text-align:center; min-width:60px;">
+                    <div style="font-size:13px; margin-bottom:4px;">${hourLabel}</div>
+                    <div style="font-size:28px;">${getWeatherEmoji(data.hourly.weather_code[i])}</div>
+                    <div style="font-weight:bold; margin-top:6px;">${tempF}°</div>
                 </div>`;
         }
-        
+
+        html += `</div><hr style="border: none; height: 1px; background: rgba(255,255,255,0.2); margin: 20px 0;">`;
+
+        // 5-Day Forecast
+        html += `<div style="font-size:15px;">`;
+        for (let i = 0; i < 5; i++) {
+            const date = data.daily.time[i];
+            const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+            const maxF = Math.round(data.daily.temperature_2m_max[i] * 9/5 + 32);
+            const minF = Math.round(data.daily.temperature_2m_min[i] * 9/5 + 32);
+
+            html += `
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.15);">
+                    <span style="width:60px; font-weight:500;">${dayName}</span>
+                    <span style="font-size:24px;">${getWeatherEmoji(data.daily.weather_code[i])}</span>
+                    <span style="width:50px; text-align:right;">${maxF}°</span>
+                    <span style="width:50px; text-align:right; color:#aaa;">${minF}°</span>
+                </div>`;
+        }
+        html += `</div></div>`;
+
         container.innerHTML = html;
+
     } catch(e) {
-        container.innerHTML = '<p style="text-align:center; color:#ff9999;">Weather unavailable.</p>';
+        container.innerHTML = '<p style="text-align:center; color:#ff9999; padding:40px;">Weather temporarily unavailable.</p>';
     }
 }
  
@@ -868,7 +895,10 @@ function getWeatherEmoji(code) {
                   95:"⛈️",96:"⛈️",99:"⛈️" };
     return map[code] || "☁️";
 }
- 
+function getWeatherText(code) {
+    const map = {0:"Clear",1:"Mostly Clear",2:"Partly Cloudy",3:"Overcast",61:"Rain",80:"Showers",95:"Thunderstorms"};
+    return map[code] || "Cloudy";
+}
 // Storage
 function saveScores() {
     localStorage.setItem('golfScores', JSON.stringify(scores));
