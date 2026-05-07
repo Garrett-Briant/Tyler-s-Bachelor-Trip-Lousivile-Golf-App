@@ -763,6 +763,7 @@ function init() {
     loadScores();
     startCountdown();        // ← MUST be here
 }
+// ============ COUNTDOWN ============
 function startCountdown() {
     const targetDate = new Date('2026-06-26T00:00:00').getTime();
 
@@ -802,7 +803,7 @@ function startCountdown() {
                 <div class="countdown-label">SECONDS</div>
             </div>
         `;
-    }
+}
 
     // Update immediately + every second
     updateCountdown();
