@@ -877,11 +877,7 @@ function renderPlayerPills() {
     }
 }
 
-    // Open scorecard in a new window/tab with player + course in URL
-    const url = `${window.location.pathname}?player=${encodeURIComponent(currentPlayer)}&course=${courseIdx}&view=scorecard`;
-    window.open(url, '_blank');
-}
- function switchRound() {
+function switchRound() {
     const otherCourse = currentCourseIndex === 0 ? 1 : 0;
     const url = `${window.location.pathname}?player=${encodeURIComponent(currentPlayer)}&course=${otherCourse}&view=scorecard`;
     window.location.href = url;
