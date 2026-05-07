@@ -106,7 +106,7 @@
             object-fit: cover;
             display: block;
         }
- /* Countdown Ticker */
+ /* COUNTDOWN TICKER */
 .countdown-container {
     background: rgba(255,255,255,0.08);
     border: 2px solid var(--gold);
@@ -761,7 +761,7 @@ let currentGroupIndex = 0;       // which player in the group is currently being
 function init() {
     renderPlayers();
     loadScores();
-    startCountdown();        
+    startCountdown();        // ← MUST be here
 }
 function startCountdown() {
     const targetDate = new Date('2026-06-26T00:00:00').getTime();
