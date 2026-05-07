@@ -802,18 +802,24 @@ function confirmGroup() {
     switchTab(2);
 }
 function backToGroupSetup() {
-    // Disable scorecard tab so they can't navigate back to it from tab bar without picking again
-    document.getElementById('tab-2').classList.add('disabled');
-
-    // Hide all content, show group selection
+    // Switch back to Home tab
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab')[0].classList.add('active');
     document.getElementById('content-0').classList.add('active');
 
-    // Show group selection screen on Home tab
-    document.getElementById('schedule-selection').style.display = 'block';
+    // Hide irrelevant sections, show group selection
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('player-selection-page').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'none';
     document.getElementById('group-selection').style.display = 'block';
+
+    // Disable scorecard tab until they pick a group again
+    document.getElementById('tab-2').classList.add('disabled');
+
+    // Re-render the group grid with current selections
+    renderGroupPlayerGrid();
+
     document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
 }
 function prevPlayer() {
@@ -1034,9 +1040,17 @@ function openScoreModal(hole, par) {
     const course = courses[currentCourseIndex];
     const holeData = course.holes[hole - 1];
 
-    document.getElementById('modal-hole-info').innerHTML =
-        `<div style="color:var(--gold); font-size:1.4em; margin-bottom:6px;">${currentPlayer}</div>
-         <div style="font-size:0.95em; color:#ccc;">Hole ${hole} • Par ${par} • ${holeData.yards} yds</div>`;
+    // Rebuild the modal title fresh every time using current player
+    const modalInfo = document.getElementById('modal-hole-info');
+    modalInfo.innerHTML = '';
+    const playerLine = document.createElement('div');
+    playerLine.textContent = currentPlayer;
+    playerLine.style.cssText = 'color: var(--gold); font-size: 1.4em; margin-bottom: 6px; font-weight: bold;';
+    const holeLine = document.createElement('div');
+    holeLine.textContent = `Hole ${hole} • Par ${par} • ${holeData.yards} yds`;
+    holeLine.style.cssText = 'font-size: 0.95em; color: #ccc;';
+    modalInfo.appendChild(playerLine);
+    modalInfo.appendChild(holeLine);
     let optionsHtml = '';
     const adjustments = [-2, -1, 0, 1, 2, 3];
     const labels = ['Eagle', 'Birdie', 'Par', 'Bogey', 'Double', 'Triple'];
