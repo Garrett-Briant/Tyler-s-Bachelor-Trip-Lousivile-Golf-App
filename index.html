@@ -802,25 +802,24 @@ function confirmGroup() {
     switchTab(2);
 }
 function backToGroupSetup() {
-    // Switch back to Home tab
+    // Hide all tab content (group-selection lives outside tabs)
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab')[0].classList.add('active');
-    document.getElementById('content-0').classList.add('active');
 
-    // Hide irrelevant sections, show group selection
+    // Show group selection, hide other landing sections
     document.getElementById('landing-page').style.display = 'none';
     document.getElementById('player-selection-page').style.display = 'none';
-    document.getElementById('schedule-selection').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'block';
     document.getElementById('group-selection').style.display = 'block';
 
     // Disable scorecard tab until they pick a group again
     document.getElementById('tab-2').classList.add('disabled');
 
-    // Re-render the group grid with current selections
+    // Re-render the group grid (clears selections)
     renderGroupPlayerGrid();
 
-    document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('schedule-selection').scrollIntoView({ behavior: 'smooth' });
 }
 function prevPlayer() {
     if (currentGroup.length === 0) return;
