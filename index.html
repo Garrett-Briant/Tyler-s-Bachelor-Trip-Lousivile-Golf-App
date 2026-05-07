@@ -338,12 +338,12 @@
 </head>
 <body>
  
-<header>
+<header id="main-header" style="display:none;">
     <h1>⛳ TYLER'S BACHELOR TRIP ⛳</h1>
     <p>Louisville, Kentucky • June 26-28, 2026</p>
 </header>
- 
-<div class="tab-bar">
+
+<div class="tab-bar" id="main-tabs" style="display:none;">
     <div class="tab active" onclick="switchTab(0)">Home</div>
     <div class="tab disabled" id="tab-1" onclick="switchTab(1)">Schedule</div>
     <div class="tab disabled" id="tab-2" onclick="switchTab(2)">Scorecard</div>
@@ -562,6 +562,8 @@ function init() {
 // ============ LANDING / NAV FLOW ============
 function startApp() {
     document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('main-header').style.display = 'block';
+    document.getElementById('main-tabs').style.display = 'flex';
     document.getElementById('player-selection-page').style.display = 'block';
     document.getElementById('player-selection-page').scrollIntoView({ behavior: "smooth" });
 }
