@@ -423,12 +423,15 @@
  
 <!-- SCORECARD -->
 <div id="content-2" class="content">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
-        <div>
-            <h2 id="current-course-name" style="margin:0;">Covered Bridge GC</h2>
-            <p id="current-course-date" style="color:#999; margin:5px 0 0 0;">Friday, June 26</p>
+    <div style="margin-bottom:15px;">
+        <button onclick="backToGroupSetup()" style="background:transparent; color:#ccc; border:none; font-size:14px; cursor:pointer; padding:6px 0; margin-bottom:8px;">← Back to Group Setup</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+                <h2 id="current-course-name" style="margin:0;">Covered Bridge GC</h2>
+                <p id="current-course-date" style="color:#999; margin:5px 0 0 0;">Friday, June 26</p>
+            </div>
+            <button id="switch-round-btn" onclick="switchRound()" style="padding:8px 14px; background:rgba(212,175,55,0.2); color:var(--gold); border:2px solid var(--gold); border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold;">↔ Switch Round</button>
         </div>
-        <button id="switch-round-btn" onclick="switchRound()" style="padding:8px 14px; background:rgba(212,175,55,0.2); color:var(--gold); border:2px solid var(--gold); border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold;">↔ Switch Round</button>
     </div>
 
     <!-- Player Swiper -->
@@ -798,7 +801,21 @@ function confirmGroup() {
     document.getElementById('group-selection').style.display = 'none';
     switchTab(2);
 }
+function backToGroupSetup() {
+    // Disable scorecard tab so they can't navigate back to it from tab bar without picking again
+    document.getElementById('tab-2').classList.add('disabled');
 
+    // Hide all content, show group selection
+    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab')[0].classList.add('active');
+    document.getElementById('content-0').classList.add('active');
+
+    // Show group selection screen on Home tab
+    document.getElementById('schedule-selection').style.display = 'block';
+    document.getElementById('group-selection').style.display = 'block';
+    document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
+}
 function prevPlayer() {
     if (currentGroup.length === 0) return;
     currentGroupIndex = (currentGroupIndex - 1 + currentGroup.length) % currentGroup.length;
@@ -1016,10 +1033,10 @@ function openScoreModal(hole, par) {
     currentModalHole = hole;
     const course = courses[currentCourseIndex];
     const holeData = course.holes[hole - 1];
- 
-    document.getElementById('modal-hole-info').textContent =
-        `Hole ${hole} • Par ${par} • ${holeData.yards} yds`;
- 
+
+    document.getElementById('modal-hole-info').innerHTML =
+        `<div style="color:var(--gold); font-size:1.4em; margin-bottom:6px;">${currentPlayer}</div>
+         <div style="font-size:0.95em; color:#ccc;">Hole ${hole} • Par ${par} • ${holeData.yards} yds</div>`;
     let optionsHtml = '';
     const adjustments = [-2, -1, 0, 1, 2, 3];
     const labels = ['Eagle', 'Birdie', 'Par', 'Bogey', 'Double', 'Triple'];
