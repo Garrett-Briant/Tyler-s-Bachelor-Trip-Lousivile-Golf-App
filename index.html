@@ -106,7 +106,54 @@
             object-fit: cover;
             display: block;
         }
- 
+ /* Countdown Ticker */
+.countdown-container {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    padding: 20px 30px;
+    margin: 30px auto;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(212,175,55,0.2);
+}
+
+.countdown-title {
+    color: #ddd;
+    font-size: 1.1em;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.countdown-grid {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.countdown-unit {
+    background: rgba(0,0,0,0.4);
+    border-radius: 12px;
+    padding: 12px 18px;
+    min-width: 78px;
+}
+
+.countdown-number {
+    font-size: 2.4em;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.countdown-label {
+    font-size: 0.85em;
+    color: #ccc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
         /* Scorecard Table */
         .scorecard-table {
             width: 100%;
@@ -384,6 +431,21 @@
             <button onclick="startApp()"
                     style="background: var(--gold); color: #0d3d0d; border: none; padding: 16px 40px; font-size: 1.35em; font-weight: bold; border-radius: 50px; cursor: pointer;">
                 LET'S GOLF! →
+                          <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 420px;">
+                ... your three bullet points ...
+            </div>
+
+            <!-- COUNTDOWN TICKER -->
+            <div id="countdown-container" class="countdown-container">
+                <div class="countdown-title">TRIP STARTS IN</div>
+                <div class="countdown-grid" id="countdown-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <button onclick="startApp()"
+                    style="background: var(--gold); color: #0d3d0d; border: none; padding: 16px 40px; font-size: 1.35em; font-weight: bold; border-radius: 50px; cursor: pointer;">
+                LET'S GOLF! →  
             </button>
         </div>
     </div>
@@ -612,8 +674,53 @@ let currentGroupIndex = 0;       // which player in the group is currently being
 function init() {
     renderPlayers();
     loadScores();
+    startCountdown();        
 }
+function startCountdown() {
+    const targetDate = new Date('2026-06-26T00:00:00').getTime();
 
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            document.getElementById('countdown-grid').innerHTML = `
+                <div style="color:var(--gold); font-size:1.4em; padding:20px;">
+                    🎉 The Trip Has Begun!
+                </div>`;
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const grid = document.getElementById('countdown-grid');
+        grid.innerHTML = `
+            <div class="countdown-unit">
+                <div class="countdown-number">${days}</div>
+                <div class="countdown-label">DAYS</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-number">${hours}</div>
+                <div class="countdown-label">HOURS</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-number">${minutes}</div>
+                <div class="countdown-label">MINUTES</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-number">${seconds}</div>
+                <div class="countdown-label">SECONDS</div>
+            </div>
+        `;
+    }
+
+    // Update immediately + every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
  
 // ============ LANDING / NAV FLOW ============
 function startApp() {
