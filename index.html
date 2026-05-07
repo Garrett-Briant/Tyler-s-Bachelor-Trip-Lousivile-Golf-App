@@ -584,7 +584,7 @@ let currentGroupIndex = 0;       // which player in the group is currently being
 function init() {
     renderPlayers();
     loadScores();
-
+}
     // Check if this is a scorecard window (opened with URL params)
     const params = new URLSearchParams(window.location.search);
     const playerParam = params.get('player');
@@ -878,9 +878,13 @@ function renderPlayerPills() {
 }
 
 function switchRound() {
-    const otherCourse = currentCourseIndex === 0 ? 1 : 0;
-    const url = `${window.location.pathname}?player=${encodeURIComponent(currentPlayer)}&course=${otherCourse}&view=scorecard`;
-    window.location.href = url;
+    if (currentCourseIndex === null || currentGroup.length === 0) return;
+    currentCourseIndex = currentCourseIndex === 0 ? 1 : 0;
+    const course = courses[currentCourseIndex];
+    document.getElementById('current-course-name').textContent = course.name;
+    document.getElementById('current-course-date').textContent = course.date;
+    renderScorecard();
+    renderPlayerPills();
 }
 // ============ TABS ============
 function switchTab(n) {
