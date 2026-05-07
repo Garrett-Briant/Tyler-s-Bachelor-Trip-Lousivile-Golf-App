@@ -585,27 +585,7 @@ function init() {
     renderPlayers();
     loadScores();
 }
-    // Check if this is a scorecard window (opened with URL params)
-    const params = new URLSearchParams(window.location.search);
-    const playerParam = params.get('player');
-    const courseParam = params.get('course');
-    const viewParam = params.get('view');
 
-    if (viewParam === 'scorecard' && playerParam && courseParam !== null) {
-        currentPlayer = decodeURIComponent(playerParam);
-        currentCourseIndex = parseInt(courseParam);
-
-        // Skip landing page, jump straight to scorecard
-        document.getElementById('landing-page').style.display = 'none';
-        document.getElementById('main-header').style.display = 'block';
-        document.getElementById('main-tabs').style.display = 'flex';
-        document.getElementById('current-player-name').textContent = currentPlayer;
-        document.getElementById('current-course-name').textContent = courses[currentCourseIndex].name;
-        document.getElementById('current-course-date').textContent = courses[currentCourseIndex].date;
-        document.getElementById('tab-2').classList.remove('disabled');
-        switchTab(2);
-    }
-}
  
 // ============ LANDING / NAV FLOW ============
 function startApp() {
