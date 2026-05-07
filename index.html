@@ -416,7 +416,10 @@
             <h2 id="current-course-name" style="margin:0;">Covered Bridge GC</h2>
             <p id="current-course-date" style="color:#999; margin:5px 0 0 0;">Friday, June 26</p>
         </div>
-        <h3 id="current-player-name" style="color:var(--gold); margin:0;"></h3>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+            <h3 id="current-player-name" style="color:var(--gold); margin:0;"></h3>
+            <button id="switch-round-btn" onclick="switchRound()" style="padding:8px 14px; background:rgba(212,175,55,0.2); color:var(--gold); border:2px solid var(--gold); border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold;">↔ Switch to Other Round</button>
+        </div>
     </div>
  
     <div style="overflow-x:auto;">
@@ -557,6 +560,27 @@ let currentModalHole = 1;
 function init() {
     renderPlayers();
     loadScores();
+
+    // Check if this is a scorecard window (opened with URL params)
+    const params = new URLSearchParams(window.location.search);
+    const playerParam = params.get('player');
+    const courseParam = params.get('course');
+    const viewParam = params.get('view');
+
+    if (viewParam === 'scorecard' && playerParam && courseParam !== null) {
+        currentPlayer = decodeURIComponent(playerParam);
+        currentCourseIndex = parseInt(courseParam);
+
+        // Skip landing page, jump straight to scorecard
+        document.getElementById('landing-page').style.display = 'none';
+        document.getElementById('main-header').style.display = 'block';
+        document.getElementById('main-tabs').style.display = 'flex';
+        document.getElementById('current-player-name').textContent = currentPlayer;
+        document.getElementById('current-course-name').textContent = courses[currentCourseIndex].name;
+        document.getElementById('current-course-date').textContent = courses[currentCourseIndex].date;
+        document.getElementById('tab-2').classList.remove('disabled');
+        switchTab(2);
+    }
 }
  
 // ============ LANDING / NAV FLOW ============
@@ -679,11 +703,18 @@ function selectCourse(courseIdx) {
     const course = courses[courseIdx];
     document.getElementById('current-course-name').textContent = course.name;
     document.getElementById('current-course-date').textContent = course.date;
- 
+
     document.getElementById('tab-2').classList.remove('disabled');
-    switchTab(2);
+
+    // Open scorecard in a new window/tab with player + course in URL
+    const url = `${window.location.pathname}?player=${encodeURIComponent(currentPlayer)}&course=${courseIdx}&view=scorecard`;
+    window.open(url, '_blank');
 }
- 
+ function switchRound() {
+    const otherCourse = currentCourseIndex === 0 ? 1 : 0;
+    const url = `${window.location.pathname}?player=${encodeURIComponent(currentPlayer)}&course=${otherCourse}&view=scorecard`;
+    window.location.href = url;
+}
 // ============ TABS ============
 function switchTab(n) {
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
