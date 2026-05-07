@@ -1184,17 +1184,26 @@ function switchRound() {
     renderPlayerPills();
 }
 // ============ TABS ============
+// ============ TABS ============
 function switchTab(n) {
+    // Hide all content
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+    
+    // Remove active from all tabs
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    
+    // Activate the clicked tab
     document.querySelectorAll('.tab')[n].classList.add('active');
-    document.getElementById(`content-${n}`).classList.add('active');
+    
+    // Show the correct content
+    const content = document.getElementById(`content-${n}`);
+    if (content) content.classList.add('active');
 
+    // Special actions
     if (n === 5) loadWeather();
-    if (n === 2) {
+    if (n === 2 && currentPlayer) {
         renderScorecard();
         renderPlayerPills();
-        document.getElementById('current-player-name').textContent = currentPlayer || '';
     }
     if (n === 3) renderLeaderboard();
 }
