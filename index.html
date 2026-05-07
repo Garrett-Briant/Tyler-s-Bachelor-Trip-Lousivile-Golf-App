@@ -951,27 +951,33 @@ function jumpToPlayer(idx) {
 function renderPlayerPills() {
     const container = document.getElementById('player-pills');
     container.innerHTML = '';
+
     currentGroup.forEach((name, idx) => {
         const pill = document.createElement('button');
         const isActive = idx === currentGroupIndex;
-        pill.textContent = name.split(' ')[0];
+        pill.textContent = name.split(' ')[0];   // short name (first name)
         pill.onclick = () => jumpToPlayer(idx);
         pill.style.cssText = `
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 6px 16px;
+            border-radius: 9999px;
             border: 2px solid var(--gold);
             background: ${isActive ? 'var(--gold)' : 'transparent'};
             color: ${isActive ? '#0d3d0d' : 'var(--gold)'};
             font-weight: bold;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 15px;
+            margin: 2px;
         `;
         container.appendChild(pill);
     });
 
-    // Update score summary
+    // === UPDATE HEADER NAME AND SCORE SUMMARY ===
+    const nameEl = document.getElementById('current-player-name');
+    if (nameEl) nameEl.textContent = currentPlayer || '';
+
     const course = courses[currentCourseIndex];
     let totalStrokes = 0, totalPar = 0, holesPlayed = 0;
+
     for (let i = 0; i < 18; i++) {
         const key = `${currentPlayer}-${currentCourseIndex}-${course.holes[i].hole}`;
         if (scores[key]) {
@@ -980,13 +986,16 @@ function renderPlayerPills() {
             holesPlayed++;
         }
     }
-    const summary = document.getElementById('current-player-score-summary');
-    if (holesPlayed > 0) {
-        const toPar = totalStrokes - totalPar;
-        const toParStr = toPar > 0 ? `+${toPar}` : (toPar === 0 ? 'E' : toPar);
-        summary.textContent = `${holesPlayed} holes • ${totalStrokes} strokes • ${toParStr}`;
-    } else {
-        summary.textContent = 'No scores yet';
+
+    const summaryEl = document.getElementById('current-player-score-summary');
+    if (summaryEl) {
+        if (holesPlayed > 0) {
+            const toPar = totalStrokes - totalPar;
+            const toParStr = toPar > 0 ? `+${toPar}` : (toPar === 0 ? 'E' : toPar);
+            summaryEl.textContent = `${holesPlayed} holes • ${totalStrokes} strokes • ${toParStr}`;
+        } else {
+            summaryEl.textContent = 'No scores yet';
+        }
     }
 }
 
