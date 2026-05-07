@@ -338,9 +338,18 @@
 </head>
 <body>
  
-<header id="main-header" style="display:none;">
-    <h1>⛳ TYLER'S BACHELOR TRIP ⛳</h1>
-    <p>Louisville, Kentucky • June 26-28, 2026</p>
+<header id="main-header" style="display:none; display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 15px; border-bottom: 5px solid var(--gold);">
+    <button onclick="goBack()" id="header-back-btn"
+            style="background: transparent; border: none; color: var(--gold); font-size: 32px; cursor: pointer; padding: 0 10px; line-height: 1; display: none;">
+        ←
+    </button>
+    
+    <div style="text-align: center; flex: 1;">
+        <h1 style="margin: 0; font-size: 28px; letter-spacing: 2px;">⛳ TYLER'S BACHELOR TRIP ⛳</h1>
+        <p style="margin: 8px 0 0 0; font-size: 1.1em; color: #ddd;">Louisville, Kentucky • June 26-28, 2026</p>
+    </div>
+    
+    <div style="width: 40px;"></div> <!-- spacer so title stays centered -->
 </header>
 
 <div class="tab-bar" id="main-tabs" style="display:none;">
@@ -614,7 +623,10 @@ function startApp() {
     const playerPage = document.getElementById('player-selection-page');
 
     if (landing) landing.style.display = 'none';
-    if (header) header.style.display = 'block';
+    if (header) {
+        header.style.display = 'flex';
+        document.getElementById('header-back-btn').style.display = 'block';   // ← show back button
+    }
     if (tabs) tabs.style.display = 'flex';
     if (playerPage) {
         playerPage.style.display = 'block';
@@ -750,8 +762,11 @@ function renderGroupPlayerGrid() {
     const grid = document.getElementById('group-player-grid');
     grid.innerHTML = '';
     currentGroup = [];
-    document.getElementById('confirm-group-btn').disabled = true;
-    document.getElementById('confirm-group-btn').style.opacity = '0.5';
+
+    // Pre-select the person who chose their name at the beginning
+    if (currentPlayer) {
+        currentGroup.push(currentPlayer);
+    }
 
     players.forEach(name => {
         const initials = name.split(' ').map(n => n[0]).join('');
@@ -765,7 +780,7 @@ function renderGroupPlayerGrid() {
             img.src = profile.photo;
             img.alt = name;
             img.className = 'avatar-photo';
-            img.onerror = function() {
+            img.onerror = () => {
                 const fallback = document.createElement('div');
                 fallback.className = 'avatar';
                 fallback.textContent = initials;
@@ -779,9 +794,26 @@ function renderGroupPlayerGrid() {
             div.innerHTML = `<div class="avatar">${initials}</div><strong>${name}</strong>`;
         }
 
+        // Pre-select the person who was chosen at the start
+        if (name === currentPlayer) {
+            div.classList.add('selected');
+        }
+
         div.onclick = () => toggleGroupMember(name, div);
         grid.appendChild(div);
     });
+
+    // Update continue button
+    const btn = document.getElementById('confirm-group-btn');
+    if (currentGroup.length >= 2) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = `Continue with ${currentGroup.length} Players →`;
+    } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.textContent = 'Continue to Scorecard →';
+    }
 }
 
 function toggleGroupMember(name, cardEl) {
@@ -838,6 +870,60 @@ function backToGroupSetup() {
 
     renderGroupPlayerGrid();
     document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
+}
+    function goBack() {
+    // 1. Close any open modals first
+    const profileModal = document.getElementById('profile-modal');
+    if (profileModal && profileModal.classList.contains('active')) {
+        closeProfileModal();
+        return;
+    }
+    const scoreModal = document.getElementById('score-modal');
+    if (scoreModal && scoreModal.classList.contains('active')) {
+        closeModal();
+        return;
+    }
+
+    // 2. Group Selection → Schedule Selection
+    const groupSel = document.getElementById('group-selection');
+    if (groupSel && groupSel.style.display === 'block') {
+        document.getElementById('group-selection').style.display = 'none';
+        document.getElementById('schedule-selection').style.display = 'block';
+        return;
+    }
+
+    // 3. Schedule Selection → Player Selection
+    const scheduleSel = document.getElementById('schedule-selection');
+    if (scheduleSel && scheduleSel.style.display === 'block') {
+        document.getElementById('schedule-selection').style.display = 'none';
+        document.getElementById('player-selection-page').style.display = 'block';
+        return;
+    }
+
+    // 4. Player Selection → Landing page (restart flow)
+    const playerSel = document.getElementById('player-selection-page');
+    if (playerSel && playerSel.style.display === 'block') {
+        document.getElementById('player-selection-page').style.display = 'none';
+        document.getElementById('landing-page').style.display = 'block';
+        return;
+    }
+
+    // 5. Scorecard → Group Selection (reuses your existing logic)
+    const scorecardContent = document.getElementById('content-2');
+    if (scorecardContent && scorecardContent.classList.contains('active')) {
+        backToGroupSetup();
+        return;
+    }
+
+    // 6. If on any tab and not in flow → go to Home tab
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab && activeTab.textContent !== 'Home') {
+        switchTab(0);
+        return;
+    }
+
+    // If nowhere else to go, just alert (safety)
+    console.log("Already at the beginning of the app");
 }
 function prevPlayer() {
     if (currentGroup.length === 0) return;
