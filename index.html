@@ -609,11 +609,18 @@ function init() {
  
 // ============ LANDING / NAV FLOW ============
 function startApp() {
-    document.getElementById('landing-page').style.display = 'none';
-    document.getElementById('main-header').style.display = 'block';
-    document.getElementById('main-tabs').style.display = 'flex';
-    document.getElementById('player-selection-page').style.display = 'block';
-    document.getElementById('player-selection-page').scrollIntoView({ behavior: "smooth" });
+    const landing = document.getElementById('landing-page');
+    const header = document.getElementById('main-header');
+    const tabs = document.getElementById('main-tabs');
+    const playerPage = document.getElementById('player-selection-page');
+
+    if (landing) landing.style.display = 'none';
+    if (header) header.style.display = 'block';
+    if (tabs) tabs.style.display = 'flex';
+    if (playerPage) {
+        playerPage.style.display = 'block';
+        playerPage.scrollIntoView({ behavior: 'smooth' });
+    }
 }
  
 function renderPlayers() {
