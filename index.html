@@ -1505,14 +1505,26 @@ async function loadWeather() {
             <div style="display:flex; gap:14px; overflow-x:auto; padding-bottom:12px;">
         `;
  
-        for (let i = 0; i < 8; i++) {
+        // Find the index of the current hour in the hourly data
+        const nowMs = Date.now();
+        let startIdx = 0;
+        for (let i = 0; i < data.hourly.time.length; i++) {
+            if (new Date(data.hourly.time[i]).getTime() >= nowMs) {
+                startIdx = Math.max(0, i - 1); // include current hour
+                break;
+            }
+        }
+
+        for (let i = startIdx; i < startIdx + 12 && i < data.hourly.time.length; i++) {
             const tempF = Math.round(data.hourly.temperature_2m[i] * 9/5 + 32);
-            const hour = new Date(data.hourly.time[i]).getHours();
-            const label = hour % 12 === 0 ? (hour === 0 ? "12AM" : "12PM") : (hour > 12 ? (hour-12) + "PM" : hour + "AM");
- 
+            const hourDate = new Date(data.hourly.time[i]);
+            const hour = hourDate.getHours();
+            const isNow = i === startIdx;
+            const label = isNow ? 'Now' : (hour % 12 === 0 ? (hour === 0 ? "12AM" : "12PM") : (hour > 12 ? (hour-12) + "PM" : hour + "AM"));
+
             html += `
-                <div style="text-align:center; min-width:55px;">
-                    <div style="font-size:13px;">${label}</div>
+                <div style="text-align:center; min-width:55px; ${isNow ? 'color:var(--gold);' : ''}">
+                    <div style="font-size:13px; font-weight:${isNow ? 'bold' : 'normal'};">${label}</div>
                     <div style="font-size:26px; margin:6px 0;">${getWeatherEmoji(data.hourly.weather_code[i])}</div>
                     <div style="font-weight:bold;">${tempF}°</div>
                 </div>`;
