@@ -4,24 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tyler's Bachelor Trip • Louisville 2026</title>
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/manifest+json,{
-        &quot;name&quot;:&quot;Tyler's Bachelor Trip&quot;,
-        &quot;short_name&quot;:&quot;Bachelor Golf&quot;,
-        &quot;start_url&quot;:&quot;.&quot;,
-        &quot;display&quot;:&quot;standalone&quot;,
-        &quot;background_color&quot;:&quot;#0d3d0d&quot;,
-        &quot;theme_color&quot;:&quot;#d4af37&quot;,
-        &quot;icons&quot;:[{&quot;src&quot;:&quot;https://via.placeholder.com/192x192/0d3d0d/d4af37?text=⛳&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/png&quot;}]
-    }">
     <style>
         :root {
             --masters-green: #0d3d0d;
             --gold: #d4af37;
             --dark-gold: #b8860b;
-        }
-        [data-theme="dark"] {
-            --masters-green: #0a2a0a;
         }
         * { box-sizing: border-box; }
         body {
@@ -30,13 +17,11 @@
             background: linear-gradient(180deg, #0a2f0a, #0d3d0d);
             color: #eee;
             min-height: 100vh;
-            transition: background 0.4s;
         }
         header {
             background: var(--masters-green);
             color: white;
             border-bottom: 5px solid var(--gold);
-            position: relative;
         }
         .tab-bar {
             display: flex;
@@ -336,7 +321,7 @@
         .team-members li { padding: 8px 0; border-bottom: 1px solid #444; }
         .team-members li:last-child { border-bottom: none; }
 
-        /* Profile Card */
+        /* Baseball Trading Card */
         .profile-card {
             background: linear-gradient(180deg, #f5f0e1, #e8d9b8);
             border: 8px solid var(--gold);
@@ -402,48 +387,6 @@
             min-height: 140px;
             box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
         }
-
-        .pill {
-            padding: 6px 16px;
-            border-radius: 9999px;
-            border: 2px solid var(--gold);
-            background: transparent;
-            color: var(--gold);
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 15px;
-            margin: 2px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .pill.active {
-            background: var(--gold);
-            color: #0d3d0d;
-        }
-        .pill img {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .night-toggle {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            background: rgba(212,175,55,0.2);
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            cursor: pointer;
-            z-index: 10;
-        }
     </style>
 </head>
 <body>
@@ -457,7 +400,7 @@
         <h1 style="margin:0; font-size:28px; letter-spacing:2px;">⛳ TYLER'S BACHELOR TRIP ⛳</h1>
         <p style="margin:8px 0 0 0; font-size:1.1em; color:#ddd;">Louisville, Kentucky • June 26-28, 2026</p>
     </div>
-    <div onclick="toggleNightMode()" class="night-toggle" title="Toggle Night Mode">🌙</div>
+    <div style="width:40px;"></div>
 </header>
 
 <div class="tab-bar" id="main-tabs" style="display:none;">
@@ -535,10 +478,67 @@
 
 <!-- SCHEDULE -->
 <div id="content-1" class="content">
-    <!-- Same schedule content as before -->
     <h2 style="text-align:center; color:var(--gold); margin-bottom:30px;">Trip Schedule</h2>
-    <!-- FRIDAY and SATURDAY blocks unchanged from your original code -->
-    <!-- (omitted here for brevity — copy from previous version if needed) -->
+
+    <!-- FRIDAY -->
+    <div style="background:rgba(255,255,255,0.05); border:2px solid var(--gold); border-radius:12px; padding:20px; margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+            <h3 style="color:var(--gold); margin:0; font-size:1.4em;">FRIDAY • June 26</h3>
+            <span style="background:var(--gold); color:#0d3d0d; padding:4px 12px; border-radius:50px; font-weight:bold; font-size:0.95em;">ROUND 1</span>
+        </div>
+        <h4 style="margin:0 0 4px 0; font-size:1.15em;">⛳ Covered Bridge Golf Club</h4>
+        <p style="color:#ccc; margin:0 0 12px 0; font-size:0.95em;">12510 Covered Bridge Rd, Sellersburg, IN 47172</p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="background:rgba(0,0,0,0.3); padding:8px 14px; border-radius:8px;">
+                <div style="font-size:0.8em; color:#999;">TEE TIME</div>
+                <div style="font-weight:bold; color:var(--gold);">9:00 AM</div>
+            </div>
+            <a href="https://www.google.com/maps/search/?api=1&query=Covered+Bridge+Golf+Club+Sellersburg+IN" target="_blank"
+               style="background:rgba(212,175,55,0.2); border:2px solid var(--gold); color:var(--gold); padding:8px 14px; border-radius:8px; text-decoration:none; font-weight:bold; display:flex; align-items:center; gap:6px;">
+                📍 Directions
+            </a>
+            <a href="tel:+18122468880"
+               style="background:rgba(255,255,255,0.1); border:2px solid #888; color:#ccc; padding:8px 14px; border-radius:8px; text-decoration:none; font-weight:bold; display:flex; align-items:center; gap:6px;">
+                📞 Call Course
+            </a>
+        </div>
+    </div>
+
+    <!-- SATURDAY -->
+    <div style="background:rgba(255,255,255,0.05); border:2px solid var(--gold); border-radius:12px; padding:20px; margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+            <h3 style="color:var(--gold); margin:0; font-size:1.4em;">SATURDAY • June 27</h3>
+            <span style="background:var(--gold); color:#0d3d0d; padding:4px 12px; border-radius:50px; font-weight:bold; font-size:0.95em;">ROUND 2</span>
+        </div>
+        <h4 style="margin:0 0 4px 0; font-size:1.15em;">⛳ Champions Pointe Golf Club</h4>
+        <p style="color:#ccc; margin:0 0 12px 0; font-size:0.95em;">1820 Champions Club Ln, Henryville, IN 47126</p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="background:rgba(0,0,0,0.3); padding:8px 14px; border-radius:8px;">
+                <div style="font-size:0.8em; color:#999;">TEE TIME</div>
+                <div style="font-weight:bold; color:var(--gold);">9:00 AM</div>
+            </div>
+            <a href="https://www.google.com/maps/search/?api=1&query=Champions+Pointe+Golf+Club+Henryville+IN" target="_blank"
+               style="background:rgba(212,175,55,0.2); border:2px solid var(--gold); color:var(--gold); padding:8px 14px; border-radius:8px; text-decoration:none; font-weight:bold; display:flex; align-items:center; gap:6px;">
+                📍 Directions
+            </a>
+            <a href="tel:+18122941800"
+               style="background:rgba(255,255,255,0.1); border:2px solid #888; color:#ccc; padding:8px 14px; border-radius:8px; text-decoration:none; font-weight:bold; display:flex; align-items:center; gap:6px;">
+                📞 Call Course
+            </a>
+        </div>
+    </div>
+
+    <!-- LODGING placeholder -->
+    <div style="background:rgba(255,255,255,0.05); border:2px solid #666; border-radius:12px; padding:20px; margin-bottom:20px;">
+        <h3 style="color:#ccc; margin:0 0 12px 0;">🏨 Lodging</h3>
+        <p style="color:#888; font-style:italic; margin:0;">Add Airbnb/hotel info here when confirmed</p>
+    </div>
+
+    <!-- EVENING PLANS placeholder -->
+    <div style="background:rgba(255,255,255,0.05); border:2px solid #666; border-radius:12px; padding:20px;">
+        <h3 style="color:#ccc; margin:0 0 12px 0;">🍻 Evening Plans</h3>
+        <p style="color:#888; font-style:italic; margin:0;">Bourbon tours, dinners, and night plans go here</p>
+    </div>
 </div>
 
 <!-- SCORECARD -->
@@ -551,8 +551,14 @@
                 <p id="current-course-date" style="color:#999; margin:5px 0 0 0;">Friday, June 26</p>
             </div>
             <div style="display:flex; gap:8px;">
-                <button onclick="switchRound()" style="padding:8px 14px; background:rgba(212,175,55,0.2); color:var(--gold); border:2px solid var(--gold); border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold;">↔ Switch Round</button>
-                <button onclick="backToGroupSetup()" style="padding:8px 14px; background:rgba(255,255,255,0.1); color:#ccc; border:2px solid #666; border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold;">👥 Change Group</button>
+                <button onclick="switchRound()"
+                        style="padding:8px 14px; background:rgba(212,175,55,0.2); color:var(--gold); border:2px solid var(--gold); border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold;">
+                    ↔ Switch Round
+                </button>
+                <button onclick="backToGroupSetup()"
+                        style="padding:8px 14px; background:rgba(255,255,255,0.1); color:#ccc; border:2px solid #666; border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold;">
+                    👥 Change Group
+                </button>
             </div>
         </div>
     </div>
@@ -581,9 +587,11 @@
 <!-- LEADERBOARD -->
 <div id="content-3" class="content">
     <h2 style="text-align:center; color:var(--gold);">Trip Leaderboard</h2>
-    <div style="text-align:center; margin-bottom:15px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-        <button onclick="resetAllScores()" style="background:#c0392b; color:white; border:none; padding:8px 20px; border-radius:50px; font-size:14px; cursor:pointer;">🗑️ Reset All Scores</button>
-        <button onclick="exportScores()" style="background:var(--gold); color:#0d3d0d; border:none; padding:8px 20px; border-radius:50px; font-size:14px; cursor:pointer;">📤 Export JSON</button>
+    <div style="text-align:center; margin-bottom:15px;">
+        <button onclick="resetAllScores()"
+                style="background:#c0392b; color:white; border:none; padding:8px 20px; border-radius:50px; font-size:14px; cursor:pointer;">
+            🗑️ Reset All Scores
+        </button>
     </div>
     <div id="leaderboard-content" style="background:rgba(255,255,255,0.05); border:2px solid var(--gold); border-radius:8px; padding:20px;">
         Scores will appear here after rounds are completed.
@@ -592,7 +600,6 @@
 
 <!-- TEAMS -->
 <div id="content-4" class="content">
-    <!-- Same as before -->
     <h2 style="text-align:center; color:var(--gold);">Teams & Skins Games</h2>
     <div class="team-builder">
         <h3 style="color:var(--gold); margin-top:0;">Create Team</h3>
@@ -614,22 +621,32 @@
 <!-- PROFILE MODAL -->
 <div id="profile-modal" class="modal">
     <div class="modal-content" style="max-width:420px; padding:25px 20px; background:transparent; border:none; box-shadow:none;">
-        <div onclick="closeProfileModal()" style="position:absolute; top:15px; right:20px; font-size:36px; cursor:pointer; color:#ddd; line-height:1; z-index:10;">×</div>
+        <div onclick="closeProfileModal()"
+             style="position:absolute; top:15px; right:20px; font-size:36px; cursor:pointer; color:#ddd; line-height:1; z-index:10;">×</div>
         <div class="profile-card">
-            <!-- same as before -->
             <div style="text-align:center; margin-bottom:20px;">
                 <div class="profile-card-name" id="profile-name-card"></div>
                 <div class="profile-card-photo-frame">
                     <img id="profile-photo-card" class="profile-card-photo" src="" alt="" onerror="this.style.display='none'">
-                    <div id="profile-avatar-card" style="display:none; width:100%; height:260px; background:linear-gradient(#d4af37,#b8860b); color:#0d3d0d; border-radius:8px; align-items:center; justify-content:center; font-size:80px; font-weight:bold;"></div>
+                    <div id="profile-avatar-card"
+                         style="display:none; width:100%; height:260px; background:linear-gradient(#d4af37,#b8860b); color:#0d3d0d; border-radius:8px; align-items:center; justify-content:center; font-size:80px; font-weight:bold;"></div>
                 </div>
             </div>
             <div class="profile-card-bio" id="profile-bio-card"></div>
-            <a id="profile-ig-card" href="#" target="_blank" rel="noopener noreferrer" style="display:none; margin-top:15px; align-items:center; justify-content:center; gap:8px; color:var(--gold); text-decoration:none; font-size:1.05em; font-weight:bold; padding:12px; border:3px solid var(--gold); border-radius:50px; background:rgba(212,175,55,0.15);">
-                <!-- IG SVG unchanged -->
+            <a id="profile-ig-card" href="#" target="_blank" rel="noopener noreferrer"
+               style="display:none; margin-top:15px; align-items:center; justify-content:center; gap:8px; color:var(--gold); text-decoration:none; font-size:1.05em; font-weight:bold; padding:12px; border:3px solid var(--gold); border-radius:50px; background:rgba(212,175,55,0.15);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span id="profile-ig-handle-card"></span>
             </a>
             <div style="margin-top:20px;">
-                <button onclick="continueFromProfile()" style="background:var(--gold); color:#0d3d0d; border:none; padding:16px 40px; font-size:1.3em; font-weight:bold; border-radius:50px; cursor:pointer; width:100%;">CONTINUE TO ROUND SELECTION →</button>
+                <button onclick="continueFromProfile()"
+                        style="background:var(--gold); color:#0d3d0d; border:none; padding:16px 40px; font-size:1.3em; font-weight:bold; border-radius:50px; cursor:pointer; width:100%;">
+                    CONTINUE TO ROUND SELECTION →
+                </button>
             </div>
         </div>
     </div>
@@ -646,266 +663,764 @@
 
 <script>
 // ============ DATA ============
-const players = ["Tyler Denman", "Garrett Briant", "Mac Chambers", "Michael Bury", "Dan Orr","Sam Trap", "Nathan Bazant", "Austin Armstrong", "AJ Marino", "Nick Bayer","Jake Piatt", "Ben Andresky", "Blake Rohrbacher", "Jake Pato"];
+const players = [
+    "Tyler Denman", "Garrett Briant", "Mac Chambers", "Michael Bury", "Dan Orr",
+    "Sam Trap", "Nathan Bazant", "Austin Armstrong", "AJ Marino", "Nick Bayer",
+    "Jake Piatt", "Ben Andresky", "Blake Rohrbacher", "Jake Pato"
+];
 
-const playerProfiles = { /* unchanged from previous version */ };
+const playerProfiles = {
+    "Tyler Denman":      { bio: "The groom himself. Solid stick with a soft spot for pirates. Last weekend of freedom — make it count, Captain.", ig: "tylerdenman12", photo: "Tyler.jpg" },
+    "Garrett Briant":    { bio: "Co-Best Man and the guy you want in your foursome — for more reasons than one. Lights it up on and off the course.", ig: "gmb_2106", photo: "garrett.jpg" },
+    "Mac Chambers":      { bio: "Co-Best Man rolling with 9 clubs in the bag. Says it's strategy. We say it's a cry for help.", ig: "mac_chambers57", photo: "Mac.jpg" },
+    "Michael Bury":      { bio: "One of Tyler's longest-running friends and the group's resident pot stirrer. Bandwagon fan of whoever's winning that week.", ig: "michaelbury_", photo: "Michael.jpg" },
+    "Dan Orr":           { bio: "Lefty flying in from Sandy Gaygo. Sneaky good — don't let the tan fool you.", ig: "dannyorr27", photo: "Dan.jpg" },
+    "Sam Trap":          { bio: "Doesn't look like a bad golfer. Is a bad golfer. Will hold up the entire group at the turn looking for a burger.", ig: "sammytrap4", photo: "Sam.jpg" },
+    "Nathan Bazant":     { bio: "Played D1 golf — just ask him. Seriously, he'll tell you. Probably already has.", ig: "bazant5", photo: "Nathan.JPG" },
+    "Austin Armstrong":  { bio: "Dan's secret lover and certified bad golfer. The chemistry is real, the swing is not.", ig: "austinarmstrong20", photo: "Austin.jpg" },
+    "AJ Marino":         { bio: "True wild card — nobody knows what AJ shoots and AJ might not either. Don't let the brown around him.", ig: "ajmarino__", photo: "AJ.jpg" },
+    "Nick Bayer":        { bio: "Lefty bringing nothing but good times and good vibes. The guy you want in your foursome.", ig: "nickbayer_", photo: "Nick.jpg" },
+    "Jake Piatt":        { bio: "Brother of the bride AND a military man. Watch your back, Ty — this man has range and authority.", ig: "jake_piatt", photo: "Jake-Piatt.jpg" },
+    "Ben Andresky":      { bio: "Construction man by day, terrible golfer by tee time. Builds houses better than he builds rounds.", ig: "ben.andresky", photo: "Ben.jpg" },
+    "Blake Rohrbacher":  { bio: "Actuary who can calculate the exact odds of his next shot — but still can't get the ball in the hole.", ig: "blakerohrbacher", photo: "Blake.JPG" },
+    "Jake Pato":         { bio: "Pure wild card. Could shoot 75 or 105 — even he doesn't know which Jake is showing up that day.", ig: "jayypay21", photo: "jake-pato.jpg" }
+};
 
-const courses = [ /* unchanged from previous version */ ];
+const courses = [
+    {
+        name: "Covered Bridge GC",
+        date: "Friday, June 26",
+        holes: Array.from({length:18}, (_,i) => ({
+            hole: i+1,
+            yards: [380,370,173,374,511,373,372,178,506, 368,369,173,388,501,349,390,168,510][i],
+            par:   [4,4,3,4,5,4,4,3,5, 4,4,3,4,5,4,4,3,5][i]
+        }))
+    },
+    {
+        name: "Champions Pointe GC",
+        date: "Saturday, June 27",
+        holes: Array.from({length:18}, (_,i) => ({
+            hole: i+1,
+            yards: [398,169,515,175,350,472,389,369,398, 357,169,515,398,382,171,548,346,431][i],
+            par:   [4,3,5,3,4,5,4,4,4, 4,3,5,4,4,3,5,4,4][i]
+        }))
+    }
+];
+
+// ============ HELPER: SAFE SCORE KEY (CRITICAL FIX) ============
+function makeScoreKey(player, courseIdx, hole) {
+    return `${encodeURIComponent(player)}|${courseIdx}|${hole}`;
+}
+
+function parseScoreKey(key) {
+    const parts = key.split('|');
+    if (parts.length !== 3) return null;
+    return {
+        player: decodeURIComponent(parts[0]),
+        courseIdx: parseInt(parts[1], 10),
+        hole: parseInt(parts[2], 10)
+    };
+}
 
 // ============ STATE ============
 let currentPlayer = null;
 let currentCourseIndex = null;
-let scores = {};
-let completedRounds = {}; // key: "groupNames|courseIdx" → true
+let scores = {};                    // key = "encodedPlayer|courseIdx|hole"
 let teamSize = 3;
 let currentModalHole = 1;
 let currentGroup = [];
 let currentGroupIndex = 0;
 let lastGeneratedTeams = null;
-let nightMode = false;
-let weatherCache = null;
-let weatherCacheTime = 0;
-
-// ============ SAFE KEY HELPERS ============
-function makeScoreKey(player, courseIdx, hole) {
-    return `${encodeURIComponent(player)}|${courseIdx}|${hole}`;
-}
-function parseScoreKey(key) {
-    const parts = key.split('|');
-    if (parts.length !== 3) return null;
-    return { player: decodeURIComponent(parts[0]), courseIdx: parseInt(parts[1]), hole: parseInt(parts[2]) };
-}
 
 // ============ INIT ============
 function init() {
     renderPlayers();
-    loadAllData();
+    loadScores();
+    loadAppState();          // NEW: restore group/round after refresh
     startCountdown();
 }
 
-// ============ COUNTDOWN (unchanged) ============
-function startCountdown() { /* unchanged from previous version */ }
+// ============ COUNTDOWN ============
+function startCountdown() {
+    const targetDate = new Date('2026-06-26T00:00:00').getTime();
+    function update() {
+        const now = Date.now();
+        const distance = targetDate - now;
+        const grid = document.getElementById('countdown-grid');
+        if (!grid) return;
+        if (distance < 0) {
+            grid.innerHTML = `<div style="color:var(--gold); font-size:1.4em; padding:20px;">🎉 The Trip Has Begun!</div>`;
+            return;
+        }
+        const days = Math.floor(distance / (1000*60*60*24));
+        const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+        const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+        const seconds = Math.floor((distance % (1000*60)) / 1000);
+        grid.innerHTML = `
+            <div class="countdown-unit"><div class="countdown-number">${days}</div><div class="countdown-label">Days</div></div>
+            <div class="countdown-unit"><div class="countdown-number">${hours}</div><div class="countdown-label">Hours</div></div>
+            <div class="countdown-unit"><div class="countdown-number">${minutes}</div><div class="countdown-label">Min</div></div>
+            <div class="countdown-unit"><div class="countdown-number">${seconds}</div><div class="countdown-label">Sec</div></div>`;
+    }
+    update();
+    setInterval(update, 1000);
+}
 
-// ============ NAV & PLAYER SELECTION (mostly unchanged) ============
-function startApp() { /* unchanged */ }
-function buildPlayerCard(name, onclickHandler) { /* unchanged */ }
-function renderPlayers() { /* unchanged */ }
-function selectPlayer(name) { /* unchanged */ }
-function closeProfileModal() { /* unchanged */ }
-function continueFromProfile() { /* unchanged */ }
-function selectCourse(courseIdx) { /* unchanged + saveAllData() */ }
-function showGroupSelection() { /* unchanged */ }
-function renderGroupPlayerGrid() { /* unchanged */ }
-function toggleGroupMember(name, cardEl) { /* unchanged + saveAllData() */ }
-function updateGroupButton() { /* unchanged */ }
-function confirmGroup() { /* unchanged + saveAllData() */ }
-function backToGroupSetup() { /* unchanged */ }
-function goBack() { /* unchanged */ }
+// ============ LANDING / NAV ============
+function startApp() {
+    document.getElementById('landing-page').style.display = 'none';
+    const header = document.getElementById('main-header');
+    header.style.display = 'flex';
+    document.getElementById('header-back-btn').style.display = 'block';
+    document.getElementById('main-tabs').style.display = 'flex';
+    const playerPage = document.getElementById('player-selection-page');
+    playerPage.style.display = 'block';
+    playerPage.scrollIntoView({ behavior: 'smooth' });
+}
 
-// ============ PLAYER SWIPER + AVATARS + PROGRESS ============
-function prevPlayer() { currentGroupIndex = (currentGroupIndex - 1 + currentGroup.length) % currentGroup.length; currentPlayer = currentGroup[currentGroupIndex]; renderScorecard(); renderPlayerPills(); saveAllData(); }
-function nextPlayer() { currentGroupIndex = (currentGroupIndex + 1) % currentGroup.length; currentPlayer = currentGroup[currentGroupIndex]; renderScorecard(); renderPlayerPills(); saveAllData(); }
-function jumpToPlayer(idx) { currentGroupIndex = idx; currentPlayer = currentGroup[idx]; renderScorecard(); renderPlayerPills(); saveAllData(); }
+function buildPlayerCard(name, onclickHandler) {
+    const initials = name.split(' ').map(n => n[0]).join('');
+    const profile = playerProfiles[name] || {};
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.dataset.name = name;
+    if (profile.photo) {
+        const img = document.createElement('img');
+        img.src = profile.photo;
+        img.alt = name;
+        img.className = 'avatar-photo';
+        img.onerror = function() {
+            const fallback = document.createElement('div');
+            fallback.className = 'avatar';
+            fallback.textContent = initials;
+            img.replaceWith(fallback);
+        };
+        const nameEl = document.createElement('strong');
+        nameEl.textContent = name;
+        div.appendChild(img);
+        div.appendChild(nameEl);
+    } else {
+        div.innerHTML = `<div class="avatar">${initials}</div><strong>${name}</strong>`;
+    }
+    div.onclick = () => onclickHandler(name, div);
+    return div;
+}
+
+function renderPlayers() {
+    const grid = document.getElementById('player-grid');
+    grid.innerHTML = '';
+    players.forEach(name => {
+        const card = buildPlayerCard(name, (n) => selectPlayer(n));
+        grid.appendChild(card);
+    });
+}
+
+function selectPlayer(name) {
+    currentPlayer = name;
+    const profile = playerProfiles[name] || { bio: "Ready to golf!", ig: null, photo: null };
+
+    document.getElementById('profile-name-card').textContent = name;
+    const photoEl = document.getElementById('profile-photo-card');
+    const avatarEl = document.getElementById('profile-avatar-card');
+
+    if (profile.photo) {
+        photoEl.src = profile.photo;
+        photoEl.style.display = 'block';
+        avatarEl.style.display = 'none';
+    } else {
+        const initials = name.split(' ').map(n => n[0]).join('');
+        photoEl.style.display = 'none';
+        avatarEl.style.display = 'flex';
+        avatarEl.textContent = initials;
+    }
+
+    document.getElementById('profile-bio-card').innerHTML = profile.bio;
+
+    const igLink = document.getElementById('profile-ig-card');
+    if (profile.ig) {
+        igLink.href = `https://instagram.com/${profile.ig}`;
+        document.getElementById('profile-ig-handle-card').textContent = `@${profile.ig}`;
+        igLink.style.display = 'flex';
+    } else {
+        igLink.style.display = 'none';
+    }
+
+    document.getElementById('profile-modal').classList.add('active');
+}
+
+function closeProfileModal() {
+    document.getElementById('profile-modal').classList.remove('active');
+}
+
+function continueFromProfile() {
+    closeProfileModal();
+    document.getElementById('player-selection-page').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'block';
+    document.getElementById('tab-1').classList.remove('disabled');
+    document.getElementById('schedule-selection').scrollIntoView({ behavior: "smooth" });
+}
+
+function selectCourse(courseIdx) {
+    currentCourseIndex = courseIdx;
+    const course = courses[courseIdx];
+    document.getElementById('current-course-name').textContent = course.name;
+    document.getElementById('current-course-date').textContent = course.date;
+    document.getElementById('tab-2').classList.remove('disabled');
+    showGroupSelection();
+    saveAppState();   // persist choice
+}
+
+function showGroupSelection() {
+    document.getElementById('schedule-selection').style.display = 'none';
+    document.getElementById('group-selection').style.display = 'block';
+    renderGroupPlayerGrid();
+    document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderGroupPlayerGrid() {
+    const grid = document.getElementById('group-player-grid');
+    grid.innerHTML = '';
+    currentGroup = [];
+    if (currentPlayer) currentGroup.push(currentPlayer);
+
+    players.forEach(name => {
+        const card = buildPlayerCard(name, (n, el) => toggleGroupMember(n, el));
+        if (name === currentPlayer) card.classList.add('selected');
+        grid.appendChild(card);
+    });
+
+    updateGroupButton();
+}
+
+function toggleGroupMember(name, cardEl) {
+    const idx = currentGroup.indexOf(name);
+    if (idx > -1) {
+        currentGroup.splice(idx, 1);
+        cardEl.classList.remove('selected');
+    } else {
+        if (currentGroup.length >= 4) {
+            alert('Max 4 players per group');
+            return;
+        }
+        currentGroup.push(name);
+        cardEl.classList.add('selected');
+    }
+    updateGroupButton();
+    saveAppState();
+}
+
+function updateGroupButton() {
+    const btn = document.getElementById('confirm-group-btn');
+    if (currentGroup.length >= 2) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = `Continue with ${currentGroup.length} Player${currentGroup.length > 1 ? 's' : ''} →`;
+    } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.textContent = 'Continue to Scorecard →';
+    }
+}
+
+function confirmGroup() {
+    if (currentGroup.length < 2) return;
+    currentGroupIndex = 0;
+    currentPlayer = currentGroup[0];
+    document.getElementById('group-selection').style.display = 'none';
+    switchTab(2);
+    saveAppState();
+}
+
+function backToGroupSetup() {
+    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab')[0].classList.add('active');
+    document.getElementById('player-selection-page').style.display = 'none';
+    document.getElementById('schedule-selection').style.display = 'block';
+    document.getElementById('group-selection').style.display = 'block';
+    document.getElementById('tab-2').classList.add('disabled');
+    renderGroupPlayerGrid();
+    document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function goBack() {
+    const profileModal = document.getElementById('profile-modal');
+    if (profileModal.classList.contains('active')) { closeProfileModal(); return; }
+    const scoreModal = document.getElementById('score-modal');
+    if (scoreModal.classList.contains('active')) { closeModal(); return; }
+
+    const scorecard = document.getElementById('content-2');
+    if (scorecard.classList.contains('active')) { backToGroupSetup(); return; }
+
+    const groupSel = document.getElementById('group-selection');
+    if (groupSel.style.display === 'block') {
+        groupSel.style.display = 'none';
+        document.getElementById('schedule-selection').style.display = 'block';
+        return;
+    }
+    const scheduleSel = document.getElementById('schedule-selection');
+    if (scheduleSel.style.display === 'block') {
+        scheduleSel.style.display = 'none';
+        document.getElementById('player-selection-page').style.display = 'block';
+        return;
+    }
+    const playerSel = document.getElementById('player-selection-page');
+    if (playerSel.style.display === 'block') {
+        playerSel.style.display = 'none';
+        document.getElementById('landing-page').style.display = 'block';
+        document.getElementById('main-header').style.display = 'none';
+        document.getElementById('main-tabs').style.display = 'none';
+        return;
+    }
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab && activeTab.textContent !== 'Home') { switchTab(0); return; }
+}
+
+// ============ PLAYER SWIPER ============
+function prevPlayer() {
+    if (currentGroup.length === 0) return;
+    currentGroupIndex = (currentGroupIndex - 1 + currentGroup.length) % currentGroup.length;
+    currentPlayer = currentGroup[currentGroupIndex];
+    renderScorecard();
+    renderPlayerPills();
+    saveAppState();
+}
+
+function nextPlayer() {
+    if (currentGroup.length === 0) return;
+    currentGroupIndex = (currentGroupIndex + 1) % currentGroup.length;
+    currentPlayer = currentGroup[currentGroupIndex];
+    renderScorecard();
+    renderPlayerPills();
+    saveAppState();
+}
+
+function jumpToPlayer(idx) {
+    currentGroupIndex = idx;
+    currentPlayer = currentGroup[idx];
+    renderScorecard();
+    renderPlayerPills();
+    saveAppState();
+}
 
 function renderPlayerPills() {
     const container = document.getElementById('player-pills');
     container.innerHTML = '';
     currentGroup.forEach((name, idx) => {
-        const isActive = idx === currentGroupIndex;
-        const profile = playerProfiles[name] || {};
         const pill = document.createElement('button');
-        pill.className = `pill ${isActive ? 'active' : ''}`;
+        const isActive = idx === currentGroupIndex;
+        pill.textContent = name.split(' ')[0];
         pill.onclick = () => jumpToPlayer(idx);
-
-        let avatarHTML = '';
-        if (profile.photo) {
-            avatarHTML = `<img src="${profile.photo}" onerror="this.style.display='none'">`;
-        } else {
-            const initials = name.split(' ').map(n => n[0]).join('');
-            avatarHTML = `<div style="width:24px;height:24px;background:linear-gradient(#d4af37,#b8860b);color:#0d3d0d;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold;">${initials}</div>`;
-        }
-        pill.innerHTML = `${avatarHTML} ${name.split(' ')[0]}`;
-
-        // Progress
-        const course = courses[currentCourseIndex];
-        let holesPlayed = 0;
-        if (course) {
-            for (let i = 0; i < 18; i++) {
-                if (scores[makeScoreKey(name, currentCourseIndex, course.holes[i].hole)]) holesPlayed++;
-            }
-        }
-        if (holesPlayed > 0) pill.innerHTML += ` <span style="font-size:11px;opacity:0.7;">(${holesPlayed}/18)</span>`;
-
+        pill.style.cssText = `
+            padding: 6px 16px;
+            border-radius: 9999px;
+            border: 2px solid var(--gold);
+            background: ${isActive ? 'var(--gold)' : 'transparent'};
+            color: ${isActive ? '#0d3d0d' : 'var(--gold)'};
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            margin: 2px;
+        `;
         container.appendChild(pill);
     });
 
     document.getElementById('current-player-name').textContent = currentPlayer || '';
-    // summary unchanged
-    renderPlayerScoreSummary();
-}
 
-function renderPlayerScoreSummary() { /* unchanged logic from previous version */ }
-
-// ============ REFACTORED SCORECARD ============
-function renderScorecard() {
-    if (!currentPlayer || currentCourseIndex === null) return;
     const course = courses[currentCourseIndex];
-    const isCompleted = completedRounds[`${currentGroup.join(',')}|${currentCourseIndex}`];
-    const table = document.getElementById('scorecard-table');
-
-    table.innerHTML = `
-        ${renderHeaderRow()}
-        ${renderYardsRow(course)}
-        ${renderParRow(course)}
-        ${renderScoreRow(course, isCompleted)}
-        ${renderToParRow(course)}
-    `;
+    if (!course) return;
+    let totalStrokes = 0, totalPar = 0, holesPlayed = 0;
+    for (let i = 0; i < 18; i++) {
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, course.holes[i].hole);
+        if (scores[key]) {
+            totalStrokes += scores[key];
+            totalPar += course.holes[i].par;
+            holesPlayed++;
+        }
+    }
+    const summary = document.getElementById('current-player-score-summary');
+    if (holesPlayed > 0) {
+        const toPar = totalStrokes - totalPar;
+        const toParStr = toPar > 0 ? `+${toPar}` : (toPar === 0 ? 'E' : toPar);
+        summary.textContent = `${holesPlayed} holes • ${totalStrokes} strokes • ${toParStr}`;
+    } else {
+        summary.textContent = 'No scores yet';
+    }
 }
 
-function renderHeaderRow() {
-    let html = `<tr class="scorecard-row header"><td class="scorecard-cell hole-label">Hole</td>`;
-    for (let i = 1; i <= 9; i++) html += `<td class="scorecard-cell">${i}</td>`;
-    html += `<td class="scorecard-cell">Out</td>`;
-    for (let i = 10; i <= 18; i++) html += `<td class="scorecard-cell">${i}</td>`;
-    html += `<td class="scorecard-cell">In</td><td class="scorecard-cell">Total</td></tr>`;
-    return html;
-}
-function renderYardsRow(course) { /* same as previous version */ return ''; } // (full implementation identical to earlier)
-function renderParRow(course) { /* same */ return ''; }
-function renderScoreRow(course, isLocked) {
-    // full logic using makeScoreKey + clickable only if !isLocked
-    let html = `<tr class="scorecard-row"><td class="scorecard-cell hole-label">Score</td>`;
-    // ... (same pattern as before, but onclick only if !isLocked)
-    return html;
-}
-function renderToParRow(course) { /* same */ return ''; }
-
-// ============ SCORE MODAL + CONFETTI ============
-function openScoreModal(hole, par) { /* unchanged but checks lock */ }
-function recordScore(score) {
-    const key = makeScoreKey(currentPlayer, currentCourseIndex, currentModalHole);
-    scores[key] = score;
-    saveAllData();
+function switchRound() {
+    if (currentCourseIndex === null || currentGroup.length === 0) return;
+    currentCourseIndex = currentCourseIndex === 0 ? 1 : 0;
+    const course = courses[currentCourseIndex];
+    document.getElementById('current-course-name').textContent = course.name;
+    document.getElementById('current-course-date').textContent = course.date;
     renderScorecard();
     renderPlayerPills();
-    triggerConfetti();
+    saveAppState();
 }
-function triggerConfetti() {
-    const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:fixed;top:0;left:0;z-index:9999;pointer-events:none;';
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // simple confetti animation
-    let particles = [];
-    for (let i = 0; i < 120; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height-300, r: Math.random()*6+4, d: Math.random()*4+2, color: ['#d4af37','#0d3d0d','#fff'][Math.floor(Math.random()*3)]});
-    function animate() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        particles.forEach((p,i) => {
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-            ctx.fill();
-            p.y += p.d;
-            p.x += Math.sin(p.y/30)*2;
-            if (p.y > canvas.height) particles.splice(i,1);
-        });
-        if (particles.length > 0) requestAnimationFrame(animate);
-        else canvas.remove();
+
+// ============ TABS ============
+function switchTab(n) {
+    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab')[n].classList.add('active');
+    const content = document.getElementById(`content-${n}`);
+    if (content) content.classList.add('active');
+    if (n === 5) loadWeather();
+    if (n === 2 && currentPlayer) {
+        renderScorecard();
+        renderPlayerPills();
     }
-    animate();
+    if (n === 3) renderLeaderboard();
 }
 
-// ============ FINISH ROUND + LOCK ============
-function finishRound() {
-    const roundKey = `${currentGroup.join(',')}|${currentCourseIndex}`;
-    completedRounds[roundKey] = true;
-    saveAllData();
+// ============ SCORECARD ============
+function renderScorecard() {
+    if (!currentPlayer || currentCourseIndex === null) {
+        document.getElementById('scorecard-table').innerHTML =
+            '<tr><td style="padding:20px; text-align:center; color:#666;">Select a player and round first.</td></tr>';
+        return;
+    }
+    const course = courses[currentCourseIndex];
+    let html = '';
+    html += '<tr class="scorecard-row header">';
+    html += '<td class="scorecard-cell hole-label">Hole</td>';
+    for (let i = 1; i <= 9; i++) html += `<td class="scorecard-cell">${i}</td>`;
+    html += '<td class="scorecard-cell">Out</td>';
+    for (let i = 10; i <= 18; i++) html += `<td class="scorecard-cell">${i}</td>`;
+    html += '<td class="scorecard-cell">In</td><td class="scorecard-cell">Total</td></tr>';
 
-    let html = `<h2 style="color:var(--gold)">🎉 Round Complete!</h2><p style="margin:15px 0 20px;">Great round, boys!</p>`;
-    currentGroup.forEach(p => {
-        const total = calculatePlayerTotal(p, currentCourseIndex);
-        html += `<div style="background:rgba(255,255,255,0.1);padding:12px;margin:8px 0;border-radius:8px;"><strong>${p}</strong> — ${total.strokes} strokes (${total.toPar > 0 ? '+' : ''}${total.toPar})</div>`;
+    html += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">Yards</td>';
+    for (let i = 0; i < 9; i++) html += `<td class="scorecard-cell">${course.holes[i].yards}</td>`;
+    const frontYards = course.holes.slice(0,9).reduce((a,b) => a+b.yards, 0);
+    html += `<td class="scorecard-cell">${frontYards}</td>`;
+    for (let i = 9; i < 18; i++) html += `<td class="scorecard-cell">${course.holes[i].yards}</td>`;
+    const backYards = course.holes.slice(9,18).reduce((a,b) => a+b.yards, 0);
+    html += `<td class="scorecard-cell">${backYards}</td><td class="scorecard-cell">${frontYards + backYards}</td></tr>`;
+
+    html += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">Par</td>';
+    for (let i = 0; i < 9; i++) html += `<td class="scorecard-cell">${course.holes[i].par}</td>`;
+    const frontPar = course.holes.slice(0,9).reduce((a,b) => a+b.par, 0);
+    html += `<td class="scorecard-cell">${frontPar}</td>`;
+    for (let i = 9; i < 18; i++) html += `<td class="scorecard-cell">${course.holes[i].par}</td>`;
+    const backPar = course.holes.slice(9,18).reduce((a,b) => a+b.par, 0);
+    html += `<td class="scorecard-cell">${backPar}</td>`;
+    const totalPar = frontPar + backPar;
+    html += `<td class="scorecard-cell">${totalPar}</td></tr>`;
+
+    html += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">Score</td>';
+    const frontScores = [], backScores = [];
+    for (let i = 0; i < 9; i++) {
+        const hole = course.holes[i];
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
+        const score = scores[key];
+        if (score) frontScores.push(score);
+        const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
+        html += `<td class="scorecard-cell clickable" onclick="openScoreModal(${hole.hole}, ${hole.par})">${scoreHtml}</td>`;
+    }
+    const outTotal = frontScores.length > 0 ? frontScores.reduce((a,b) => a+b, 0) : '-';
+    html += `<td class="scorecard-cell total-cell">${outTotal}</td>`;
+    for (let i = 9; i < 18; i++) {
+        const hole = course.holes[i];
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
+        const score = scores[key];
+        if (score) backScores.push(score);
+        const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
+        html += `<td class="scorecard-cell clickable" onclick="openScoreModal(${hole.hole}, ${hole.par})">${scoreHtml}</td>`;
+    }
+    const inTotal = backScores.length > 0 ? backScores.reduce((a,b) => a+b, 0) : '-';
+    html += `<td class="scorecard-cell total-cell">${inTotal}</td>`;
+    const grandTotal = (typeof outTotal === 'number' && typeof inTotal === 'number') ? outTotal + inTotal : '-';
+    html += `<td class="scorecard-cell total-cell">${grandTotal}</td></tr>`;
+
+    html += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">To Par</td>';
+    for (let i = 0; i < 9; i++) {
+        const hole = course.holes[i];
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
+        const score = scores[key];
+        const toPar = score ? score - hole.par : '';
+        html += `<td class="scorecard-cell">${toPar !== '' ? (toPar > 0 ? `+${toPar}` : toPar) : '-'}</td>`;
+    }
+    const frontToPar = frontScores.length > 0 ? (frontScores.reduce((a,b) => a+b, 0) - frontPar) : '-';
+    html += `<td class="scorecard-cell total-cell">${frontToPar !== '-' ? (frontToPar > 0 ? `+${frontToPar}` : frontToPar) : '-'}</td>`;
+    for (let i = 9; i < 18; i++) {
+        const hole = course.holes[i];
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
+        const score = scores[key];
+        const toPar = score ? score - hole.par : '';
+        html += `<td class="scorecard-cell">${toPar !== '' ? (toPar > 0 ? `+${toPar}` : toPar) : '-'}</td>`;
+    }
+    const backToPar = backScores.length > 0 ? (backScores.reduce((a,b) => a+b, 0) - backPar) : '-';
+    html += `<td class="scorecard-cell total-cell">${backToPar !== '-' ? (backToPar > 0 ? `+${backToPar}` : backToPar) : '-'}</td>`;
+    const totalToPar = (typeof outTotal === 'number' && typeof inTotal === 'number') ? (outTotal + inTotal - totalPar) : '-';
+    html += `<td class="scorecard-cell total-cell">${totalToPar !== '-' ? (totalToPar > 0 ? `+${totalToPar}` : totalToPar) : '-'}</td></tr>`;
+
+    document.getElementById('scorecard-table').innerHTML = html;
+}
+
+function getScoreClass(score, par) {
+    const diff = score - par;
+    if (diff <= -2) return 'eagle';
+    if (diff === -1) return 'birdie';
+    if (diff === 0) return 'par';
+    if (diff === 1) return 'bogey';
+    if (diff === 2) return 'double';
+    if (diff >= 3) return 'triple';
+    return '';
+}
+
+// ============ SCORE MODAL ============
+function openScoreModal(hole, par) {
+    currentModalHole = hole;
+    const course = courses[currentCourseIndex];
+    const holeData = course.holes[hole - 1];
+
+    const modalInfo = document.getElementById('modal-hole-info');
+    modalInfo.innerHTML = '';
+    const playerLine = document.createElement('div');
+    playerLine.textContent = currentPlayer;
+    playerLine.style.cssText = 'color: var(--gold); font-size: 1.4em; margin-bottom: 6px; font-weight: bold;';
+    const holeLine = document.createElement('div');
+    holeLine.textContent = `Hole ${hole} • Par ${par} • ${holeData.yards} yds`;
+    holeLine.style.cssText = 'font-size: 0.95em; color: #ccc;';
+    modalInfo.appendChild(playerLine);
+    modalInfo.appendChild(holeLine);
+
+    const existingKey = makeScoreKey(currentPlayer, currentCourseIndex, hole);
+    const existingScore = scores[existingKey];
+    let warningHtml = '';
+    if (existingScore) {
+        warningHtml = `<div style="background:rgba(212,175,55,0.15); border:1px solid var(--gold); border-radius:8px; padding:10px; margin:12px 0; color:var(--gold); font-size:0.95em;">⚠️ Currently recorded: <strong>${existingScore}</strong> — tap a new score to overwrite</div>`;
+    }
+
+    let optionsHtml = '';
+    const adjustments = [-2, -1, 0, 1, 2, 3, 4, 5];
+    const labels = ['Eagle', 'Birdie', 'Par', 'Bogey', 'Double', 'Triple', 'Quad', '+5'];
+    adjustments.forEach((adj, i) => {
+        const scoreNum = par + adj;
+        if (scoreNum < 1) return;
+        optionsHtml += `<div class="score-option" onclick="recordScore(${scoreNum}); closeModal();"><div style="font-size:32px; font-weight:bold;">${scoreNum}</div><div>${labels[i]}</div></div>`;
     });
-    html += `<button onclick="closeModal();switchTab(3)" style="background:var(--gold);color:#0d3d0d;padding:14px 32px;border:none;border-radius:50px;font-weight:bold;width:100%;margin-top:15px;">View Full Leaderboard →</button>`;
+    optionsHtml += `<div class="score-option" onclick="customScore()" style="background:rgba(192,57,43,0.2); border-color:#c0392b;"><div style="font-size:32px; font-weight:bold;">+</div><div>Other</div></div>`;
 
-    const modalContent = document.getElementById('modal-hole-info');
-    modalContent.innerHTML = html;
-    document.getElementById('modal-score-options').innerHTML = '';
+    let clearBtnHtml = '';
+    if (existingScore) {
+        clearBtnHtml = `<button onclick="clearHoleScore()" style="margin-top:15px; background:#c0392b; color:white; border:none; padding:10px 24px; border-radius:6px; cursor:pointer; font-weight:bold;">🗑 Clear This Hole</button>`;
+    }
+
+    document.getElementById('modal-score-options').innerHTML = warningHtml + optionsHtml + clearBtnHtml;
     document.getElementById('score-modal').classList.add('active');
 }
 
-function calculatePlayerTotal(player, courseIdx) {
-    let strokes = 0, parTotal = 0;
-    const course = courses[courseIdx];
-    for (let i = 0; i < 18; i++) {
-        const key = makeScoreKey(player, courseIdx, course.holes[i].hole);
-        if (scores[key]) {
-            strokes += scores[key];
-            parTotal += course.holes[i].par;
-        }
+function customScore() {
+    const input = prompt('Enter score for this hole (1-20):');
+    if (!input) return;
+    const num = parseInt(input);
+    if (isNaN(num) || num < 1 || num > 20) {
+        alert('Please enter a valid score between 1 and 20');
+        return;
     }
-    return { strokes, toPar: strokes - parTotal };
+    recordScore(num);
+    closeModal();
 }
 
-// ============ LEADERBOARD + EXPORT ============
-function renderLeaderboard() { /* updated with safe parsing */ }
-function exportScores() {
-    const data = { scores, completedRounds, exported: new Date().toISOString() };
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `bachelor-trip-scores-${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    alert("✅ Scores exported! Share this file in the group chat.");
+function recordScore(score) {
+    const key = makeScoreKey(currentPlayer, currentCourseIndex, currentModalHole);
+    scores[key] = score;
+    saveScores();
+    renderScorecard();
+    renderPlayerPills();
 }
 
-// ============ NIGHT MODE ============
-function toggleNightMode() {
-    nightMode = !nightMode;
-    document.documentElement.setAttribute('data-theme', nightMode ? 'dark' : '');
-    saveAllData();
+function clearHoleScore() {
+    const key = makeScoreKey(currentPlayer, currentCourseIndex, currentModalHole);
+    delete scores[key];
+    saveScores();
+    renderScorecard();
+    renderPlayerPills();
+    closeModal();
 }
 
-// ============ WEATHER WITH CACHE ============
-async function loadWeather() { /* same as before + 30-min cache */ }
+function closeModal() {
+    document.getElementById('score-modal').classList.remove('active');
+}
+
+function finishRound() {
+    alert(`✅ Round saved for ${currentPlayer} on ${courses[currentCourseIndex].name}!`);
+    switchTab(3);
+}
+
+// ============ LEADERBOARD (now safe with new key format) ============
+function renderLeaderboard() {
+    const container = document.getElementById('leaderboard-content');
+    const playerTotals = {};
+
+    for (const key in scores) {
+        const parsed = parseScoreKey(key);
+        if (!parsed) continue;
+
+        const { player, courseIdx, hole } = parsed;
+        if (!playerTotals[player]) playerTotals[player] = { rounds: {} };
+        if (!playerTotals[player].rounds[courseIdx]) {
+            playerTotals[player].rounds[courseIdx] = { strokes: 0, holes: 0, par: 0 };
+        }
+        const stroke = scores[key];
+        const parVal = courses[courseIdx].holes[hole - 1].par;
+        playerTotals[player].rounds[courseIdx].strokes += stroke;
+        playerTotals[player].rounds[courseIdx].par += parVal;
+        playerTotals[player].rounds[courseIdx].holes += 1;
+    }
+
+    const rows = Object.keys(playerTotals).map(name => {
+        const p = playerTotals[name];
+        let totalStrokes = 0, totalPar = 0, totalHoles = 0;
+        Object.values(p.rounds).forEach(r => {
+            totalStrokes += r.strokes;
+            totalPar += r.par;
+            totalHoles += r.holes;
+        });
+        return { name, totalStrokes, toPar: totalStrokes - totalPar, totalHoles };
+    });
+
+    if (rows.length === 0) {
+        container.innerHTML = 'Scores will appear here after rounds are completed.';
+        return;
+    }
+    rows.sort((a, b) => a.toPar - b.toPar);
+
+    let html = '<table style="width:100%; border-collapse:collapse; color:#eee;">';
+    html += '<tr style="border-bottom:2px solid var(--gold);"><th style="text-align:left; padding:8px;">Rank</th><th style="text-align:left; padding:8px;">Player</th><th style="text-align:right; padding:8px;">Holes</th><th style="text-align:right; padding:8px;">Strokes</th><th style="text-align:right; padding:8px;">To Par</th></tr>';
+    rows.forEach((r, i) => {
+        const toParStr = r.toPar > 0 ? `+${r.toPar}` : (r.toPar === 0 ? 'E' : r.toPar);
+        html += `<tr style="border-bottom:1px solid #333;"><td style="padding:8px;">${i+1}</td><td style="padding:8px;">${r.name}</td><td style="padding:8px; text-align:right;">${r.totalHoles}</td><td style="padding:8px; text-align:right;">${r.totalStrokes}</td><td style="padding:8px; text-align:right; font-weight:bold; color:var(--gold);">${toParStr}</td></tr>`;
+    });
+    html += '</table>';
+    container.innerHTML = html;
+}
+
+function resetAllScores() {
+    if (confirm("Clear ALL saved scores for the entire trip?")) {
+        scores = {};
+        saveScores();
+        renderLeaderboard();
+        alert("✅ All scores have been reset.");
+    }
+}
+
+// ============ TEAMS ============
+function setTeamSize(size, btn) {
+    teamSize = size;
+    document.querySelectorAll('.team-size-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+}
+
+function generateTeams() {
+    if (lastGeneratedTeams && !confirm('This will replace your current teams. Continue?')) return;
+    const shuffled = [...players].sort(() => Math.random() - 0.5);
+    const teams = [];
+    for (let i = 0; i < shuffled.length; i += teamSize) {
+        teams.push(shuffled.slice(i, i + teamSize));
+    }
+    lastGeneratedTeams = teams;
+    let html = `<h3 style="color:var(--gold);">${teamSize}-Person Teams</h3><div class="team-list">`;
+    teams.forEach((team, idx) => {
+        html += `<div class="team-card"><h4>Team ${idx + 1}</h4><ul class="team-members">${team.map(p => `<li>${p}</li>`).join('')}</ul></div>`;
+    });
+    html += '</div>';
+    document.getElementById('teams-output').innerHTML = html;
+}
+
+// ============ WEATHER ============
+async function loadWeather() {
+    const container = document.getElementById('weather-container');
+    container.innerHTML = '<p style="text-align:center; padding:40px;">Loading weather...</p>';
+    try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.2527&longitude=-85.7585&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,weather_code&timezone=America/New_York');
+        const data = await res.json();
+        let html = `<div style="background:rgba(30,30,40,0.95); border-radius:22px; padding:20px; color:white; box-shadow:0 10px 30px rgba(0,0,0,0.6);">`;
+        const todayMax = Math.round(data.daily.temperature_2m_max[0] * 9/5 + 32);
+        const todayMin = Math.round(data.daily.temperature_2m_min[0] * 9/5 + 32);
+        const todayCode = data.daily.weather_code[0];
+        html += `<div style="text-align:center; margin-bottom:20px;"><div style="font-size:78px; font-weight:300; line-height:1;">${todayMax}°</div><div style="font-size:24px; margin:4px 0;">${getWeatherText(todayCode)}</div><div style="font-size:17px; color:#ddd;">H:${todayMax}° L:${todayMin}°</div></div><hr style="border:none; height:1px; background:rgba(255,255,255,0.2); margin:20px 0;"><div style="display:flex; gap:14px; overflow-x:auto; padding-bottom:12px;">`;
+
+        const nowMs = Date.now();
+        let startIdx = 0;
+        for (let i = 0; i < data.hourly.time.length; i++) {
+            if (new Date(data.hourly.time[i]).getTime() >= nowMs) {
+                startIdx = Math.max(0, i - 1);
+                break;
+            }
+        }
+        for (let i = startIdx; i < startIdx + 12 && i < data.hourly.time.length; i++) {
+            const tempF = Math.round(data.hourly.temperature_2m[i] * 9/5 + 32);
+            const hour = new Date(data.hourly.time[i]).getHours();
+            const isNow = i === startIdx;
+            const label = isNow ? 'Now' : (hour % 12 === 0 ? (hour === 0 ? "12AM" : "12PM") : (hour > 12 ? (hour-12) + "PM" : hour + "AM"));
+            html += `<div style="text-align:center; min-width:55px; ${isNow ? 'color:var(--gold);' : ''}"><div style="font-size:13px; font-weight:${isNow ? 'bold' : 'normal'};">${label}</div><div style="font-size:26px; margin:6px 0;">${getWeatherEmoji(data.hourly.weather_code[i])}</div><div style="font-weight:bold;">${tempF}°</div></div>`;
+        }
+        html += `</div><hr style="border:none; height:1px; background:rgba(255,255,255,0.2); margin:20px 0;"><div style="font-size:15px;">`;
+        for (let i = 0; i < 5; i++) {
+            const dayName = new Date(data.daily.time[i]).toLocaleDateString('en-US', { weekday: 'short' });
+            const maxF = Math.round(data.daily.temperature_2m_max[i] * 9/5 + 32);
+            const minF = Math.round(data.daily.temperature_2m_min[i] * 9/5 + 32);
+            const range = maxF - minF;
+            html += `<div style="display:flex; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.15);"><span style="width:55px; font-weight:500;">${dayName}</span><span style="font-size:26px; width:40px;">${getWeatherEmoji(data.daily.weather_code[i])}</span><div style="flex:1; height:6px; background:#444; border-radius:9999px; margin:0 12px; position:relative;"><div style="position:absolute; left:0; top:0; height:100%; background:linear-gradient(to right, #4fc3f7, #ffd54f); border-radius:9999px; width:${range + 20}%;"></div></div><span style="width:36px; text-align:right; font-weight:bold;">${maxF}°</span><span style="width:36px; text-align:right; color:#aaa;">${minF}°</span></div>`;
+        }
+        html += `</div></div>`;
+        container.innerHTML = html;
+    } catch(e) {
+        container.innerHTML = '<p style="text-align:center; color:#ff9999; padding:40px;">Weather temporarily unavailable.</p>';
+    }
+}
+
+function getWeatherEmoji(code) {
+    const map = {0:"☀️",1:"☀️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌦️",95:"⛈️",96:"⛈️",99:"⛈️"};
+    return map[code] || "☁️";
+}
+
+function getWeatherText(code) {
+    const map = {0:"Clear",1:"Mostly Clear",2:"Partly Cloudy",3:"Overcast",61:"Rain",80:"Showers",95:"Thunderstorms"};
+    return map[code] || "Cloudy";
+}
 
 // ============ STORAGE ============
-function saveAllData() {
+function saveScores() {
+    try { localStorage.setItem('golfScores', JSON.stringify(scores)); } catch(e) {}
+}
+
+function loadScores() {
     try {
-        localStorage.setItem('golfScores', JSON.stringify(scores));
-        localStorage.setItem('golfCompletedRounds', JSON.stringify(completedRounds));
-        localStorage.setItem('golfAppState', JSON.stringify({
-            currentPlayer, currentCourseIndex, currentGroup, currentGroupIndex, nightMode
-        }));
+        const saved = localStorage.getItem('golfScores');
+        if (saved) scores = JSON.parse(saved);
     } catch(e) {}
 }
 
-function loadAllData() {
+// NEW: Persist app state (group, round, player) so you don't lose your place on refresh
+function saveAppState() {
+    const state = {
+        currentPlayer,
+        currentCourseIndex,
+        currentGroup,
+        currentGroupIndex
+    };
     try {
-        const savedScores = localStorage.getItem('golfScores');
-        if (savedScores) scores = JSON.parse(savedScores);
+        localStorage.setItem('golfAppState', JSON.stringify(state));
+    } catch(e) {}
+}
 
-        const savedCompleted = localStorage.getItem('golfCompletedRounds');
-        if (savedCompleted) completedRounds = JSON.parse(savedCompleted);
-
-        const state = localStorage.getItem('golfAppState');
-        if (state) {
-            const s = JSON.parse(state);
-            currentPlayer = s.currentPlayer;
-            currentCourseIndex = s.currentCourseIndex;
-            currentGroup = s.currentGroup || [];
-            currentGroupIndex = s.currentGroupIndex || 0;
-            nightMode = s.nightMode || false;
-            if (nightMode) document.documentElement.setAttribute('data-theme', 'dark');
+function loadAppState() {
+    try {
+        const saved = localStorage.getItem('golfAppState');
+        if (!saved) return;
+        const state = JSON.parse(saved);
+        if (state.currentCourseIndex !== undefined) currentCourseIndex = state.currentCourseIndex;
+        if (state.currentGroup && state.currentGroup.length) {
+            currentGroup = state.currentGroup;
+            currentGroupIndex = state.currentGroupIndex || 0;
+            currentPlayer = state.currentPlayer || currentGroup[0];
         }
     } catch(e) {}
 }
-
-// ============ TEAMS & OTHER FUNCTIONS (unchanged) ============
-function setTeamSize(size, btn) { /* unchanged */ }
-function generateTeams() { /* unchanged */ }
 
 // ============ START ============
 init();
