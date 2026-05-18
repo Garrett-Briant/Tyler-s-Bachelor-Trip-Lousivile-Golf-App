@@ -67,28 +67,38 @@
             gap: 18px;
             margin: 25px 0;
         }
-       .card {
-            background: rgba(255,255,255,0.08);
-            border: 2px solid var(--gold);
-            border-radius: 12px;
-            padding: 20px;
+      .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 22px 16px 18px;
             text-align: center;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
             backdrop-filter: blur(8px);
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 180px;
+            justify-content: flex-start;
+            min-height: 200px;
+        }
+        .card strong {
+            font-size: 15px;
+            color: #f5e9c4;
+            letter-spacing: 0.3px;
+            font-weight: 600;
         }
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 25px rgba(212,175,55,0.4);
+            transform: translateY(-6px);
+            border-color: var(--gold);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
         }
         .card.selected {
-            border-color: #fff;
-            background: rgba(212,175,55,0.25);
+            border-color: var(--gold);
+            border-width: 2px;
+            background: rgba(212, 175, 55, 0.12);
+            box-shadow: 0 0 0 1px var(--gold), 0 8px 20px rgba(0,0,0,0.4);
         }
         .avatar {
             width: 80px; height: 80px;
@@ -104,13 +114,13 @@
             border: 3px solid white;
         }
         .avatar-photo {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            margin: 0 auto 12px;
+            margin: 0 auto 14px;
             object-fit: cover;
             display: block;
-            border: 3px solid var(--gold);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
  /* COUNTDOWN TICKER */
 .countdown-container {
