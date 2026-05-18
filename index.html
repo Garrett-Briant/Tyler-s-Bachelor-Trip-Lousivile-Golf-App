@@ -124,6 +124,22 @@
             object-position: center;
             display: block;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+        .avatar-photo.zoom {
+            transform: scale(1.4);
+            transform-origin: center;
+        }
+        .avatar-wrapper {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 12px;
+            display: block;
+        }
+        .avatar-wrapper .avatar-photo {
+            margin: 0;
         }
  /* COUNTDOWN TICKER */
 .countdown-container {
@@ -858,22 +874,32 @@ function renderPlayers() {
         div.className = 'card';
  
         if (profile.photo) {
+            // These players already fill their photos tight - everyone else needs zoom
+            const tightPhotos = ['Garrett Briant', 'Blake Rohrbacher', 'Ben Andresky', 'Nathan Bazant', 'Nick Bayer'];
+            const needsZoom = !tightPhotos.includes(name);
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'avatar-wrapper';
+
             const img = document.createElement('img');
             img.src = profile.photo;
             img.alt = name;
-            img.className = 'avatar-photo';
+            img.className = needsZoom ? 'avatar-photo zoom' : 'avatar-photo';
             img.onerror = function() {
                 const fallback = document.createElement('div');
                 fallback.className = 'avatar';
                 fallback.textContent = initials;
-                img.replaceWith(fallback);
+                wrapper.replaceWith(fallback);
             };
- 
+
+            wrapper.appendChild(img);
+
             const nameEl = document.createElement('strong');
             nameEl.textContent = name;
- 
-            div.appendChild(img);
+
+            div.appendChild(wrapper);
             div.appendChild(nameEl);
+        }
         } else {
             div.innerHTML = `
                 <div class="avatar">${initials}</div>
@@ -969,21 +995,29 @@ function renderGroupPlayerGrid() {
         div.className = 'card';
         div.dataset.name = name;
 
-        if (profile.photo) {
+       if (profile.photo) {
+            const tightPhotos = ['Garrett Briant', 'Blake Rohrbacher', 'Ben Andresky', 'Nathan Bazant', 'Nick Bayer'];
+            const needsZoom = !tightPhotos.includes(name);
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'avatar-wrapper';
+
             const img = document.createElement('img');
             img.src = profile.photo;
             img.alt = name;
-            img.className = 'avatar-photo';
-            img.onerror = () => {
+            img.className = needsZoom ? 'avatar-photo zoom' : 'avatar-photo';
+            img.onerror = function() {
                 const fallback = document.createElement('div');
                 fallback.className = 'avatar';
                 fallback.textContent = initials;
-                img.replaceWith(fallback);
+                wrapper.replaceWith(fallback);
             };
+            wrapper.appendChild(img);
             const nameEl = document.createElement('strong');
             nameEl.textContent = name;
-            div.appendChild(img);
+            div.appendChild(wrapper);
             div.appendChild(nameEl);
+        }
         } else {
             div.innerHTML = `<div class="avatar">${initials}</div><strong>${name}</strong>`;
         }
