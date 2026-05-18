@@ -857,7 +857,7 @@ function renderPlayers() {
         const div = document.createElement('div');
         div.className = 'card';
  
-  if (profile.photo) {
+if (profile.photo) {
             const img = document.createElement('img');
             img.src = profile.photo;
             img.alt = name;
@@ -874,7 +874,6 @@ function renderPlayers() {
 
             div.appendChild(img);
             div.appendChild(nameEl);
-        }
         } else {
             div.innerHTML = `
                 <div class="avatar">${initials}</div>
@@ -970,7 +969,7 @@ function renderGroupPlayerGrid() {
         div.className = 'card';
         div.dataset.name = name;
 
- if (profile.photo) {
+if (profile.photo) {
             const img = document.createElement('img');
             img.src = profile.photo;
             img.alt = name;
@@ -987,7 +986,6 @@ function renderGroupPlayerGrid() {
 
             div.appendChild(img);
             div.appendChild(nameEl);
-        }
         } else {
             div.innerHTML = `<div class="avatar">${initials}</div><strong>${name}</strong>`;
         }
