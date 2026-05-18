@@ -707,10 +707,25 @@ const courses = [
     }
 ];
 
+// ============ HELPER: SAFE SCORE KEY (CRITICAL FIX) ============
+function makeScoreKey(player, courseIdx, hole) {
+    return `${encodeURIComponent(player)}|${courseIdx}|${hole}`;
+}
+
+function parseScoreKey(key) {
+    const parts = key.split('|');
+    if (parts.length !== 3) return null;
+    return {
+        player: decodeURIComponent(parts[0]),
+        courseIdx: parseInt(parts[1], 10),
+        hole: parseInt(parts[2], 10)
+    };
+}
+
 // ============ STATE ============
 let currentPlayer = null;
 let currentCourseIndex = null;
-let scores = {};
+let scores = {};                    // key = "encodedPlayer|courseIdx|hole"
 let teamSize = 3;
 let currentModalHole = 1;
 let currentGroup = [];
@@ -721,6 +736,7 @@ let lastGeneratedTeams = null;
 function init() {
     renderPlayers();
     loadScores();
+    loadAppState();          // NEW: restore group/round after refresh
     startCountdown();
 }
 
@@ -851,6 +867,7 @@ function selectCourse(courseIdx) {
     document.getElementById('current-course-date').textContent = course.date;
     document.getElementById('tab-2').classList.remove('disabled');
     showGroupSelection();
+    saveAppState();   // persist choice
 }
 
 function showGroupSelection() {
@@ -889,6 +906,7 @@ function toggleGroupMember(name, cardEl) {
         cardEl.classList.add('selected');
     }
     updateGroupButton();
+    saveAppState();
 }
 
 function updateGroupButton() {
@@ -910,6 +928,7 @@ function confirmGroup() {
     currentPlayer = currentGroup[0];
     document.getElementById('group-selection').style.display = 'none';
     switchTab(2);
+    saveAppState();
 }
 
 function backToGroupSetup() {
@@ -964,6 +983,7 @@ function prevPlayer() {
     currentPlayer = currentGroup[currentGroupIndex];
     renderScorecard();
     renderPlayerPills();
+    saveAppState();
 }
 
 function nextPlayer() {
@@ -972,6 +992,7 @@ function nextPlayer() {
     currentPlayer = currentGroup[currentGroupIndex];
     renderScorecard();
     renderPlayerPills();
+    saveAppState();
 }
 
 function jumpToPlayer(idx) {
@@ -979,6 +1000,7 @@ function jumpToPlayer(idx) {
     currentPlayer = currentGroup[idx];
     renderScorecard();
     renderPlayerPills();
+    saveAppState();
 }
 
 function renderPlayerPills() {
@@ -1009,7 +1031,7 @@ function renderPlayerPills() {
     if (!course) return;
     let totalStrokes = 0, totalPar = 0, holesPlayed = 0;
     for (let i = 0; i < 18; i++) {
-        const key = `${currentPlayer}-${currentCourseIndex}-${course.holes[i].hole}`;
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, course.holes[i].hole);
         if (scores[key]) {
             totalStrokes += scores[key];
             totalPar += course.holes[i].par;
@@ -1034,6 +1056,7 @@ function switchRound() {
     document.getElementById('current-course-date').textContent = course.date;
     renderScorecard();
     renderPlayerPills();
+    saveAppState();
 }
 
 // ============ TABS ============
@@ -1089,7 +1112,7 @@ function renderScorecard() {
     const frontScores = [], backScores = [];
     for (let i = 0; i < 9; i++) {
         const hole = course.holes[i];
-        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
         const score = scores[key];
         if (score) frontScores.push(score);
         const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
@@ -1099,7 +1122,7 @@ function renderScorecard() {
     html += `<td class="scorecard-cell total-cell">${outTotal}</td>`;
     for (let i = 9; i < 18; i++) {
         const hole = course.holes[i];
-        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
         const score = scores[key];
         if (score) backScores.push(score);
         const scoreHtml = score ? `<div class="score-visual-small ${getScoreClass(score, hole.par)}">${score}</div>` : '-';
@@ -1113,7 +1136,7 @@ function renderScorecard() {
     html += '<tr class="scorecard-row"><td class="scorecard-cell hole-label">To Par</td>';
     for (let i = 0; i < 9; i++) {
         const hole = course.holes[i];
-        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
         const score = scores[key];
         const toPar = score ? score - hole.par : '';
         html += `<td class="scorecard-cell">${toPar !== '' ? (toPar > 0 ? `+${toPar}` : toPar) : '-'}</td>`;
@@ -1122,7 +1145,7 @@ function renderScorecard() {
     html += `<td class="scorecard-cell total-cell">${frontToPar !== '-' ? (frontToPar > 0 ? `+${frontToPar}` : frontToPar) : '-'}</td>`;
     for (let i = 9; i < 18; i++) {
         const hole = course.holes[i];
-        const key = `${currentPlayer}-${currentCourseIndex}-${hole.hole}`;
+        const key = makeScoreKey(currentPlayer, currentCourseIndex, hole.hole);
         const score = scores[key];
         const toPar = score ? score - hole.par : '';
         html += `<td class="scorecard-cell">${toPar !== '' ? (toPar > 0 ? `+${toPar}` : toPar) : '-'}</td>`;
@@ -1163,7 +1186,7 @@ function openScoreModal(hole, par) {
     modalInfo.appendChild(playerLine);
     modalInfo.appendChild(holeLine);
 
-    const existingKey = `${currentPlayer}-${currentCourseIndex}-${hole}`;
+    const existingKey = makeScoreKey(currentPlayer, currentCourseIndex, hole);
     const existingScore = scores[existingKey];
     let warningHtml = '';
     if (existingScore) {
@@ -1202,7 +1225,7 @@ function customScore() {
 }
 
 function recordScore(score) {
-    const key = `${currentPlayer}-${currentCourseIndex}-${currentModalHole}`;
+    const key = makeScoreKey(currentPlayer, currentCourseIndex, currentModalHole);
     scores[key] = score;
     saveScores();
     renderScorecard();
@@ -1210,7 +1233,7 @@ function recordScore(score) {
 }
 
 function clearHoleScore() {
-    const key = `${currentPlayer}-${currentCourseIndex}-${currentModalHole}`;
+    const key = makeScoreKey(currentPlayer, currentCourseIndex, currentModalHole);
     delete scores[key];
     saveScores();
     renderScorecard();
@@ -1227,27 +1250,25 @@ function finishRound() {
     switchTab(3);
 }
 
-// ============ LEADERBOARD ============
+// ============ LEADERBOARD (now safe with new key format) ============
 function renderLeaderboard() {
     const container = document.getElementById('leaderboard-content');
     const playerTotals = {};
 
     for (const key in scores) {
-        // Key format: "Player Name-courseIdx-hole" — last 2 segments are numbers
-        const parts = key.split('-');
-        const hole = parts.pop();
-        const courseIdx = parts.pop();
-        const name = parts.join('-');
+        const parsed = parseScoreKey(key);
+        if (!parsed) continue;
 
-        if (!playerTotals[name]) playerTotals[name] = { rounds: {} };
-        if (!playerTotals[name].rounds[courseIdx]) {
-            playerTotals[name].rounds[courseIdx] = { strokes: 0, holes: 0, par: 0 };
+        const { player, courseIdx, hole } = parsed;
+        if (!playerTotals[player]) playerTotals[player] = { rounds: {} };
+        if (!playerTotals[player].rounds[courseIdx]) {
+            playerTotals[player].rounds[courseIdx] = { strokes: 0, holes: 0, par: 0 };
         }
         const stroke = scores[key];
-        const parVal = courses[courseIdx].holes[parseInt(hole) - 1].par;
-        playerTotals[name].rounds[courseIdx].strokes += stroke;
-        playerTotals[name].rounds[courseIdx].par += parVal;
-        playerTotals[name].rounds[courseIdx].holes += 1;
+        const parVal = courses[courseIdx].holes[hole - 1].par;
+        playerTotals[player].rounds[courseIdx].strokes += stroke;
+        playerTotals[player].rounds[courseIdx].par += parVal;
+        playerTotals[player].rounds[courseIdx].holes += 1;
     }
 
     const rows = Object.keys(playerTotals).map(name => {
@@ -1371,6 +1392,33 @@ function loadScores() {
     try {
         const saved = localStorage.getItem('golfScores');
         if (saved) scores = JSON.parse(saved);
+    } catch(e) {}
+}
+
+// NEW: Persist app state (group, round, player) so you don't lose your place on refresh
+function saveAppState() {
+    const state = {
+        currentPlayer,
+        currentCourseIndex,
+        currentGroup,
+        currentGroupIndex
+    };
+    try {
+        localStorage.setItem('golfAppState', JSON.stringify(state));
+    } catch(e) {}
+}
+
+function loadAppState() {
+    try {
+        const saved = localStorage.getItem('golfAppState');
+        if (!saved) return;
+        const state = JSON.parse(saved);
+        if (state.currentCourseIndex !== undefined) currentCourseIndex = state.currentCourseIndex;
+        if (state.currentGroup && state.currentGroup.length) {
+            currentGroup = state.currentGroup;
+            currentGroupIndex = state.currentGroupIndex || 0;
+            currentPlayer = state.currentPlayer || currentGroup[0];
+        }
     } catch(e) {}
 }
 
