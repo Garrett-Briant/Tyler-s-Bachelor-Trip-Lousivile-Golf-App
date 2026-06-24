@@ -238,23 +238,6 @@
     color: #ff5252; 
 }
 
-        /* Score Markings */
-        .score-visual-small {
-            position: relative;
-            width: 38px; height: 38px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: #333;
-        }
-        .score-visual-small.birdie { border: 2px solid #3d5f7e; border-radius: 50%; }
-        .score-visual-small.eagle { box-shadow: 0 0 0 2px #3d5f7e, 0 0 0 5px rgba(61, 95, 126, 0.4); border-radius: 50%; }
-        .score-visual-small.bogey { border: 2px solid #3d5f7e; }
-        .score-visual-small.double { box-shadow: inset 0 0 0 2px #3d5f7e, 0 0 0 3px #3d5f7e; }
-        .score-visual-small.triple { box-shadow: inset 0 0 0 2px #c0392b, 0 0 0 3px #c0392b; color: #c0392b; }
-
         /* Modal */
         .modal {
             position: fixed;
@@ -677,7 +660,7 @@
             <div style="margin-top:20px;">
                 <button onclick="continueFromProfile()"
                         style="background:var(--gold); color:#0d3d0d; border:none; padding:16px 40px; font-size:1.3em; font-weight:bold; border-radius:50px; cursor:pointer; width:100%;">
-                    CONTINUE TO ROUND SELECTION →
+                    CONTINUE TO TEAMS →
                 </button>
             </div>
         </div>
@@ -769,8 +752,7 @@ function init() {
     renderPlayers();
     loadScores();
     loadAppState();
-    startCountdown();           // Make sure countdown starts
-    // Do NOT auto-show anything else
+    startCountdown();
 }
 
 // ============ COUNTDOWN ============
@@ -808,13 +790,6 @@ function startApp() {
     document.getElementById('main-header').style.display = 'flex';
     document.getElementById('main-tabs').style.display = 'flex';
     document.getElementById('player-selection-page').style.display = 'block';
-}
-
-function init() {
-    renderPlayers();
-    loadScores();
-    loadAppState();
-    startCountdown();        // This must run
 }
 
 function buildPlayerCard(name, onclickHandler) {
@@ -986,7 +961,6 @@ function backToGroupSetup() {
     renderGroupPlayerGrid();
     document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
 }
-
 function goBack() {
     const profileModal = document.getElementById('profile-modal');
     if (profileModal.classList.contains('active')) { 
@@ -997,38 +971,21 @@ function goBack() {
     if (scoreModal.classList.contains('active')) { 
         closeModal(); 
         return; 
+    }
+
+    // Back from Teams or Scorecard
     if (document.getElementById('content-4').classList.contains('active') || 
         document.getElementById('content-2').classList.contains('active')) {
-        switchTab(0); // or show player selection again
+        switchTab(0);
         return;
     }
-    const scorecard = document.getElementById('content-2');
-    if (scorecard.classList.contains('active')) { backToGroupSetup(); return; }
 
-    const groupSel = document.getElementById('group-selection');
-    if (groupSel.style.display === 'block') {
-        groupSel.style.display = 'none';
-        document.getElementById('schedule-selection').style.display = 'block';
-        return;
-    }
-    const scheduleSel = document.getElementById('schedule-selection');
-    if (scheduleSel.style.display === 'block') {
-        scheduleSel.style.display = 'none';
-        document.getElementById('player-selection-page').style.display = 'block';
-        return;
-    }
-    const playerSel = document.getElementById('player-selection-page');
-    if (playerSel.style.display === 'block') {
-        playerSel.style.display = 'none';
-        document.getElementById('landing-page').style.display = 'block';
-        document.getElementById('main-header').style.display = 'none';
-        document.getElementById('main-tabs').style.display = 'none';
-        return;
-    }
     const activeTab = document.querySelector('.tab.active');
-    if (activeTab && activeTab.textContent !== 'Home') { switchTab(0); return; }
+    if (activeTab && activeTab.textContent !== 'Home') { 
+        switchTab(0); 
+        return; 
+    }
 }
-
 // ============ PLAYER SWIPER ============
 function prevPlayer() {
     if (currentGroup.length === 0) return;
