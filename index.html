@@ -425,13 +425,13 @@
 
 <!-- Landing Page -->
 <div id="landing-page">
-    <div style="text-align:center; padding:40px 20px 30px; background:rgba(0,0,0,0.4); border-radius:16px; margin-bottom:30px;">
+    <div style="text-align:center; padding:40px 20px 50px; background:rgba(0,0,0,0.4); border-radius:16px; margin:20px auto; max-width:520px;">
         <img src="tyler-photo.jpeg" alt="Tyler"
              onerror="this.style.display='none'"
              style="width:100%; max-width:260px; height:260px; object-fit:cover; border-radius:50%; box-shadow:0 15px 35px rgba(0,0,0,0.7); margin-bottom:25px;">
 
-        <h1 style="font-size:2.4em; margin:15px 0 8px 0; color:var(--gold);">Tyler's Bachelor Trip</h1>
-        <p style="font-size:1.4em; color:#eee; margin:0 0 25px 0;">Louisville, Kentucky • June 26-28, 2026</p>
+        <h1 style="font-size:2.5em; margin:15px 0 8px 0; color:var(--gold);">Tyler's Bachelor Trip</h1>
+        <p style="font-size:1.45em; color:#eee; margin:0 0 30px 0;">Louisville, Kentucky • June 26-28, 2026</p>
 
         <div style="background:rgba(255,255,255,0.1); border-radius:12px; padding:20px; margin:20px auto; max-width:420px;">
             <p style="margin:8px 0; font-size:1.15em;">⛳ Two epic golf rounds</p>
@@ -439,13 +439,13 @@
             <p style="margin:8px 0; font-size:1.15em;">🍻 Beers, Bourbon, Buddies & Good times</p>
         </div>
 
-        <div id="countdown-container" class="countdown-container" style="margin:30px auto 25px;">
+        <div id="countdown-container" class="countdown-container" style="margin:30px auto 35px;">
             <div class="countdown-title">TRIP STARTS IN</div>
             <div class="countdown-grid" id="countdown-grid"></div>
         </div>
 
-        <button onclick="startApp()"
-                style="background:var(--gold); color:#0d3d0d; border:none; padding:16px 40px; font-size:1.35em; font-weight:bold; border-radius:50px; cursor:pointer; display:block; margin:0 auto;">
+        <button onclick="startApp()" 
+                style="background:var(--gold); color:#0d3d0d; border:none; padding:18px 50px; font-size:1.4em; font-weight:bold; border-radius:50px; cursor:pointer;">
             LET'S GOLF! →
         </button>
     </div>
@@ -776,15 +776,16 @@ function init() {
 
 // ============ COUNTDOWN ============
 function startCountdown() {
-    const targetDate = new Date('2026-06-26T09:00:00').getTime();  // Louisville time
+    const targetDate = new Date('2026-06-26T09:00:00').getTime();
     const grid = document.getElementById('countdown-grid');
+    if (!grid) return;
 
     function update() {
         const now = Date.now();
         const distance = targetDate - now;
 
         if (distance < 0) {
-            grid.innerHTML = `<div style="color:var(--gold); font-size:1.5em; padding:20px;">🎉 THE TRIP HAS BEGUN!</div>`;
+            grid.innerHTML = `<div style="color:var(--gold); font-size:1.6em; padding:30px;">🎉 THE TRIP HAS BEGUN!</div>`;
             return;
         }
 
@@ -804,15 +805,18 @@ function startCountdown() {
     setInterval(update, 1000);
 }
 
-// ============ LANDING / NAV ============
 function startApp() {
     document.getElementById('landing-page').style.display = 'none';
     document.getElementById('main-header').style.display = 'flex';
     document.getElementById('main-tabs').style.display = 'flex';
-    
-    // Show player selection
     document.getElementById('player-selection-page').style.display = 'block';
-    document.getElementById('player-selection-page').scrollIntoView({ behavior: 'smooth' });
+}
+
+function init() {
+    renderPlayers();
+    loadScores();
+    loadAppState();
+    startCountdown();        // This must run
 }
 
 function buildPlayerCard(name, onclickHandler) {
