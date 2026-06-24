@@ -424,10 +424,9 @@
 </div>
 
 <!-- Landing Page -->
-<div id="landing-page">
+<div id="landing-page" style="display:block;">
     <div style="text-align:center; padding:40px 20px 50px; background:rgba(0,0,0,0.4); border-radius:16px; margin:20px auto; max-width:520px;">
-        <img src="tyler-photo.jpeg" alt="Tyler"
-             onerror="this.style.display='none'"
+        <img src="tyler-photo.jpeg" alt="Tyler" 
              style="width:100%; max-width:260px; height:260px; object-fit:cover; border-radius:50%; box-shadow:0 15px 35px rgba(0,0,0,0.7); margin-bottom:25px;">
 
         <h1 style="font-size:2.5em; margin:15px 0 8px 0; color:var(--gold);">Tyler's Bachelor Trip</h1>
@@ -785,7 +784,7 @@ function startCountdown() {
         const distance = targetDate - now;
 
         if (distance < 0) {
-            grid.innerHTML = `<div style="color:var(--gold); font-size:1.6em; padding:30px;">🎉 THE TRIP HAS BEGUN!</div>`;
+            grid.innerHTML = `<div style="color:var(--gold); font-size:1.6em;">🎉 TRIP STARTED!</div>`;
             return;
         }
 
@@ -804,7 +803,6 @@ function startCountdown() {
     update();
     setInterval(update, 1000);
 }
-
 function startApp() {
     document.getElementById('landing-page').style.display = 'none';
     document.getElementById('main-header').style.display = 'flex';
