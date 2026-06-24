@@ -705,11 +705,13 @@ const courses = [
         }))
     }
 ];
+
 const fridayTeams = {
     1: { name: "Team 1", captain: "Garrett Briant", members: ["Tyler Denman", "Garrett Briant", "Mac Chambers", "Sam Trap", "Nick Bayer", "Ben Andresky"] },
     2: { name: "Team 2", captain: "Nathan Bazant", members: ["Dan Orr", "Nathan Bazant", "Blake Rohrbacher", "Michael Bury", "AJ Marino", "Austin Armstrong"] }
 };
-// ============ HELPER: SAFE SCORE KEY (CRITICAL FIX) ============
+
+// ============ HELPER: SAFE SCORE KEY ============
 function makeScoreKey(player, courseIdx, hole) {
     return `${encodeURIComponent(player)}|${courseIdx}|${hole}`;
 }
@@ -725,13 +727,21 @@ function parseScoreKey(key) {
 }
 
 // ============ STATE ============
-let currentPlayer=null,currentCourseIndex=null,scores={},teamSize=3,currentModalHole=1,currentGroup=[],currentGroupIndex=0,currentTeam=null;
+let currentPlayer = null,
+    currentCourseIndex = null,
+    scores = {},
+    teamSize = 3,
+    currentModalHole = 1,
+    currentGroup = [],
+    currentGroupIndex = 0,
+    currentTeam = null,
+    lastGeneratedTeams = null;   // ← FIXED: Added this line
 
 // ============ INIT ============
 function init() {
     renderPlayers();
     loadScores();
-    loadAppState();          // NEW: restore group/round after refresh
+    loadAppState();
     startCountdown();
 }
 
@@ -810,23 +820,14 @@ function renderPlayers() {
     });
 }
 
-function selectPlayer(n){
+function selectPlayer(n) {
     currentPlayer = n;
-    document.getElementById('profile-name-card').textContent = n;
-    document.getElementById('profile-bio-card').textContent = playerProfiles[n] || "Ready to golf!";
-    
-    // Auto-assign team for Friday
-    if(currentCourseIndex === 0) {
-        if(fridayTeams[1].members.includes(n)) {
-            currentTeam = 1;
-        } else if(fridayTeams[2].members.includes(n)) {
-            currentTeam = 2;
-        }
-    }
-    
-    document.getElementById('profile-modal').classList.add('active');
-}
+    const profile = playerProfiles[n] || {};
 
+    document.getElementById('profile-name-card').textContent = n;
+    document.getElementById('profile-bio-card').textContent = profile.bio || "Ready to golf!";
+
+    // Instagram link
     const igLink = document.getElementById('profile-ig-card');
     if (profile.ig) {
         igLink.href = `https://instagram.com/${profile.ig}`;
@@ -836,6 +837,15 @@ function selectPlayer(n){
         igLink.style.display = 'none';
     }
 
+    // Auto-assign team for Friday
+    if (currentCourseIndex === 0) {
+        if (fridayTeams[1].members.includes(n)) {
+            currentTeam = 1;
+        } else if (fridayTeams[2].members.includes(n)) {
+            currentTeam = 2;
+        }
+    }
+
     document.getElementById('profile-modal').classList.add('active');
 }
 
@@ -843,18 +853,16 @@ function closeProfileModal() {
     document.getElementById('profile-modal').classList.remove('active');
 }
 
-function continueFromProfile(){
+function continueFromProfile() {
     closeProfileModal();
     document.getElementById('player-selection-page').style.display = 'none';
-    
-    if(currentCourseIndex === 0) {
-        // Friday - go straight to scorecard
+
+    if (currentCourseIndex !== null) {
+        // Round already selected → go to group selection
         document.getElementById('schedule-selection').style.display = 'none';
-        document.getElementById('group-selection').style.display = 'none';
-        document.getElementById('tab-2').classList.remove('disabled');
-        switchTab(2);
+        showGroupSelection();
     } else {
-        // Saturday - show schedule (you'll update this later)
+        // Show round selection
         document.getElementById('schedule-selection').style.display = 'block';
         document.getElementById('tab-1').classList.remove('disabled');
     }
@@ -867,7 +875,7 @@ function selectCourse(courseIdx) {
     document.getElementById('current-course-date').textContent = course.date;
     document.getElementById('tab-2').classList.remove('disabled');
     showGroupSelection();
-    saveAppState();   // persist choice
+    saveAppState();
 }
 
 function showGroupSelection() {
@@ -1250,7 +1258,7 @@ function finishRound() {
     switchTab(3);
 }
 
-// ============ LEADERBOARD (now safe with new key format) ============
+// ============ LEADERBOARD ============
 function renderLeaderboard() {
     const container = document.getElementById('leaderboard-content');
     const playerTotals = {};
@@ -1316,12 +1324,14 @@ function setTeamSize(size, btn) {
 
 function generateTeams() {
     if (lastGeneratedTeams && !confirm('This will replace your current teams. Continue?')) return;
+
     const shuffled = [...players].sort(() => Math.random() - 0.5);
     const teams = [];
     for (let i = 0; i < shuffled.length; i += teamSize) {
         teams.push(shuffled.slice(i, i + teamSize));
     }
     lastGeneratedTeams = teams;
+
     let html = `<h3 style="color:var(--gold);">${teamSize}-Person Teams</h3><div class="team-list">`;
     teams.forEach((team, idx) => {
         html += `<div class="team-card"><h4>Team ${idx + 1}</h4><ul class="team-members">${team.map(p => `<li>${p}</li>`).join('')}</ul></div>`;
@@ -1395,7 +1405,6 @@ function loadScores() {
     } catch(e) {}
 }
 
-// NEW: Persist app state (group, round, player) so you don't lose your place on refresh
 function saveAppState() {
     const state = {
         currentPlayer,
