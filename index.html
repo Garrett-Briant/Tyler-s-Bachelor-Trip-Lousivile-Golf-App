@@ -769,32 +769,37 @@ let lastGeneratedTeams = null;
 function init() {
     renderPlayers();
     loadScores();
-    loadAppState();          // NEW: restore group/round after refresh
-    startCountdown();
+    loadAppState();
+    startCountdown();           // Make sure countdown starts
+    // Do NOT auto-show anything else
 }
 
 // ============ COUNTDOWN ============
 function startCountdown() {
-    const targetDate = new Date('2026-06-26T00:00:00').getTime();
+    const targetDate = new Date('2026-06-26T09:00:00').getTime();  // Louisville time
+    const grid = document.getElementById('countdown-grid');
+
     function update() {
         const now = Date.now();
         const distance = targetDate - now;
-        const grid = document.getElementById('countdown-grid');
-        if (!grid) return;
+
         if (distance < 0) {
-            grid.innerHTML = `<div style="color:var(--gold); font-size:1.4em; padding:20px;">🎉 The Trip Has Begun!</div>`;
+            grid.innerHTML = `<div style="color:var(--gold); font-size:1.5em; padding:20px;">🎉 THE TRIP HAS BEGUN!</div>`;
             return;
         }
+
         const days = Math.floor(distance / (1000*60*60*24));
         const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
         const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
         const seconds = Math.floor((distance % (1000*60)) / 1000);
+
         grid.innerHTML = `
-            <div class="countdown-unit"><div class="countdown-number">${days}</div><div class="countdown-label">Days</div></div>
-            <div class="countdown-unit"><div class="countdown-number">${hours}</div><div class="countdown-label">Hours</div></div>
-            <div class="countdown-unit"><div class="countdown-number">${minutes}</div><div class="countdown-label">Min</div></div>
-            <div class="countdown-unit"><div class="countdown-number">${seconds}</div><div class="countdown-label">Sec</div></div>`;
+            <div class="countdown-unit"><div class="countdown-number">${days}</div><div class="countdown-label">DAYS</div></div>
+            <div class="countdown-unit"><div class="countdown-number">${hours}</div><div class="countdown-label">HOURS</div></div>
+            <div class="countdown-unit"><div class="countdown-number">${minutes}</div><div class="countdown-label">MIN</div></div>
+            <div class="countdown-unit"><div class="countdown-number">${seconds}</div><div class="countdown-label">SEC</div></div>`;
     }
+
     update();
     setInterval(update, 1000);
 }
@@ -802,13 +807,12 @@ function startCountdown() {
 // ============ LANDING / NAV ============
 function startApp() {
     document.getElementById('landing-page').style.display = 'none';
-    const header = document.getElementById('main-header');
-    header.style.display = 'flex';
-    document.getElementById('header-back-btn').style.display = 'block';
+    document.getElementById('main-header').style.display = 'flex';
     document.getElementById('main-tabs').style.display = 'flex';
-    const playerPage = document.getElementById('player-selection-page');
-    playerPage.style.display = 'block';
-    playerPage.scrollIntoView({ behavior: 'smooth' });
+    
+    // Show player selection
+    document.getElementById('player-selection-page').style.display = 'block';
+    document.getElementById('player-selection-page').scrollIntoView({ behavior: 'smooth' });
 }
 
 function buildPlayerCard(name, onclickHandler) {
