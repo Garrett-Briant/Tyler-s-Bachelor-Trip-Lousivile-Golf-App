@@ -385,14 +385,14 @@
 </head>
 <body>
 
-<header id="main-header" style="display:none; align-items:center; justify-content:space-between; padding:20px;">
+<header id="main-header" style="display:none; align-items:center; justify-content:space-between; padding:15px 20px; position:sticky; top:0; z-index:100; background:var(--masters-green);">
     <button onclick="goBack()" id="header-back-btn"
-            style="background:transparent; border:none; color:var(--gold); font-size:32px; cursor:pointer; padding:0 10px; line-height:1; display:none;">
+            style="background:transparent; border:none; color:var(--gold); font-size:36px; cursor:pointer; padding:0 8px; line-height:1;">
         ←
     </button>
     <div style="text-align:center; flex:1;">
-        <h1 style="margin:0; font-size:28px; letter-spacing:2px;">⛳ TYLER'S BACHELOR TRIP ⛳</h1>
-        <p style="margin:8px 0 0 0; font-size:1.1em; color:#ddd;">Louisville, Kentucky • June 26-28, 2026</p>
+        <h1 style="margin:0; font-size:26px; letter-spacing:2px;">TYLER'S BACHELOR TRIP</h1>
+        <p style="margin:4px 0 0 0; font-size:1.05em; color:#ddd;">Louisville • June 26-28, 2026</p>
     </div>
     <div style="width:40px;"></div>
 </header>
@@ -964,23 +964,38 @@ function goBack() {
         closeProfileModal(); 
         return; 
     }
+
     const scoreModal = document.getElementById('score-modal');
     if (scoreModal.classList.contains('active')) { 
         closeModal(); 
         return; 
     }
 
-    // Back from Teams or Scorecard
-    if (document.getElementById('content-4').classList.contains('active') || 
-        document.getElementById('content-2').classList.contains('active')) {
-        switchTab(0);
+    // If on Scorecard → go back to Teams
+    if (document.getElementById('content-2').classList.contains('active')) {
+        switchTab(4);
         return;
     }
 
-    const activeTab = document.querySelector('.tab.active');
-    if (activeTab && activeTab.textContent !== 'Home') { 
-        switchTab(0); 
-        return; 
+    // If on Teams, Leaderboard, Weather, or Schedule → go back to Player Selection
+    if (document.getElementById('content-4').classList.contains('active') ||
+        document.getElementById('content-3').classList.contains('active') ||
+        document.getElementById('content-5').classList.contains('active') ||
+        document.getElementById('content-1').classList.contains('active')) {
+        
+        document.getElementById('player-selection-page').style.display = 'block';
+        switchTab(0);   // Home tab
+        return;
+    }
+
+    // If on Player Selection → go back to Landing
+    const playerPage = document.getElementById('player-selection-page');
+    if (playerPage.style.display === 'block') {
+        playerPage.style.display = 'none';
+        document.getElementById('landing-page').style.display = 'block';
+        document.getElementById('main-header').style.display = 'none';
+        document.getElementById('main-tabs').style.display = 'none';
+        return;
     }
 }
 // ============ PLAYER SWIPER ============
