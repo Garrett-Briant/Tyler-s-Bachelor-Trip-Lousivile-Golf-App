@@ -457,36 +457,6 @@
     <div class="player-grid" id="player-grid"></div>
 </div>
 
-<!-- Round Selection -->
-<div id="schedule-selection" style="display:none; margin-top:40px;">
-    <h2 style="text-align:center; color:var(--gold);">Select Your Round</h2>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:25px; max-width:620px; margin-left:auto; margin-right:auto;">
-        <div class="card" onclick="selectCourse(0)" style="cursor:pointer; padding:35px 20px; text-align:center;">
-            <h3 style="margin:0 0 8px 0; font-size:1.8em; color:var(--gold);">ROUND 1</h3>
-            <p style="margin:0; color:#ccc;">Friday, June 26, 2026</p>
-            <p style="margin:12px 0 0 0; font-weight:bold;">Covered Bridge GC</p>
-        </div>
-        <div class="card" onclick="selectCourse(1)" style="cursor:pointer; padding:35px 20px; text-align:center;">
-            <h3 style="margin:0 0 8px 0; font-size:1.8em; color:var(--gold);">ROUND 2</h3>
-            <p style="margin:0; color:#ccc;">Saturday, June 27, 2026</p>
-            <p style="margin:12px 0 0 0; font-weight:bold;">Champions Pointe</p>
-        </div>
-    </div>
-</div>
-
-<!-- Group Selection -->
-<div id="group-selection" style="display:none; margin-top:40px;">
-    <h2 style="text-align:center; color:var(--gold);">Who's in Your Group?</h2>
-    <p style="text-align:center; color:#ccc; margin-bottom:20px;">Select 2-4 players you'll be scoring for this round</p>
-    <div class="player-grid" id="group-player-grid" style="margin-bottom:25px;"></div>
-    <div style="text-align:center;">
-        <button onclick="confirmGroup()" id="confirm-group-btn" disabled
-                style="background:var(--gold); color:#0d3d0d; border:none; padding:16px 40px; font-size:1.2em; font-weight:bold; border-radius:50px; cursor:pointer; opacity:0.5;">
-            Continue to Scorecard →
-        </button>
-    </div>
-</div>
-
 <!-- SCHEDULE -->
 <div id="content-1" class="content">
     <h2 style="text-align:center; color:var(--gold); margin-bottom:30px;">Trip Formats & Schedule</h2>
@@ -918,11 +888,16 @@ function closeProfileModal() {
 function continueFromProfile() {
     closeProfileModal();
     document.getElementById('player-selection-page').style.display = 'none';
-    document.getElementById('schedule-selection').style.display = 'block';
+    document.getElementById('schedule-selection').style.display = 'none';
+    document.getElementById('group-selection').style.display = 'none';
+    
+    // Go directly to Teams tab
+    switchTab(4);
+    
+    // Enable the tabs
     document.getElementById('tab-1').classList.remove('disabled');
-    document.getElementById('schedule-selection').scrollIntoView({ behavior: "smooth" });
+    document.getElementById('tab-2').classList.remove('disabled');
 }
-
 function selectCourse(courseIdx) {
     currentCourseIndex = courseIdx;
     const course = courses[courseIdx];
@@ -1008,10 +983,19 @@ function backToGroupSetup() {
 
 function goBack() {
     const profileModal = document.getElementById('profile-modal');
-    if (profileModal.classList.contains('active')) { closeProfileModal(); return; }
+    if (profileModal.classList.contains('active')) { 
+        closeProfileModal(); 
+        return; 
+    }
     const scoreModal = document.getElementById('score-modal');
-    if (scoreModal.classList.contains('active')) { closeModal(); return; }
-
+    if (scoreModal.classList.contains('active')) { 
+        closeModal(); 
+        return; 
+    if (document.getElementById('content-4').classList.contains('active') || 
+        document.getElementById('content-2').classList.contains('active')) {
+        switchTab(0); // or show player selection again
+        return;
+    }
     const scorecard = document.getElementById('content-2');
     if (scorecard.classList.contains('active')) { backToGroupSetup(); return; }
 
