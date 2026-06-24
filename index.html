@@ -646,18 +646,63 @@
 </div>
 
 <!-- TEAMS -->
+<!-- TEAMS -->
 <div id="content-4" class="content">
-    <h2 style="text-align:center; color:var(--gold);">Teams & Skins Games</h2>
-    <div class="team-builder">
-        <h3 style="color:var(--gold); margin-top:0;">Create Team</h3>
-        <p>Select team size for games like Skins or Nassau:</p>
-        <div class="team-size-selector">
-            <button class="team-size-btn active" data-size="3" onclick="setTeamSize(3, this)">3-Person Teams</button>
-            <button class="team-size-btn" data-size="4" onclick="setTeamSize(4, this)">4-Person Teams</button>
+    <h2 style="text-align:center; color:var(--gold); margin-bottom:30px;">Teams & Formats</h2>
+
+    <!-- FRIDAY TEAMS -->
+    <div style="background:rgba(255,255,255,0.05); border:3px solid var(--gold); border-radius:16px; padding:25px; margin-bottom:35px;">
+        <h3 style="color:var(--gold); text-align:center; margin-top:0;">FRIDAY – 2 Teams of 6</h3>
+        <p style="text-align:center; color:#ccc; margin-bottom:20px;">Gary & Nathan Captains • Lowest team total wins $20/head</p>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+            <div style="background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; border:2px solid var(--gold);">
+                <h4 style="color:var(--gold); text-align:center; margin:0 0 15px 0;">GARY'S TEAM</h4>
+                <ul style="margin:0; padding:0; list-style:none; line-height:2; color:#eee;">
+                    <li>Ty (Jake)</li>
+                    <li>Mac</li>
+                    <li>Trap</li>
+                    <li>Bayer19</li>
+                    <li>Andresky</li>
+                </ul>
+            </div>
+            <div style="background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; border:2px solid var(--gold);">
+                <h4 style="color:var(--gold); text-align:center; margin:0 0 15px 0;">NATHAN'S TEAM</h4>
+                <ul style="margin:0; padding:0; list-style:none; line-height:2; color:#eee;">
+                    <li>Danny</li>
+                    <li>Blake</li>
+                    <li>Bury</li>
+                    <li>AJ</li>
+                    <li>Austin</li>
+                </ul>
+            </div>
         </div>
-        <button onclick="generateTeams()" style="width:100%; padding:12px; background:var(--gold); color:#000; border:none; border-radius:8px; font-size:16px; cursor:pointer; font-weight:bold;">Generate Teams</button>
     </div>
-    <div id="teams-output" style="margin-top:40px;"></div>
+
+    <!-- SATURDAY SCRAMBLE GROUPS -->
+    <div style="background:rgba(255,255,255,0.05); border:3px solid var(--gold); border-radius:16px; padding:25px;">
+        <h3 style="color:var(--gold); text-align:center; margin-top:0;">SATURDAY – SCRAMBLE</h3>
+        <p style="text-align:center; color:#ccc; margin-bottom:20px;">1 Foursome + 3 Threesomes</p>
+        
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:18px;">
+            <div class="team-card">
+                <h4 style="color:var(--gold);">Group A – Foursome</h4>
+                <p>Ty, Jake, Gary, Mac</p>
+            </div>
+            <div class="team-card">
+                <h4 style="color:var(--gold);">Group B – Threesome</h4>
+                <p>Bazant, Bayer, Andresky</p>
+            </div>
+            <div class="team-card">
+                <h4 style="color:var(--gold);">Group C – Threesome</h4>
+                <p>Danny, Sam, Mike</p>
+            </div>
+            <div class="team-card">
+                <h4 style="color:var(--gold);">Group D – Threesome</h4>
+                <p>Blake, Austin, AJ</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- WEATHER -->
