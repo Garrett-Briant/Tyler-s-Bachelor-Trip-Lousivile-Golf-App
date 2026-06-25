@@ -884,8 +884,8 @@ function continueFromProfile() {
 }
     // ====================== FRIDAY TEAM SELECTION ======================
 const fridayTeams = [
-    ["Tyler Denman", "Mac Chambers", "Sam Trap", "Nick Bayer", "Ben Andresky"],     // Gary's Team - Index 0
-    ["Dan Orr", "Blake Rohrbacher", "Michael Bury", "AJ Marino", "Austin Armstrong"] // Nathan's Team - Index 1
+    ["Garrett Briant","Tyler Denman", "Mac Chambers", "Sam Trap", "Nick Bayer", "Ben Andresky"],     // Gary's Team - Index 0
+    ["Nathan Bazant","Dan Orr", "Blake Rohrbacher", "Michael Bury", "AJ Marino", "Austin Armstrong"] // Nathan's Team - Index 1
 ];
 
 function selectTeam(teamIndex) {
@@ -1142,16 +1142,12 @@ function renderScorecard() {
     const course = courses[currentCourseIndex];
     let html = '';
 
-    // Header
     html += `<tr class="scorecard-row header">
         <td class="hole-label">HOLE</td>`;
-    
     for (let i = 1; i <= 9; i++) html += `<td class="scorecard-cell">${i}</td>`;
     html += `<td class="scorecard-cell total-cell">OUT</td>`;
-    
     for (let i = 10; i <= 18; i++) html += `<td class="scorecard-cell">${i}</td>`;
-    html += `<td class="scorecard-cell total-cell">IN</td>
-             <td class="scorecard-cell total-cell">TOTAL</td></tr>`;
+    html += `<td class="scorecard-cell total-cell">IN</td><td class="scorecard-cell total-cell">TOTAL</td></tr>`;
 
     // Yards
     html += `<tr class="scorecard-row">
