@@ -568,39 +568,50 @@
 </div>
 
 <!-- TEAMS -->
-<!-- TEAMS -->
 <div id="content-4" class="content">
-    <h2 style="text-align:center; color:var(--gold); margin-bottom:30px;">Teams & Formats</h2>
+    <h2 style="text-align:center; color:var(--gold); margin-bottom:30px;">Friday Teams</h2>
+    <p style="text-align:center; color:#ccc; margin-bottom:35px;">Tap your team to load the group and start scoring</p>
 
-    <!-- FRIDAY TEAMS -->
-    <div style="background:rgba(255,255,255,0.05); border:3px solid var(--gold); border-radius:16px; padding:25px; margin-bottom:35px;">
-        <h3 style="color:var(--gold); text-align:center; margin-top:0;">FRIDAY – 2 Teams of 6</h3>
-        <p style="text-align:center; color:#ccc; margin-bottom:20px;">Gary & Nathan Captains • Lowest team total wins $20/head</p>
-        
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-            <div style="background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; border:2px solid var(--gold);">
-                <h4 style="color:var(--gold); text-align:center; margin:0 0 15px 0;">GARY'S TEAM</h4>
-                <ul style="margin:0; padding:0; list-style:none; line-height:2; color:#eee;">
-                    <li>Ty (Jake)</li>
-                    <li>Mac</li>
-                    <li>Trap</li>
-                    <li>Bayer19</li>
-                    <li>Andresky</li>
-                </ul>
-            </div>
-            <div style="background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; border:2px solid var(--gold);">
-                <h4 style="color:var(--gold); text-align:center; margin:0 0 15px 0;">NATHAN'S TEAM</h4>
-                <ul style="margin:0; padding:0; list-style:none; line-height:2; color:#eee;">
-                    <li>Danny</li>
-                    <li>Blake</li>
-                    <li>Bury</li>
-                    <li>AJ</li>
-                    <li>Austin</li>
-                </ul>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:25px; max-width:720px; margin:0 auto;">
+
+        <!-- Gary's Team -->
+        <div onclick="selectTeam(0)" 
+             style="background:rgba(0,0,0,0.4); padding:28px 20px; border-radius:16px; border:3px solid var(--gold); cursor:pointer; transition:all 0.25s;">
+            <h3 style="color:var(--gold); text-align:center; margin:0 0 18px 0;">GARY'S TEAM</h3>
+            <ul style="margin:0; padding:0; list-style:none; line-height:2.1; color:#eee; font-size:1.1em;">
+                <li>Ty (Jake)</li>
+                <li>Mac</li>
+                <li>Trap</li>
+                <li>Bayer19</li>
+                <li>Andresky</li>
+            </ul>
+            <div style="text-align:center; margin-top:25px;">
+                <span style="background:var(--gold); color:#0d3d0d; padding:10px 28px; border-radius:50px; font-weight:bold; font-size:1.05em;">SCORE THIS TEAM →</span>
             </div>
         </div>
+
+        <!-- Nathan's Team -->
+        <div onclick="selectTeam(1)" 
+             style="background:rgba(0,0,0,0.4); padding:28px 20px; border-radius:16px; border:3px solid var(--gold); cursor:pointer; transition:all 0.25s;">
+            <h3 style="color:var(--gold); text-align:center; margin:0 0 18px 0;">NATHAN'S TEAM</h3>
+            <ul style="margin:0; padding:0; list-style:none; line-height:2.1; color:#eee; font-size:1.1em;">
+                <li>Danny</li>
+                <li>Blake</li>
+                <li>Bury</li>
+                <li>AJ</li>
+                <li>Austin</li>
+            </ul>
+            <div style="text-align:center; margin-top:25px;">
+                <span style="background:var(--gold); color:#0d3d0d; padding:10px 28px; border-radius:50px; font-weight:bold; font-size:1.05em;">SCORE THIS TEAM →</span>
+            </div>
+        </div>
+
     </div>
 
+    <p style="text-align:center; margin-top:50px; color:#777; font-size:0.95em;">
+        Saturday Scramble groups will be added soon
+    </p>
+</div>
     <!-- SATURDAY SCRAMBLE GROUPS -->
     <div style="background:rgba(255,255,255,0.05); border:3px solid var(--gold); border-radius:16px; padding:25px;">
         <h3 style="color:var(--gold); text-align:center; margin-top:0;">SATURDAY – SCRAMBLE</h3>
@@ -875,6 +886,35 @@ function continueFromProfile() {
     // Enable the other tabs
     document.getElementById('tab-1').classList.remove('disabled');
     document.getElementById('tab-2').classList.remove('disabled');
+}
+    // ====================== FRIDAY TEAM SELECTION ======================
+const fridayTeams = [
+    ["Tyler Denman", "Mac Chambers", "Sam Trap", "Nick Bayer", "Ben Andresky"],     // Gary's Team - Index 0
+    ["Dan Orr", "Blake Rohrbacher", "Michael Bury", "AJ Marino", "Austin Armstrong"] // Nathan's Team - Index 1
+];
+
+function selectTeam(teamIndex) {
+    if (!currentPlayer) {
+        alert("Please go back and select your name first.");
+        return;
+    }
+
+    currentGroup = [...fridayTeams[teamIndex]];
+    currentGroupIndex = currentGroup.indexOf(currentPlayer);
+
+    // If your name isn't in the team, add it at the front
+    if (currentGroupIndex === -1) {
+        currentGroup.unshift(currentPlayer);
+        currentGroupIndex = 0;
+    }
+
+    currentCourseIndex = 0; // Start with Friday round
+
+    document.getElementById('tab-2').classList.remove('disabled');
+    
+    switchTab(2);           // Go to Scorecard
+    renderScorecard();
+    renderPlayerPills();
 }
 function selectCourse(courseIdx) {
     currentCourseIndex = courseIdx;
