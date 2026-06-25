@@ -385,9 +385,9 @@
 </head>
 <body>
 
-<header id="main-header" style="display:none; align-items:center; justify-content:space-between; padding:15px 20px; position:sticky; top:0; z-index:100; background:var(--masters-green);">
-    <button onclick="goBack()" id="header-back-btn"
-            style="background:transparent; border:none; color:var(--gold); font-size:36px; cursor:pointer; padding:0 8px; line-height:1;">
+<header id="main-header" style="display:none; align-items:center; justify-content:space-between; padding:15px 20px; position:sticky; top:0; z-index:100; background:var(--masters-green); border-bottom:5px solid var(--gold);">
+    <button onclick="goBack()" 
+            style="background:transparent; border:none; color:var(--gold); font-size:36px; cursor:pointer; padding:0 10px; line-height:1;">
         ←
     </button>
     <div style="text-align:center; flex:1;">
@@ -994,6 +994,7 @@ function backToGroupSetup() {
     document.getElementById('group-selection').scrollIntoView({ behavior: 'smooth' });
 }
 function goBack() {
+    // Close any open modals first
     const profileModal = document.getElementById('profile-modal');
     if (profileModal.classList.contains('active')) { 
         closeProfileModal(); 
@@ -1006,26 +1007,26 @@ function goBack() {
         return; 
     }
 
-    // If on Scorecard → go back to Teams
+    // From Scorecard → Back to Teams
     if (document.getElementById('content-2').classList.contains('active')) {
         switchTab(4);
         return;
     }
 
-    // If on Teams, Leaderboard, Weather, or Schedule → go back to Player Selection
+    // From Teams, Leaderboard, Weather, or Schedule → Back to Player Selection
     if (document.getElementById('content-4').classList.contains('active') ||
         document.getElementById('content-3').classList.contains('active') ||
         document.getElementById('content-5').classList.contains('active') ||
         document.getElementById('content-1').classList.contains('active')) {
         
+        switchTab(0);                    // Go to Home tab
         document.getElementById('player-selection-page').style.display = 'block';
-        switchTab(0);   // Home tab
         return;
     }
 
-    // If on Player Selection → go back to Landing
+    // From Player Selection → Back to Landing Page
     const playerPage = document.getElementById('player-selection-page');
-    if (playerPage.style.display === 'block') {
+    if (playerPage.style.display !== 'none') {
         playerPage.style.display = 'none';
         document.getElementById('landing-page').style.display = 'block';
         document.getElementById('main-header').style.display = 'none';
