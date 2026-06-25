@@ -573,36 +573,63 @@
     <p style="text-align:center; color:#ccc; margin-bottom:35px;">Tap your team to load the group and start scoring</p>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:25px; max-width:720px; margin:0 auto;">
-        <div onclick="selectTeam(0)" style="background:rgba(0,0,0,0.45); padding:30px 20px; border-radius:16px; border:3px solid var(--gold); cursor:pointer; min-height:340px;">
+
+        <!-- Gary's Team -->
+        <div onclick="selectTeam(0)" 
+             style="background:rgba(0,0,0,0.45); padding:30px 20px; border-radius:16px; border:3px solid var(--gold); cursor:pointer; transition:all 0.25s; min-height:340px;">
             <h3 style="color:var(--gold); text-align:center; margin:0 0 20px 0; font-size:1.45em;">GARY'S TEAM</h3>
             <ul style="margin:0; padding:0; list-style:none; line-height:2.2; color:#eee; font-size:1.1em;">
-                <li>Ty (Jake)</li><li>Mac</li><li>Trap</li><li>Bayer19</li><li>Andresky</li>
+                <li>Ty (Jake)</li>
+                <li>Mac</li>
+                <li>Trap</li>
+                <li>Bayer19</li>
+                <li>Andresky</li>
             </ul>
             <div style="text-align:center; margin-top:40px;">
                 <span style="background:var(--gold); color:#0d3d0d; padding:12px 32px; border-radius:50px; font-weight:bold; font-size:1.1em;">SCORE THIS TEAM →</span>
             </div>
         </div>
 
-        <div onclick="selectTeam(1)" style="background:rgba(0,0,0,0.45); padding:30px 20px; border-radius:16px; border:3px solid var(--gold); cursor:pointer; min-height:340px;">
+        <!-- Nathan's Team -->
+        <div onclick="selectTeam(0)" 
+             style="background:rgba(0,0,0,0.45); padding:30px 20px; border-radius:16px; border:3px solid var(--gold); cursor:pointer; transition:all 0.25s; min-height:340px;">
             <h3 style="color:var(--gold); text-align:center; margin:0 0 20px 0; font-size:1.45em;">NATHAN'S TEAM</h3>
             <ul style="margin:0; padding:0; list-style:none; line-height:2.2; color:#eee; font-size:1.1em;">
-                <li>Nathan</li><li>Danny</li><li>Blake</li><li>Bury</li><li>AJ</li><li>Austin</li>
+                <li>Danny</li>
+                <li>Blake</li>
+                <li>Bury</li>
+                <li>AJ</li>
+                <li>Austin</li>
             </ul>
             <div style="text-align:center; margin-top:40px;">
                 <span style="background:var(--gold); color:#0d3d0d; padding:12px 32px; border-radius:50px; font-weight:bold; font-size:1.1em;">SCORE THIS TEAM →</span>
             </div>
         </div>
+
     </div>
 
-    <!-- Saturday Section -->
+    <!-- SATURDAY SCRAMBLE -->
     <div style="background:rgba(255,255,255,0.05); border:3px solid var(--gold); border-radius:16px; padding:25px; margin-top:50px;">
-        <h3 style="color:var(--gold); text-align:center;">SATURDAY – SCRAMBLE</h3>
-        <p style="text-align:center; color:#ccc; margin:15px 0 25px;">1 Foursome + 3 Threesomes</p>
+        <h3 style="color:var(--gold); text-align:center; margin-top:0;">SATURDAY – SCRAMBLE</h3>
+        <p style="text-align:center; color:#ccc; margin-bottom:25px;">1 Foursome + 3 Threesomes</p>
+        
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:18px;">
-            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px;"><h4 style="color:var(--gold);">Group A</h4><p>Ty, Jake, Gary, Mac</p></div>
-            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px;"><h4 style="color:var(--gold);">Group B</h4><p>Bazant, Bayer, Andresky</p></div>
-            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px;"><h4 style="color:var(--gold);">Group C</h4><p>Danny, Sam, Mike</p></div>
-            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px;"><h4 style="color:var(--gold);">Group D</h4><p>Blake, Austin, AJ</p></div>
+            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px; border:2px solid #666;">
+                <h4 style="color:var(--gold);">Group A – Foursome</h4>
+                <p style="color:#eee; margin:8px 0 0 0;">Ty, Jake, Gary, Mac</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px; border:2px solid #666;">
+                <h4 style="color:var(--gold);">Group B – Threesome</h4>
+                <p style="color:#eee; margin:8px 0 0 0;">Bazant, Bayer, Andresky</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px; border:2px solid #666;">
+                <h4 style="color:var(--gold);">Group C – Threesome</h4>
+                <p style="color:#eee; margin:8px 0 0 0;">Danny, Sam, Mike</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.4); padding:18px; border-radius:12px; border:2px solid #666;">
+                <h4 style="color:var(--gold);">Group D – Threesome</h4>
+                <p style="color:#eee; margin:8px 0 0 0;">Blake, Austin, AJ</p>
+            </div>
         </div>
     </div>
 </div>
@@ -861,41 +888,28 @@ const fridayTeams = [
     ["Nathan Bazant","Dan Orr", "Blake Rohrbacher", "Michael Bury", "AJ Marino", "Austin Armstrong"] // Nathan's Team - Index 1
 ];
 
-const fridayTeams = [
-    ["Tyler Denman", "Mac Chambers", "Sam Trap", "Nick Bayer", "Ben Andresky"],           // Gary's Team - 0
-    ["Nathan Bazant", "Dan Orr", "Blake Rohrbacher", "Michael Bury", "AJ Marino", "Austin Armstrong"] // Nathan's Team - 1
-];
-
 function selectTeam(teamIndex) {
     if (!currentPlayer) {
-        alert("Please select your name first.");
+        alert("Please go back and select your name first.");
         return;
     }
 
     currentGroup = [...fridayTeams[teamIndex]];
     currentGroupIndex = currentGroup.indexOf(currentPlayer);
 
+    // If your name isn't in the team, add it at the front
     if (currentGroupIndex === -1) {
         currentGroup.unshift(currentPlayer);
         currentGroupIndex = 0;
     }
 
-    currentCourseIndex = 0;
+    currentCourseIndex = 0; // Start with Friday round
+
     document.getElementById('tab-2').classList.remove('disabled');
-    switchTab(2);
+    
+    switchTab(2);           // Go to Scorecard
     renderScorecard();
     renderPlayerPills();
-}
-
-// Add this missing function
-function getScoreClass(score, par) {
-    const diff = score - par;
-    if (diff <= -2) return 'eagle';
-    if (diff === -1) return 'birdie';
-    if (diff === 1) return 'bogey';
-    if (diff === 2) return 'double';
-    if (diff >= 3) return 'triple';
-    return '';
 }
 function selectCourse(courseIdx) {
     currentCourseIndex = courseIdx;
